@@ -1,0 +1,11 @@
+/.gitignore~
+/CMakeCache.txt
+/CMakeCache.txt~
+/CMakeFiles
+/CMakeLists.txt~
+/Makefile
+/cmake_install.cmake
+/cscope.files
+/cscope.out
+/cscope.out.in
+/cscope.out.po

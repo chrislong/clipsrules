@@ -6,7 +6,7 @@ import java.io.Writer;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
-public class ConsoleUTF8Router implements Router
+public class ConsoleUTF8Router extends Router
   {
    private String theName;
    private int thePriority;
@@ -35,7 +35,7 @@ public class ConsoleUTF8Router implements Router
      String name,
      int priority) throws Exception
      {
-      super();
+      super(name);
       theName = name;
       thePriority = priority;
       ungotten = false;

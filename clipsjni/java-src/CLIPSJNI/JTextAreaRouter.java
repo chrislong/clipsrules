@@ -8,7 +8,7 @@ import java.awt.event.*;
 import java.io.Reader;
 import java.io.InputStreamReader;
 
-public class JTextAreaRouter implements Router, KeyListener
+public class JTextAreaRouter extends Router implements KeyListener
   {  
    protected Environment clips;
    protected JTextArea jta;
@@ -37,6 +37,7 @@ public class JTextAreaRouter implements Router, KeyListener
    public JTextAreaRouter(
      Environment theEnv) throws Exception
      {  
+      super("Console");
       clips = theEnv;
       expectingInput = false;
       

@@ -1,7 +1,7 @@
 
 package CLIPSJNI;
 
-public class ConsoleRouter implements Router
+public class ConsoleRouter extends Router
   {
    private String theName;
    private int thePriority;
@@ -24,7 +24,7 @@ public class ConsoleRouter implements Router
      String name,
      int priority)
      {
-      super();
+      super(name);
       theName = name;
       thePriority = priority;
       ungotten = false;

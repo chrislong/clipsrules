@@ -1,0 +1,6 @@
+/.gitignore~
+/CMakeFiles
+/Makefile
+/clips
+/cmake_install.cmake
+/libclips.dylib
