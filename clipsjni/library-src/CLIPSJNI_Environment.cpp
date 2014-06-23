@@ -18,6 +18,8 @@ struct clipsJNIData
    jclass doubleClass;
    jmethodID doubleInitMethod;
    
+   jclass stringClass;
+
    jclass arrayListClass;
    jmethodID arrayListInitMethod;
    jmethodID arrayListAddMethod;
@@ -289,6 +291,7 @@ JNIEXPORT jlong JNICALL Java_CLIPSJNI_Environment_createEnvironment(
    jmethodID theLongInitMethod;
    jclass theDoubleClass; 
    jmethodID theDoubleInitMethod;
+   jclass theStringClass; 
    jclass theArrayListClass; 
    jmethodID theArrayListInitMethod, theArrayListAddMethod;
    jclass theVoidValueClass;
@@ -312,6 +315,7 @@ JNIEXPORT jlong JNICALL Java_CLIPSJNI_Environment_createEnvironment(
    theClassClass = env->FindClass("java/lang/Class"); 
    theLongClass = env->FindClass("java/lang/Long"); 
    theDoubleClass = env->FindClass("java/lang/Double"); 
+   theStringClass = env->FindClass("java/lang/String"); 
    theArrayListClass = env->FindClass("java/util/ArrayList"); 
    theVoidValueClass = env->FindClass("CLIPSJNI/VoidValue");
    theIntegerValueClass = env->FindClass("CLIPSJNI/IntegerValue");
@@ -330,6 +334,7 @@ JNIEXPORT jlong JNICALL Java_CLIPSJNI_Environment_createEnvironment(
    
    if ((theClassClass == NULL) ||
        (theLongClass == NULL) || (theDoubleClass == NULL) ||
+       (theStringClass == NULL) ||
        (theArrayListClass == NULL) ||
        (theVoidValueClass == NULL) ||
        (theIntegerValueClass == NULL) || (theFloatValueClass == NULL) ||
@@ -402,6 +407,7 @@ JNIEXPORT jlong JNICALL Java_CLIPSJNI_Environment_createEnvironment(
    CLIPSJNIData(theEnv)->longInitMethod = theLongInitMethod;
    CLIPSJNIData(theEnv)->doubleClass = static_cast<jclass>(env->NewGlobalRef(theDoubleClass));
    CLIPSJNIData(theEnv)->doubleInitMethod = theDoubleInitMethod;
+   CLIPSJNIData(theEnv)->stringClass = static_cast<jclass>(env->NewGlobalRef(theStringClass));
    CLIPSJNIData(theEnv)->arrayListClass = static_cast<jclass>(env->NewGlobalRef(theArrayListClass));
    CLIPSJNIData(theEnv)->arrayListInitMethod = theArrayListInitMethod;
    CLIPSJNIData(theEnv)->arrayListAddMethod = theArrayListAddMethod;
@@ -1924,7 +1930,7 @@ static intBool CallJavaMethod(
       /*=====================================*/
 
       theSize = env->GetArrayLength(methodList); 
-      for (c = 0; c < theSize; c++) 
+      for (c = 0; c < theSize && !found; c++) 
         { 
          theMethod = env->GetObjectArrayElement(methodList,c); 
          str = (jstring) env->CallObjectMethod(theMethod,getNameID);
@@ -1953,12 +1959,16 @@ static intBool CallJavaMethod(
       
          if (paramCount != (numberOfArguments - 2))
            { 
-            env->ReleaseStringUTFChars(str,cStr);
             continue; 
            }
 
          matches = TRUE;
       
+         /*=============================================================================*/
+         /* Make a new JNI reference frame so we can easily free any local refs we make */
+         /*=============================================================================*/
+         env->PushLocalFrame(16); // 16 is default
+
          for (p = 0; (p < paramCount) && matches; p++)
            {
             tempClass = (jclass) env->GetObjectArrayElement(parameterList,p);
@@ -1969,29 +1979,93 @@ static intBool CallJavaMethod(
              
             printf("p[%d] = %s\n",(int) p,cStr);
             
-            if (GetType(newArgs[p]) == INTEGER)
-              {
-               if (strcmp(cStr,"long") == 0)
+            switch (GetType(newArgs[p])) {
+            case INTEGER:
+               if (strcmp(cStr,"byte") == 0)  
                  { 
-                  /* printf("p[%d] = %s\n",(int) p,cStr); */
-                  javaArgs[p].j = DOToLong(newArgs[p]);
+                  javaArgs[p].b = DOToInteger(newArgs[p]);
                  }
                else if (strcmp(cStr,"int") == 0)  
                  { 
-                  /* printf("p[%d] = %s\n",(int) p,cStr); */
-                  javaArgs[p].i = DOToLong(newArgs[p]);
+                  javaArgs[p].i = DOToInteger(newArgs[p]);
+                 }
+               else if (strcmp(cStr,"long") == 0)
+                 { 
+                  javaArgs[p].j = DOToLong(newArgs[p]);
+                 }
+               else if (strcmp(cStr,"short") == 0)  
+                 { 
+                  javaArgs[p].s = DOToInteger(newArgs[p]);
+                 }
+               // fall through to allow a CLIPS INTEGER to be passed to a float/double Java func
+            case FLOAT:
+               if (strcmp(cStr,"double") == 0)  
+                 { 
+                  javaArgs[p].d = DOToDouble(newArgs[p]);
+                 }
+               else if (strcmp(cStr,"float") == 0)  
+                 { 
+                  javaArgs[p].f = DOToFloat(newArgs[p]);
                  }
                else
-                 { matches = FALSE; }
+                {
+                 matches = FALSE;
+                }
+               break;
+            case EXTERNAL_ADDRESS:
+             {
+              struct externalAddressHashNode *theEA = reinterpret_cast<struct externalAddressHashNode *>(newArgs[p].value);
+              if (theEA->type == CLIPSJNIData(theEnv)->javaExternalAddressID) {
+               jobject object = reinterpret_cast<jobject>(theEA->externalAddress);
+               jboolean assignable = env->IsInstanceOf(object, tempClass);
+               if (assignable)
+                {
+                 javaArgs[p].l = object;
+                }
+               else
+                {
+                 matches = FALSE;
+                }
               }
-            else
-              { matches = FALSE; }
-
+              else
+               {
+                SetEvaluationError(theEnv,TRUE);
+                ExpectedTypeError1(theEnv,methodName,p,"Java object (was other kind of external address)");
+                matches = FALSE;
+               }
+             }
+             break;
+            case INSTANCE_NAME:
+            case INSTANCE_ADDRESS:
+             SetEvaluationError(theEnv,TRUE);
+             ExpectedTypeError1(theEnv,methodName,p,"valid Java parameter (instances not supported)");
+             matches = FALSE;
+             break;
+            case STRING:
+             {
+              jobject stringObject = env->NewStringUTF(DOToString(newArgs[p]));
+              jboolean assignable = env->IsInstanceOf(stringObject, tempClass);
+              if (assignable)
+               {
+                javaArgs[p].l = stringObject;
+               }
+              else {
+               matches = FALSE;
+              }
+              // TODO: clean this up (via DeleteLocalRef) after calling the java func
+             }
+             break;
+            case SYMBOL:
+            default:
+             { matches = FALSE; }
+            }
+            
             env->ReleaseStringUTFChars(str,cStr);
-         
+            
             env->DeleteLocalRef(tempClass);
-           }
       
+           }
+         
          if (matches)
            {
             jobject returnType = env->CallObjectMethod(theMethod,getReturnTypeID); 
@@ -2057,33 +2131,45 @@ static intBool CallJavaMethod(
              jobject result = env->CallObjectMethodA(theObject,
                                                      env->FromReflectedMethod(theMethod),
                                                      javaArgs);
-             void* externalAddr;
              if (result != NULL) {
-              result = env->NewGlobalRef(result);
-              externalAddr = EnvAddExternalAddress
-               (theEnv,result, CLIPSJNIData(theEnv)->javaExternalAddressID);
+              jclass klass = env->GetObjectClass(result);
+              if (env->IsSameObject(klass,CLIPSJNIData(theEnv)->stringClass)) {
+               jstring javaString = static_cast<jstring>(result);
+               EnvSetpType(theEnv,rv,STRING);
+               jboolean isCopy = JNI_FALSE;
+               const char *resultString = env->GetStringUTFChars(javaString, &isCopy);
+               EnvSetpValue(theEnv,rv,EnvAddSymbol(theEnv,resultString));
+               env->ReleaseStringUTFChars(javaString, resultString);
+              }
+              else {
+               void* externalAddr;
+               result = env->NewGlobalRef(result);
+               externalAddr = EnvAddExternalAddress
+                (theEnv,result, CLIPSJNIData(theEnv)->javaExternalAddressID);
+               EnvSetpType(theEnv,rv,EXTERNAL_ADDRESS);
+               EnvSetpValue(theEnv,rv,externalAddr);
+              }
              }
              else {
-              externalAddr = NULL;
+              EnvSetpType(theEnv,rv,EXTERNAL_ADDRESS);
+              EnvSetpValue(theEnv,rv,NULL);
              }
-             EnvSetpType(theEnv,rv,EXTERNAL_ADDRESS);
-             EnvSetpValue(theEnv,rv,externalAddr);
             }
             found = TRUE;
-            break; 
            }
+         env->PopLocalFrame(NULL);
         }
      }
 
    if (newArgs != NULL)
-     { genfree(theEnv,newArgs,sizeof(DATA_OBJECT) * (numberOfArguments - 2)); }
+    { genfree(theEnv,newArgs,sizeof(DATA_OBJECT) * (numberOfArguments - 2)); }
 
    if (javaArgs != NULL)
-     { genfree(theEnv,javaArgs,sizeof(jvalue) * (numberOfArguments - 2)); }
-     
-   return TRUE;
+    { genfree(theEnv,javaArgs,sizeof(jvalue) * (numberOfArguments - 2)); }
+
+   return found;
   }
-  
+    
 /*******************************************************/
 /* DiscardJavaAddress: */
 /*******************************************************/
