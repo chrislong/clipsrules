@@ -26,6 +26,10 @@
 #ifndef _H_API
 #define _H_API
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "setup.h"
 #ifndef _H_argacces
 #include "argacces.h"
@@ -130,8 +134,9 @@
 #include "objrtmch.h"
 #endif
 
-
+#ifdef __cplusplus
+}
 #endif
 
-
-
+#endif
+  

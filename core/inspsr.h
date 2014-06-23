@@ -36,11 +36,11 @@
 #endif
 
 #if ! RUN_TIME
-LOCALE EXPRESSION *ParseInitializeInstance(void *,EXPRESSION *,char *);
-LOCALE EXPRESSION *ParseSlotOverrides(void *,char *,int *);
+LOCALE EXPRESSION *ParseInitializeInstance(void *,EXPRESSION *,const char *);
+LOCALE EXPRESSION *ParseSlotOverrides(void *,const char *,int *);
 #endif
 
-LOCALE EXPRESSION *ParseSimpleInstance(void *,EXPRESSION *,char *);
+LOCALE EXPRESSION *ParseSimpleInstance(void *,EXPRESSION *,const char *);
 
 #ifndef _INSCOM_SOURCE_
 #endif

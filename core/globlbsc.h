@@ -52,9 +52,9 @@
    LOCALE void                           EnvGetDefglobalList(void *,DATA_OBJECT_PTR,void *);
    LOCALE void                          *DefglobalModuleFunction(void *);
    LOCALE void                           PPDefglobalCommand(void *);
-   LOCALE int                            PPDefglobal(void *,char *,char *);
+   LOCALE int                            PPDefglobal(void *,const char *,const char *);
    LOCALE void                           ListDefglobalsCommand(void *);
-   LOCALE void                           EnvListDefglobals(void *,char *,void *);
+   LOCALE void                           EnvListDefglobals(void *,const char *,void *);
    LOCALE unsigned                       EnvGetDefglobalWatch(void *,void *);
    LOCALE void                           EnvSetDefglobalWatch(void *,unsigned,void *);
    LOCALE void                           ResetDefglobals(void *);

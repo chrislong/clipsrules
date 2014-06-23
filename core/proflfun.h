@@ -68,7 +68,7 @@ struct profileFunctionData
    int ProfileUserFunctions;
    int ProfileConstructs;
    struct constructProfileInfo *ActiveProfileFrame;
-   char *OutputString;
+   const char *OutputString;
   };
 
 #define ProfileFunctionData(theEnv) ((struct profileFunctionData *) GetEnvironmentData(theEnv,PROFLFUN_DATA))
@@ -88,10 +88,10 @@ struct profileFunctionData
    LOCALE double                         SetProfilePercentThreshold(void *,double);
    LOCALE double                         GetProfilePercentThresholdCommand(void *);
    LOCALE double                         GetProfilePercentThreshold(void *);
-   LOCALE intBool                        Profile(void *,char *);
+   LOCALE intBool                        Profile(void *,const char *);
    LOCALE void                           DeleteProfileData(void *,void *);
    LOCALE void                          *CreateProfileData(void *);
-   LOCALE char                          *SetProfileOutputString(void *,char *);
+   LOCALE const char                    *SetProfileOutputString(void *,const char *);
 
 #endif
 

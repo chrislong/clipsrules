@@ -345,7 +345,7 @@ globle struct expr *GenConstant(
 /*************************************************/
 globle void PrintExpression(
   void *theEnv,
-  char *fileid,
+  const char *fileid,
   struct expr *theExpression)
   {
    struct expr *oldExpression;

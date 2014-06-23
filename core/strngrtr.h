@@ -61,11 +61,11 @@ struct stringRouterData
 /**************************/
 
    LOCALE void                           InitializeStringRouter(void *);
-   LOCALE int                            OpenStringSource(void *,char *,char *,size_t);
-   LOCALE int                            OpenTextSource(void *,char *,char *,size_t,size_t);
-   LOCALE int                            CloseStringSource(void *,char *);
-   LOCALE int                            OpenStringDestination(void *,char *,char *,size_t);
-   LOCALE int                            CloseStringDestination(void *,char *);
+   LOCALE int                            OpenStringSource(void *,const char *,char *,size_t);
+   LOCALE int                            OpenTextSource(void *,const char *,char *,size_t,size_t);
+   LOCALE int                            CloseStringSource(void *,const char *);
+   LOCALE int                            OpenStringDestination(void *,const char *,char *,size_t);
+   LOCALE int                            CloseStringDestination(void *,const char *);
 
 #endif
 

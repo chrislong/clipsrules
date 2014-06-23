@@ -53,7 +53,7 @@ typedef struct messageHandlerLink
 
    LOCALE intBool          DirectMessage(void *,SYMBOL_HN *,INSTANCE_TYPE *,
                                          DATA_OBJECT *,EXPRESSION *);
-   LOCALE void             EnvSend(void *,DATA_OBJECT *,char *,char *,DATA_OBJECT *);
+   LOCALE void             EnvSend(void *,DATA_OBJECT *,const char *,char *,DATA_OBJECT *);
    LOCALE void             DestroyHandlerLinks(void *,HANDLER_LINK *);
    LOCALE void             SendCommand(void *,DATA_OBJECT *);
    LOCALE DATA_OBJECT     *GetNthMessageArgument(void *,int);
@@ -65,9 +65,9 @@ typedef struct messageHandlerLink
                                                 HANDLER_LINK *[],SYMBOL_HN *);
    LOCALE HANDLER_LINK    *JoinHandlerLinks(void *,HANDLER_LINK *[],HANDLER_LINK *[],SYMBOL_HN *);
 
-   LOCALE void             PrintHandlerSlotGetFunction(void *,char *,void *);
+   LOCALE void             PrintHandlerSlotGetFunction(void *,const char *,void *);
    LOCALE intBool          HandlerSlotGetFunction(void *,void *,DATA_OBJECT *);
-   LOCALE void             PrintHandlerSlotPutFunction(void *,char *,void *);
+   LOCALE void             PrintHandlerSlotPutFunction(void *,const char *,void *);
    LOCALE intBool          HandlerSlotPutFunction(void *,void *,DATA_OBJECT *);
    LOCALE void             DynamicHandlerGetSlot(void *,DATA_OBJECT *);
    LOCALE void             DynamicHandlerPutSlot(void *,DATA_OBJECT *);

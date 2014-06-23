@@ -74,28 +74,28 @@
    =========================================
    ***************************************** */
 
-static void PrintObjectGetVarJN1(void *,char *,void *);
+static void PrintObjectGetVarJN1(void *,const char *,void *);
 static intBool ObjectGetVarJNFunction1(void *,void *,DATA_OBJECT *);
-static void PrintObjectGetVarJN2(void *,char *,void *);
+static void PrintObjectGetVarJN2(void *,const char *,void *);
 static intBool ObjectGetVarJNFunction2(void *,void *,DATA_OBJECT *);
-static void PrintObjectGetVarPN1(void *,char *,void *);
+static void PrintObjectGetVarPN1(void *,const char *,void *);
 static intBool ObjectGetVarPNFunction1(void *,void *,DATA_OBJECT *);
-static void PrintObjectGetVarPN2(void *,char *,void *);
+static void PrintObjectGetVarPN2(void *,const char *,void *);
 static intBool ObjectGetVarPNFunction2(void *,void *,DATA_OBJECT *);
-static void PrintObjectCmpConstant(void *,char *,void *);
-static void PrintSlotLengthTest(void *,char *,void *);
+static void PrintObjectCmpConstant(void *,const char *,void *);
+static void PrintSlotLengthTest(void *,const char *,void *);
 static intBool SlotLengthTestFunction(void *,void *,DATA_OBJECT *);
-static void PrintPNSimpleCompareFunction1(void *,char *,void *);
+static void PrintPNSimpleCompareFunction1(void *,const char *,void *);
 static intBool PNSimpleCompareFunction1(void *,void *,DATA_OBJECT *);
-static void PrintPNSimpleCompareFunction2(void *,char *,void *);
+static void PrintPNSimpleCompareFunction2(void *,const char *,void *);
 static intBool PNSimpleCompareFunction2(void *,void *,DATA_OBJECT *);
-static void PrintPNSimpleCompareFunction3(void *,char *,void *);
+static void PrintPNSimpleCompareFunction3(void *,const char *,void *);
 static intBool PNSimpleCompareFunction3(void *,void *,DATA_OBJECT *);
-static void PrintJNSimpleCompareFunction1(void *,char *,void *);
+static void PrintJNSimpleCompareFunction1(void *,const char *,void *);
 static intBool JNSimpleCompareFunction1(void *,void *,DATA_OBJECT *);
-static void PrintJNSimpleCompareFunction2(void *,char *,void *);
+static void PrintJNSimpleCompareFunction2(void *,const char *,void *);
 static intBool JNSimpleCompareFunction2(void *,void *,DATA_OBJECT *);
-static void PrintJNSimpleCompareFunction3(void *,char *,void *);
+static void PrintJNSimpleCompareFunction3(void *,const char *,void *);
 static intBool JNSimpleCompareFunction3(void *,void *,DATA_OBJECT *);
 static void GetPatternObjectAndMarks(void *,int,int,int,INSTANCE_TYPE **,struct multifieldMarker **);
 static void GetObjectValueGeneral(void *,DATA_OBJECT *,INSTANCE_TYPE *,
@@ -370,7 +370,7 @@ globle intBool ObjectCmpConstantFunction(
 
 static void PrintObjectGetVarJN1(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   void *theValue)
   {
 #if DEVELOPER
@@ -426,7 +426,7 @@ static intBool ObjectGetVarJNFunction1(
 
 static void PrintObjectGetVarJN2(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   void *theValue)
   {
 #if DEVELOPER
@@ -474,7 +474,7 @@ static intBool ObjectGetVarJNFunction2(
 
 static void PrintObjectGetVarPN1(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   void *theValue)
   {
 #if DEVELOPER
@@ -520,7 +520,7 @@ static intBool ObjectGetVarPNFunction1(
 
 static void PrintObjectGetVarPN2(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   void *theValue)
   {
 #if DEVELOPER
@@ -563,7 +563,7 @@ static intBool ObjectGetVarPNFunction2(
 
 static void PrintObjectCmpConstant(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   void *theValue)
   {
 #if DEVELOPER
@@ -594,7 +594,7 @@ static void PrintObjectCmpConstant(
 
 static void PrintSlotLengthTest(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   void *theValue)
   {
 #if DEVELOPER
@@ -638,7 +638,7 @@ static intBool SlotLengthTestFunction(
 
 static void PrintPNSimpleCompareFunction1(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   void *theValue)
   {
 #if DEVELOPER
@@ -686,7 +686,7 @@ static intBool PNSimpleCompareFunction1(
 
 static void PrintPNSimpleCompareFunction2(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   void *theValue)
   {
 #if DEVELOPER
@@ -738,7 +738,7 @@ static intBool PNSimpleCompareFunction2(
 
 static void PrintPNSimpleCompareFunction3(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   void *theValue)
   {
 #if DEVELOPER
@@ -792,7 +792,7 @@ static intBool PNSimpleCompareFunction3(
 
 static void PrintJNSimpleCompareFunction1(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   void *theValue)
   {
 #if DEVELOPER
@@ -848,7 +848,7 @@ static intBool JNSimpleCompareFunction1(
 
 static void PrintJNSimpleCompareFunction2(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   void *theValue)
   {
 #if DEVELOPER
@@ -908,7 +908,7 @@ static intBool JNSimpleCompareFunction2(
 
 static void PrintJNSimpleCompareFunction3(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   void *theValue)
   {
 #if DEVELOPER

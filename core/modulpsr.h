@@ -23,7 +23,7 @@
 
 struct portConstructItem
   {
-   char *constructName;
+   const char *constructName;
    int typeExpected;
    struct portConstructItem *next;
   };
@@ -50,11 +50,11 @@ struct portConstructItem
 
    LOCALE long                           GetNumberOfDefmodules(void *);
    LOCALE void                           SetNumberOfDefmodules(void *,long);
-   LOCALE void                           AddAfterModuleDefinedFunction(void *,char *,void (*)(void *),int);
-   LOCALE int                            ParseDefmodule(void *,char *);
-   LOCALE void                           AddPortConstructItem(void *,char *,int);
-   LOCALE struct portConstructItem      *ValidPortConstructItem(void *,char *);
-   LOCALE int                            FindImportExportConflict(void *,char *,struct defmodule *,char *);
+   LOCALE void                           AddAfterModuleDefinedFunction(void *,const char *,void (*)(void *),int);
+   LOCALE int                            ParseDefmodule(void *,const char *);
+   LOCALE void                           AddPortConstructItem(void *,const char *,int);
+   LOCALE struct portConstructItem      *ValidPortConstructItem(void *,const char *);
+   LOCALE int                            FindImportExportConflict(void *,const char *,struct defmodule *,const char *);
 
 #endif
 

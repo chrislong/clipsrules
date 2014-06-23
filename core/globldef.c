@@ -240,7 +240,7 @@ globle struct defglobalModule *GetDefglobalModuleItem(
 /*****************************************************/
 globle void *EnvFindDefglobal(
   void *theEnv,
-  char *defglobalName)
+  const char *defglobalName)
   { 
    return(FindNamedConstruct(theEnv,defglobalName,DefglobalData(theEnv)->DefglobalConstruct)); 
   }
@@ -600,7 +600,7 @@ globle int QGetDefglobalValue(
 /************************************************************/
 globle intBool EnvGetDefglobalValue(
   void *theEnv,
-  char *variableName,
+  const char *variableName,
   DATA_OBJECT_PTR vPtr)
   {
    struct defglobal *theDefglobal;
@@ -619,7 +619,7 @@ globle intBool EnvGetDefglobalValue(
 /****************************************************************/
 globle intBool EnvSetDefglobalValue(
   void *theEnv,
-  char *variableName,
+  const char *variableName,
   DATA_OBJECT_PTR vPtr)
   {
    struct defglobal *theGlobal;

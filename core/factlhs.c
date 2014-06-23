@@ -55,7 +55,7 @@
 /***********************************************/
 globle struct lhsParseNode *SequenceRestrictionParse(
   void *theEnv,
-  char *readSource,
+  const char *readSource,
   struct token *theToken)
   {
    struct lhsParseNode *topNode;
@@ -209,7 +209,7 @@ globle int FactPatternParserFind(
 /******************************************************/
 globle struct lhsParseNode *FactPatternParse(
   void *theEnv,
-  char *readSource,
+  const char *readSource,
   struct token *theToken)
   {
    struct deftemplate *theDeftemplate;

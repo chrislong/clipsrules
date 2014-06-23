@@ -209,7 +209,7 @@ globle struct deffactsModule *GetDeffactsModuleItem(
 /**************************************************/
 globle void *EnvFindDeffacts(
   void *theEnv,
-  char *deffactsName)
+  const char *deffactsName)
   { 
    return(FindNamedConstruct(theEnv,deffactsName,DeffactsData(theEnv)->DeffactsConstruct)); 
   }

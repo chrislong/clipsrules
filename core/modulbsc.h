@@ -44,9 +44,9 @@
    LOCALE void                           DefmoduleBasicCommands(void *);
    LOCALE void                           EnvGetDefmoduleList(void *,DATA_OBJECT_PTR);
    LOCALE void                           PPDefmoduleCommand(void *);
-   LOCALE int                            PPDefmodule(void *,char *,char *);
+   LOCALE int                            PPDefmodule(void *,const char *,const char *);
    LOCALE void                           ListDefmodulesCommand(void *);
-   LOCALE void                           EnvListDefmodules(void *,char *);
+   LOCALE void                           EnvListDefmodules(void *,const char *);
 
 #endif
 

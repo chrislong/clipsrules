@@ -51,10 +51,10 @@ struct prettyPrintData
    LOCALE void                           InitializePrettyPrintData(void *);
    LOCALE void                           FlushPPBuffer(void *);
    LOCALE void                           DestroyPPBuffer(void *);
-   LOCALE void                           SavePPBuffer(void *,char *);
+   LOCALE void                           SavePPBuffer(void *,const char *);
    LOCALE void                           PPBackup(void *);
-   LOCALE char                          *CopyPPBuffer(void *);
-   LOCALE char                          *GetPPBuffer(void *);
+   LOCALE const char                    *CopyPPBuffer(void *);
+   LOCALE const char                    *GetPPBuffer(void *);
    LOCALE void                           PPCRAndIndent(void *);
    LOCALE void                           IncrementIndentDepth(void *,int);
    LOCALE void                           DecrementIndentDepth(void *,int);

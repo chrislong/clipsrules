@@ -988,10 +988,10 @@ struct topics
 /******************************************************************************/
 
 #if HELP_FUNCTIONS
-static int RecognizeHelpRouters(void *,char *);
-static int HelpPrint(void *,char *,char *);
-static int HelpGetc(void *,char *);
-static int HelpUngetc(void *,int,char *);
+static int RecognizeHelpRouters(void *,const char *);
+static int HelpPrint(void *,const char *,const char *);
+static int HelpGetc(void *,const char *);
+static int HelpUngetc(void *,int,const char *);
 static struct topics *AskForNewHelpTopic(void *,struct topics *,char **);
 #endif
 
@@ -1446,7 +1446,7 @@ globle int TossCommand(
 
 static int RecognizeHelpRouters(
   void *theEnv,
-  char *log_name)
+  const char *log_name)
   {
 #if MAC_XCD
 #pragma unused(theEnv)
@@ -1459,8 +1459,8 @@ static int RecognizeHelpRouters(
 
 static int HelpPrint(
   void *theEnv,
-  char *log_name,
-  char *str)
+  const char *log_name,
+  const char *str)
   {
 #if MAC_XCD
 #pragma unused(log_name)
@@ -1472,7 +1472,7 @@ static int HelpPrint(
 
 static int HelpGetc(
   void *theEnv,
-  char *log_name)
+  const char *log_name)
   {
 #if MAC_XCD
 #pragma unused(log_name)
@@ -1484,7 +1484,7 @@ static int HelpGetc(
 static int HelpUngetc(
   void *theEnv,
   int ch,
-  char *log_name)
+  const char *log_name)
   {
 #if MAC_XCD
 #pragma unused(log_name)

@@ -75,7 +75,7 @@
 /***************************************/
 
 #if (! RUN_TIME) && (! BLOAD_ONLY)
-   static struct expr            *ParseRuleRHS(void *,char *);
+   static struct expr            *ParseRuleRHS(void *,const char *);
    static int                     ReplaceRHSVariable(void *,struct expr *,void *);
    static struct defrule         *ProcessRuleLHS(void *,struct lhsParseNode *,struct expr *,SYMBOL_HN *,int *);
    static struct defrule         *CreateNewDisjunct(void *,SYMBOL_HN *,int,struct expr *,
@@ -93,7 +93,7 @@
 /****************************************************/
 globle int ParseDefrule(
   void *theEnv,
-  char *readSource)
+  const char *readSource)
   {
 #if (! RUN_TIME) && (! BLOAD_ONLY)
    SYMBOL_HN *ruleName;
@@ -602,7 +602,7 @@ static int ReplaceRHSVariable(
 /*******************************************************/
 static struct expr *ParseRuleRHS(
   void *theEnv,
-  char *readSource)
+  const char *readSource)
   {
    struct expr *actions;
    struct token theToken;

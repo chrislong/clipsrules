@@ -52,11 +52,11 @@ struct router
    int priority;
    short int environmentAware;
    void *context;
-   int (*query)(void *,char *);
-   int (*printer)(void *,char *,char *);
+   int (*query)(void *,const char *);
+   int (*printer)(void *,const char *,const char *);
    int (*exiter)(void *,int);
-   int (*charget)(void *,char *);
-   int (*charunget)(void *,int,char *);
+   int (*charget)(void *,const char *);
+   int (*charunget)(void *,int,const char *);
    struct router *next;
   };
 
@@ -64,9 +64,9 @@ struct routerData
   { 
    size_t CommandBufferInputCount;
    int AwaitingInput;
-   char *LineCountRouter;
-   char *FastCharGetRouter;
-   char *FastCharGetString;
+   const char *LineCountRouter;
+   const char *FastCharGetRouter;
+   const char *FastCharGetString;
    long FastCharGetIndex;
    struct router *ListOfRouters;
    FILE *FastLoadFilePtr;
@@ -95,43 +95,43 @@ struct routerData
 #define DeleteRouter(a) EnvDeleteRouter(GetCurrentEnvironment(),a)
 
    LOCALE void                           InitializeDefaultRouters(void *);
-   LOCALE int                            EnvPrintRouter(void *,char *,char *);
-   LOCALE int                            EnvGetcRouter(void *,char *);
-   LOCALE int                            EnvUngetcRouter(void *,int,char *);
+   LOCALE int                            EnvPrintRouter(void *,const char *,const char *);
+   LOCALE int                            EnvGetcRouter(void *,const char *);
+   LOCALE int                            EnvUngetcRouter(void *,int,const char *);
    LOCALE void                           EnvExitRouter(void *,int);
    LOCALE void                           AbortExit(void *);
    LOCALE intBool                        EnvAddRouterWithContext(void *,
-                                                   char *,int,
-                                                   int (*)(void *,char *),
-                                                   int (*)(void *,char *,char *),
-                                                   int (*)(void *,char *),
-                                                   int (*)(void *,int,char *),
+                                                   const char *,int,
+                                                   int (*)(void *,const char *),
+                                                   int (*)(void *,const char *,const char *),
+                                                   int (*)(void *,const char *),
+                                                   int (*)(void *,int,const char *),
                                                    int (*)(void *,int),
                                                    void *);
    LOCALE intBool                        EnvAddRouter(void *,
-                                                   char *,int,
-                                                   int (*)(void *,char *),
-                                                   int (*)(void *,char *,char *),
-                                                   int (*)(void *,char *),
-                                                   int (*)(void *,int,char *),
+                                                   const char *,int,
+                                                   int (*)(void *,const char *),
+                                                   int (*)(void *,const char *,const char *),
+                                                   int (*)(void *,const char *),
+                                                   int (*)(void *,int,const char *),
                                                    int (*)(void *,int));
-   LOCALE intBool                        AddRouter(char *,int,
-                                                   int (*)(char *),
-                                                   int (*)(char *,char *),
-                                                   int (*)(char *),
-                                                   int (*)(int,char *),
+   LOCALE intBool                        AddRouter(const char *,int,
+                                                   int (*)(const char *),
+                                                   int (*)(const char *,const char *),
+                                                   int (*)(const char *),
+                                                   int (*)(int,const char *),
                                                    int (*)(int));
-   LOCALE int                            EnvDeleteRouter(void *,char *);
-   LOCALE int                            QueryRouters(void *,char *);
-   LOCALE int                            EnvDeactivateRouter(void *,char *);
-   LOCALE int                            EnvActivateRouter(void *,char *);
+   LOCALE int                            EnvDeleteRouter(void *,const char *);
+   LOCALE int                            QueryRouters(void *,const char *);
+   LOCALE int                            EnvDeactivateRouter(void *,const char *);
+   LOCALE int                            EnvActivateRouter(void *,const char *);
    LOCALE void                           SetFastLoad(void *,FILE *);
    LOCALE void                           SetFastSave(void *,FILE *);
    LOCALE FILE                          *GetFastLoad(void *);
    LOCALE FILE                          *GetFastSave(void *);
-   LOCALE void                           UnrecognizedRouterMessage(void *,char *);
+   LOCALE void                           UnrecognizedRouterMessage(void *,const char *);
    LOCALE void                           ExitCommand(void *);
-   LOCALE int                            PrintNRouter(void *,char *,char *,unsigned long);
+   LOCALE int                            PrintNRouter(void *,const char *,const char *,unsigned long);
 
 #endif
 

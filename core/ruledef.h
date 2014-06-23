@@ -160,7 +160,7 @@ struct defruleData
 #define IsDefruleDeletable(a) EnvIsDefruleDeletable(GetCurrentEnvironment(),a)
 
    LOCALE void                           InitializeDefrules(void *);
-   LOCALE void                          *EnvFindDefrule(void *,char *);
+   LOCALE void                          *EnvFindDefrule(void *,const char *);
    LOCALE void                          *EnvGetNextDefrule(void *,void *);
    LOCALE struct defruleModule          *GetDefruleModuleItem(void *,struct defmodule *);
    LOCALE intBool                        EnvIsDefruleDeletable(void *,void *);

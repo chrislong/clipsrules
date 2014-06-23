@@ -54,9 +54,9 @@
    =========================================
    ***************************************** */
 
-static void FormMethodsFromRestrictions(void *,DEFGENERIC *,char *,EXPRESSION *);
+static void FormMethodsFromRestrictions(void *,DEFGENERIC *,const char *,EXPRESSION *);
 static RESTRICTION *ParseRestrictionType(void *,int);
-static EXPRESSION *GenTypeExpression(void *,EXPRESSION *,int,int,char *);
+static EXPRESSION *GenTypeExpression(void *,EXPRESSION *,int,int,const char *);
 
 /* =========================================
    *****************************************
@@ -112,7 +112,7 @@ globle void AddImplicitMethods(
 static void FormMethodsFromRestrictions(
   void *theEnv,
   DEFGENERIC *gfunc,
-  char *rstring,
+  const char *rstring,
   EXPRESSION *actions)
   {
    DEFMETHOD *meth;
@@ -382,7 +382,7 @@ static EXPRESSION *GenTypeExpression(
   EXPRESSION *top,
   int nonCOOLCode,
   int primitiveCode,
-  char *COOLName)
+  const char *COOLName)
   {
 #if OBJECT_SYSTEM
 #if MAC_XCD

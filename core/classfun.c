@@ -211,8 +211,8 @@ globle SLOT_DESC *FindClassSlot(
  ***************************************************************/
 globle void ClassExistError(
   void *theEnv,
-  char *func,
-  char *cname)
+  const char *func,
+  const char *cname)
   {
    PrintErrorID(theEnv,"CLASSFUN",1,FALSE);
    EnvPrintRouter(theEnv,WERROR,"Unable to find class ");
@@ -258,7 +258,7 @@ globle void DeleteClassLinks(
  ******************************************************/
 globle void PrintClassName(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   DEFCLASS *theDefclass,
   intBool linefeedFlag)
   {
@@ -289,8 +289,8 @@ globle void PrintClassName(
  ***************************************************/
 globle void PrintPackedClassLinks(
   void *theEnv,
-  char *logicalName,
-  char *title,
+  const char *logicalName,
+  const char *title,
   PACKED_CLASS_LINKS *plinks)
   {
    long i;

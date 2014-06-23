@@ -57,13 +57,13 @@
    LOCALE void                          *DeftemplateModuleFunction(void *);
 #if DEBUGGING_FUNCTIONS
    LOCALE void                           PPDeftemplateCommand(void *);
-   LOCALE int                            PPDeftemplate(void *,char *,char *);
+   LOCALE int                            PPDeftemplate(void *,const char *,const char *);
    LOCALE void                           ListDeftemplatesCommand(void *);
-   LOCALE void                           EnvListDeftemplates(void *,char *,void *);
+   LOCALE void                           EnvListDeftemplates(void *,const char *,void *);
    LOCALE unsigned                       EnvGetDeftemplateWatch(void *,void *);
    LOCALE void                           EnvSetDeftemplateWatch(void *,unsigned,void *);
    LOCALE unsigned                       DeftemplateWatchAccess(void *,int,unsigned,struct expr *);
-   LOCALE unsigned                       DeftemplateWatchPrint(void *,char *,int,struct expr *);
+   LOCALE unsigned                       DeftemplateWatchPrint(void *,const char *,int,struct expr *);
 #endif
 
 #endif

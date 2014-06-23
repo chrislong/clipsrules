@@ -67,12 +67,12 @@
    LOCALE int                     ReplaceMultiValueField(void *,struct dataObject *,
                                                          struct dataObject *,
                                                          long,long,
-                                                         struct dataObject *,char *);
+                                                         struct dataObject *,const char *);
    LOCALE int                     InsertMultiValueField(void *,struct dataObject *,
                                                         struct dataObject *,
-                                                        long,struct dataObject *,char *);
+                                                        long,struct dataObject *,const char *);
    LOCALE int                     DeleteMultiValueField(void *,struct dataObject *,struct dataObject *,
-                                                        long,long,char *);
+                                                        long,long,const char *);
 
 #endif
 

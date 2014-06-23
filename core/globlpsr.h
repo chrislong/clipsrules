@@ -42,9 +42,9 @@ struct defglobal;
 #define LOCALE extern
 #endif
 
-   LOCALE intBool                 ParseDefglobal(void *,char *);
+   LOCALE intBool                 ParseDefglobal(void *,const char *);
    LOCALE intBool                 ReplaceGlobalVariable(void *,struct expr *);
-   LOCALE void                    GlobalReferenceErrorMessage(void *,char *);
+   LOCALE void                    GlobalReferenceErrorMessage(void *,const char *);
 
 #endif
 

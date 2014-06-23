@@ -59,26 +59,26 @@
 #define ArgTypeCheck(a,b,c,d) EnvArgTypeCheck(GetCurrentEnvironment(),a,b,c,d)
 
    LOCALE int                            EnvRtnArgCount(void *);
-   LOCALE int                            EnvArgCountCheck(void *,char *,int,int);
-   LOCALE int                            EnvArgRangeCheck(void *,char *,int,int);
+   LOCALE int                            EnvArgCountCheck(void *,const char *,int,int);
+   LOCALE int                            EnvArgRangeCheck(void *,const char *,int,int);
    LOCALE char                          *EnvRtnLexeme(void *,int);
    LOCALE double                         EnvRtnDouble(void *,int);
    LOCALE long long                      EnvRtnLong(void *,int);
    LOCALE struct dataObject             *EnvRtnUnknown(void *,int,struct dataObject *);
-   LOCALE int                            EnvArgTypeCheck(void *,char *,int,int,struct dataObject *);
-   LOCALE intBool                        GetNumericArgument(void *,struct expr *,char *,struct dataObject *,int,int);
-   LOCALE char                          *GetLogicalName(void *,int,char *);
-   LOCALE char                          *GetFileName(void *,char *,int);
-   LOCALE char                          *GetConstructName(void *,char *,char *);
-   LOCALE void                           ExpectedCountError(void *,char *,int,int);
-   LOCALE void                           OpenErrorMessage(void *,char *,char *);
-   LOCALE intBool                        CheckFunctionArgCount(void *,char *,char *,int);
-   LOCALE void                           ExpectedReturnTypeError(char *,char *);
-   LOCALE void                           ExpectedTypeError1(void *,char *,int,char *);
-   LOCALE void                           ExpectedTypeError2(void *,char *,int);
-   LOCALE struct defmodule              *GetModuleName(void *,char *,int,int *);
-   LOCALE void                          *GetFactOrInstanceArgument(void *,int,DATA_OBJECT *,char *);
-   LOCALE void                           IllegalLogicalNameMessage(void *,char *);
+   LOCALE int                            EnvArgTypeCheck(void *,const char *,int,int,struct dataObject *);
+   LOCALE intBool                        GetNumericArgument(void *,struct expr *,const char *,struct dataObject *,int,int);
+   LOCALE const char                    *GetLogicalName(void *,int,const char *);
+   LOCALE const char                    *GetFileName(void *,const char *,int);
+   LOCALE const char                    *GetConstructName(void *,const char *,const char *);
+   LOCALE void                           ExpectedCountError(void *,const char *,int,int);
+   LOCALE void                           OpenErrorMessage(void *,const char *,const char *);
+   LOCALE intBool                        CheckFunctionArgCount(void *,const char *,const char *,int);
+   LOCALE void                           ExpectedReturnTypeError(const char *,const char *);
+   LOCALE void                           ExpectedTypeError1(void *,const char *,int,const char *);
+   LOCALE void                           ExpectedTypeError2(void *,const char *,int);
+   LOCALE struct defmodule              *GetModuleName(void *,const char *,int,int *);
+   LOCALE void                          *GetFactOrInstanceArgument(void *,int,DATA_OBJECT *,const char *);
+   LOCALE void                           IllegalLogicalNameMessage(void *,const char *);
 
 #endif
 

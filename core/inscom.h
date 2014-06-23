@@ -79,7 +79,7 @@ struct instanceData
 #define ValidInstanceAddress(a) EnvValidInstanceAddress(GetCurrentEnvironment(),a)
 
 #if ALLOW_ENVIRONMENT_GLOBALS
-   LOCALE char                          *GetInstanceName(void *);
+   LOCALE const char *GetInstanceName(void *);
 #endif
 
 LOCALE void SetupInstances(void *);
@@ -88,15 +88,15 @@ LOCALE intBool EnvUnmakeInstance(void *,void *);
 #if DEBUGGING_FUNCTIONS
 LOCALE void InstancesCommand(void *);
 LOCALE void PPInstanceCommand(void *);
-LOCALE void EnvInstances(void *,char *,void *,char *,int);
+LOCALE void EnvInstances(void *,const char *,void *,const char *,int);
 #endif
 LOCALE void *EnvMakeInstance(void *,char *);
-LOCALE void *EnvCreateRawInstance(void *,void *,char *);
-LOCALE void *EnvFindInstance(void *,void *,char *,unsigned);
+LOCALE void *EnvCreateRawInstance(void *,void *,const char *);
+LOCALE void *EnvFindInstance(void *,void *,const char *,unsigned);
 LOCALE int EnvValidInstanceAddress(void *,void *);
-LOCALE void EnvDirectGetSlot(void *,void *,char *,DATA_OBJECT *);
-LOCALE int EnvDirectPutSlot(void *,void *,char *,DATA_OBJECT *);
-LOCALE char *EnvGetInstanceName(void *,void *);
+LOCALE void EnvDirectGetSlot(void *,void *,const char *,DATA_OBJECT *);
+LOCALE int EnvDirectPutSlot(void *,void *,const char *,DATA_OBJECT *);
+LOCALE const char *EnvGetInstanceName(void *,void *);
 LOCALE void *EnvGetInstanceClass(void *,void *);
 LOCALE unsigned long GetGlobalNumberOfInstances(void *);
 LOCALE void *EnvGetNextInstance(void *,void *);

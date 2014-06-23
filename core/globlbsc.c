@@ -59,11 +59,11 @@
 /* LOCAL INTERNAL FUNCTION DEFINITIONS */
 /***************************************/
 
-   static void                    SaveDefglobals(void *,void *,char *);
+   static void                    SaveDefglobals(void *,void *,const char *);
    static void                    ResetDefglobalAction(void *,struct constructHeader *,void *);
 #if DEBUGGING_FUNCTIONS && (! RUN_TIME)
    static unsigned                DefglobalWatchAccess(void *,int,unsigned,struct expr *);
-   static unsigned                DefglobalWatchPrint(void *,char *,int,struct expr *);
+   static unsigned                DefglobalWatchPrint(void *,const char *,int,struct expr *);
 #endif
 
 /****************************************/
@@ -147,7 +147,7 @@ static void ResetDefglobalAction(
 static void SaveDefglobals(
   void *theEnv,
   void *theModule,
-  char *logicalName)
+  const char *logicalName)
   {
    SaveConstruct(theEnv,theModule,logicalName,DefglobalData(theEnv)->DefglobalConstruct); 
   }
@@ -224,8 +224,8 @@ globle void PPDefglobalCommand(
 /*************************************/
 globle int PPDefglobal(
   void *theEnv,
-  char *defglobalName,
-  char *logicalName)
+  const char *defglobalName,
+  const char *logicalName)
   {
    return(PPConstruct(theEnv,defglobalName,logicalName,DefglobalData(theEnv)->DefglobalConstruct)); 
   }
@@ -246,7 +246,7 @@ globle void ListDefglobalsCommand(
 /***************************************/
 globle void EnvListDefglobals(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   void *vTheModule)
   {
    struct defmodule *theModule = (struct defmodule *) vTheModule;
@@ -311,7 +311,7 @@ static unsigned DefglobalWatchAccess(
 /*********************************************************************/
 static unsigned DefglobalWatchPrint(
   void *theEnv,
-  char *logName,
+  const char *logName,
   int code,
   EXPRESSION *argExprs)
   {

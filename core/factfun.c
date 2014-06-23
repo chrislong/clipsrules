@@ -224,7 +224,7 @@ globle void FactSlotValueFunction(
 globle void FactSlotValue(
   void *theEnv,
   void *vTheFact,
-  char *theSlotName,
+  const char *theSlotName,
   DATA_OBJECT *returnValue)
   {
    struct fact *theFact = (struct fact *) vTheFact;
@@ -512,7 +512,7 @@ globle void PPFactFunction(
   {
    struct fact *theFact;
    int numberOfArguments;
-   char *logicalName = NULL;      /* Avoids warning */
+   const char *logicalName = NULL;      /* Avoids warning */
    int ignoreDefaults = FALSE;
    DATA_OBJECT theArg;
 
@@ -576,7 +576,7 @@ globle void PPFactFunction(
 globle void EnvPPFact(
   void *theEnv,
   void *vTheFact,
-  char *logicalName,
+  const char *logicalName,
   int ignoreDefaults)
   {
 #if MAC_XCD
@@ -599,7 +599,7 @@ globle void EnvPPFact(
 /**************************************************************/
 globle struct fact *GetFactAddressOrIndexArgument(
   void *theEnv,
-  char *theFunction,
+  const char *theFunction,
   int position,
   int noFactError)
   {

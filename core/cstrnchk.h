@@ -56,7 +56,7 @@
    LOCALE intBool                        CheckAllowedClassesConstraint(void *,int,void *,CONSTRAINT_RECORD *);
    LOCALE int                            ConstraintCheckExpressionChain(void *,struct expr *,
                                                                      CONSTRAINT_RECORD *);
-   LOCALE void                           ConstraintViolationErrorMessage(void *,char *,char *,int,int,
+   LOCALE void                           ConstraintViolationErrorMessage(void *,const char *,const char *,int,int,
                                                                       struct symbolHashNode *,
                                                                       int,int,CONSTRAINT_RECORD *,
                                                                       int);

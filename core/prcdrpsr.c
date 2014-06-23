@@ -68,16 +68,16 @@ struct procedureParserData
 /***************************************/
 
 #if (! RUN_TIME) && (! BLOAD_ONLY)
-   static struct expr            *WhileParse(void *,struct expr *,char *);
-   static struct expr            *LoopForCountParse(void *,struct expr *,char *);
+   static struct expr            *WhileParse(void *,struct expr *,const char *);
+   static struct expr            *LoopForCountParse(void *,struct expr *,const char *);
    static void                    ReplaceLoopCountVars(void *,SYMBOL_HN *,EXPRESSION *,int);
-   static struct expr            *IfParse(void *,struct expr *,char *);
-   static struct expr            *PrognParse(void *,struct expr *,char *);
-   static struct expr            *BindParse(void *,struct expr *,char *);
+   static struct expr            *IfParse(void *,struct expr *,const char *);
+   static struct expr            *PrognParse(void *,struct expr *,const char *);
+   static struct expr            *BindParse(void *,struct expr *,const char *);
    static int                     AddBindName(void *,struct symbolHashNode *,CONSTRAINT_RECORD *);
-   static struct expr            *ReturnParse(void *,struct expr *,char *);
-   static struct expr            *BreakParse(void *,struct expr *,char *);
-   static struct expr            *SwitchParse(void *,struct expr *,char *);
+   static struct expr            *ReturnParse(void *,struct expr *,const char *);
+   static struct expr            *BreakParse(void *,struct expr *,const char *);
+   static struct expr            *SwitchParse(void *,struct expr *,const char *);
    static void                    DeallocateProceduralFunctionData(void *);
 #endif
 
@@ -176,7 +176,7 @@ globle intBool ParsedBindNamesEmpty(
 static struct expr *WhileParse(
   void *theEnv,
   struct expr *parse,
-  char *infile)
+  const char *infile)
   {
    struct token theToken;
    int read_first_paren;
@@ -265,7 +265,7 @@ static struct expr *WhileParse(
 static struct expr *LoopForCountParse(
   void *theEnv,
   struct expr *parse,
-  char *infile)
+  const char *infile)
   {
    struct token theToken;
    SYMBOL_HN *loopVar = NULL;
@@ -483,7 +483,7 @@ static void ReplaceLoopCountVars(
 static struct expr *IfParse(
   void *theEnv,
   struct expr *top,
-  char *infile)
+  const char *infile)
   {
    struct token theToken;
 
@@ -604,7 +604,7 @@ static struct expr *IfParse(
 static struct expr *PrognParse(
   void *theEnv,
   struct expr *top,
-  char *infile)
+  const char *infile)
   {
    struct token tkn;
    struct expr *tmp;
@@ -630,7 +630,7 @@ static struct expr *PrognParse(
 static struct expr *BindParse(
   void *theEnv,
   struct expr *top,
-  char *infile)
+  const char *infile)
   {
    struct token theToken;
    SYMBOL_HN *variableName;
@@ -713,7 +713,7 @@ static struct expr *BindParse(
 static struct expr *ReturnParse(
   void *theEnv,
   struct expr *top,
-  char *infile)
+  const char *infile)
   {
    int error_flag = FALSE;
    struct token theToken;
@@ -766,7 +766,7 @@ static struct expr *ReturnParse(
 static struct expr *BreakParse(
   void *theEnv,
   struct expr *top,
-  char *infile)
+  const char *infile)
   {
    struct token theToken;
 
@@ -798,7 +798,7 @@ static struct expr *BreakParse(
 static struct expr *SwitchParse(
   void *theEnv,
   struct expr *top,
-  char *infile)
+  const char *infile)
   {
    struct token theToken;
    EXPRESSION *theExp,*chk;

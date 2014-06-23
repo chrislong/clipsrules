@@ -133,7 +133,7 @@ struct deftemplateData
 #define DeftemplateModule(x) GetConstructModuleName((struct constructHeader *) x)
 
    LOCALE void                           InitializeDeftemplates(void *);
-   LOCALE void                          *EnvFindDeftemplate(void *,char *);
+   LOCALE void                          *EnvFindDeftemplate(void *,const char *);
    LOCALE void                          *EnvGetNextDeftemplate(void *,void *);
    LOCALE intBool                        EnvIsDeftemplateDeletable(void *,void *);
    LOCALE void                          *EnvGetNextFactInTemplate(void *,void *,void *);

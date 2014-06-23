@@ -53,9 +53,9 @@
    LOCALE void                           EnvGetDeffactsList(void *,DATA_OBJECT_PTR,void *);
    LOCALE void                          *DeffactsModuleFunction(void *);
    LOCALE void                           PPDeffactsCommand(void *);
-   LOCALE int                            PPDeffacts(void *,char *,char *);
+   LOCALE int                            PPDeffacts(void *,const char *,const char *);
    LOCALE void                           ListDeffactsCommand(void *);
-   LOCALE void                           EnvListDeffacts(void *,char *,void *);
+   LOCALE void                           EnvListDeffacts(void *,const char *,void *);
 
 #endif
 

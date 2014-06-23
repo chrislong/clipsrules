@@ -63,9 +63,9 @@
 /***************************************/
 
 #if ! RUN_TIME
-   static int                     DoString(char *,int,int *);
-   static int                     DoComment(char *,int);
-   static int                     DoWhiteSpace(char *,int);
+   static int                     DoString(const char *,int,int *);
+   static int                     DoComment(const char *,int);
+   static int                     DoWhiteSpace(const char *,int);
    static int                     DefaultGetNextEvent(void *);
 #endif
    static void                    DeallocateCommandLineData(void *);
@@ -94,7 +94,7 @@ static void DeallocateCommandLineData(
   {
 #if ! RUN_TIME
    if (CommandLineData(theEnv)->CommandString != NULL) 
-     { rm(theEnv,CommandLineData(theEnv)->CommandString,CommandLineData(theEnv)->MaximumCharacters); }
+     { rm(theEnv,(void*)CommandLineData(theEnv)->CommandString,CommandLineData(theEnv)->MaximumCharacters); }
      
    if (CommandLineData(theEnv)->CurrentCommand != NULL) 
      { ReturnExpression(theEnv,CommandLineData(theEnv)->CurrentCommand); }
@@ -133,7 +133,7 @@ globle int ExpandCommandString(
 globle void FlushCommandString(
   void *theEnv)
   {
-   if (CommandLineData(theEnv)->CommandString != NULL) rm(theEnv,CommandLineData(theEnv)->CommandString,CommandLineData(theEnv)->MaximumCharacters);
+   if (CommandLineData(theEnv)->CommandString != NULL) rm(theEnv,(void*)CommandLineData(theEnv)->CommandString,CommandLineData(theEnv)->MaximumCharacters);
    CommandLineData(theEnv)->CommandString = NULL;
    CommandLineData(theEnv)->MaximumCharacters = 0;
    RouterData(theEnv)->CommandBufferInputCount = 0;
@@ -145,7 +145,7 @@ globle void FlushCommandString(
 /*********************************************************************************/
 globle void SetCommandString(
   void *theEnv,
-  char *str)
+  const char *str)
   {
    size_t length;
 
@@ -166,7 +166,7 @@ globle void SetCommandString(
 /*************************************************************/
 globle void SetNCommandString(
   void *theEnv,
-  char *str,
+  const char *str,
   unsigned length)
   {
    FlushCommandString(theEnv);
@@ -185,7 +185,7 @@ globle void SetNCommandString(
 /******************************************************************************/
 globle void AppendCommandString(
   void *theEnv,
-  char *str)
+  const char *str)
   {
    CommandLineData(theEnv)->CommandString = AppendToString(theEnv,str,CommandLineData(theEnv)->CommandString,&RouterData(theEnv)->CommandBufferInputCount,&CommandLineData(theEnv)->MaximumCharacters);
   }
@@ -195,7 +195,7 @@ globle void AppendCommandString(
 /******************************************************************************/
 globle void InsertCommandString(
   void *theEnv,
-  char *str,
+  const char *str,
   unsigned int position)
   {
    CommandLineData(theEnv)->CommandString = 
@@ -209,7 +209,7 @@ globle void InsertCommandString(
 /************************************************************/
 globle void AppendNCommandString(
   void *theEnv,
-  char *str,
+  const char *str,
   unsigned length)
   {
    CommandLineData(theEnv)->CommandString = AppendNToString(theEnv,str,CommandLineData(theEnv)->CommandString,length,&RouterData(theEnv)->CommandBufferInputCount,&CommandLineData(theEnv)->MaximumCharacters);
@@ -235,7 +235,7 @@ globle char *GetCommandString(
 /*   contains an error.                                                   */
 /**************************************************************************/
 globle int CompleteCommand(
-  char *mstring)
+  const char *mstring)
   {
    int i;
    char inchar;
@@ -378,7 +378,7 @@ globle int CompleteCommand(
 /*   until the closing quotation mark is encountered.      */
 /***********************************************************/
 static int DoString(
-  char *str,
+  const char *str,
   int pos,
   int *complete)
   {
@@ -439,7 +439,7 @@ static int DoString(
 /*   until a line feed or carriage return is encountered.    */
 /*************************************************************/
 static int DoComment(
-  char *str,
+  const char *str,
   int pos)
   {
    int inchar;
@@ -462,7 +462,7 @@ static int DoComment(
 /*   tabs, and form feeds that is contained within a string.  */
 /**************************************************************/
 static int DoWhiteSpace(
-  char *str,
+  const char *str,
   int pos)
   {
    int inchar;
@@ -742,7 +742,7 @@ globle intBool RouteCommand(
   {
    DATA_OBJECT result;
    struct expr *top;
-   char *commandName;
+   const char *commandName;
    struct token theToken;
 
    if (command == NULL)
@@ -940,7 +940,7 @@ globle intBool TopLevelCommand(
 /* GetCommandCompletionString: Returns the last token in a */
 /*   string if it is a valid token for command completion. */
 /***********************************************************/
-globle char *GetCommandCompletionString(
+globle const char *GetCommandCompletionString(
   void *theEnv,
   char *theString,
   size_t maxPosition)
@@ -948,7 +948,7 @@ globle char *GetCommandCompletionString(
    struct token lastToken;
    struct token theToken;
    char lastChar;
-   char *rs;
+   const char *rs;
    size_t length;
 
    /*=========================*/

@@ -64,7 +64,7 @@
 
    static void                    ResetDefrules(void *);
    static void                    ResetDefrulesPrime(void *);
-   static void                    SaveDefrules(void *,void *,char *);
+   static void                    SaveDefrules(void *,void *,const char *);
 #if (! RUN_TIME)
    static int                     ClearDefrulesReady(void *);
    static void                    ClearDefrules(void *);
@@ -235,7 +235,7 @@ static void ClearDefrules(
 static void SaveDefrules(
   void *theEnv,
   void *theModule,
-  char *logicalName)
+  const char *logicalName)
   {
    SaveConstruct(theEnv,theModule,logicalName,DefruleData(theEnv)->DefruleConstruct); 
   }
@@ -312,8 +312,8 @@ globle void PPDefruleCommand(
 /***********************************/
 globle int PPDefrule(
   void *theEnv,
-  char *defruleName,
-  char *logicalName)
+  const char *defruleName,
+  const char *logicalName)
   {
    return(PPConstruct(theEnv,defruleName,logicalName,DefruleData(theEnv)->DefruleConstruct));
   }
@@ -334,7 +334,7 @@ globle void ListDefrulesCommand(
 /*************************************/
 globle void EnvListDefrules(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   void *theModule)
   {
    ListConstruct(theEnv,DefruleData(theEnv)->DefruleConstruct,logicalName,(struct defmodule *) theModule); 
@@ -450,7 +450,7 @@ globle unsigned DefruleWatchAccess(
 /*****************************************************************/
 globle unsigned DefruleWatchPrint(
   void *theEnv,
-  char *logName,
+  const char *logName,
   int code,
   struct expr *argExprs)
   {   

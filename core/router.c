@@ -53,7 +53,7 @@
 /* LOCAL INTERNAL FUNCTION DEFINITIONS */
 /***************************************/
 
-   static int                     QueryRouter(void *,char *,struct router *);
+   static int                     QueryRouter(void *,const char *,struct router *);
    static void                    DeallocateRouterData(void *);
 
 /*********************************************************/
@@ -98,8 +98,8 @@ static void DeallocateRouterData(
 /*******************************************/
 globle int EnvPrintRouter(
   void *theEnv,
-  char *logicalName,
-  char *str)
+  const char *logicalName,
+  const char *str)
   {
    struct router *currentPtr;
 
@@ -110,7 +110,7 @@ globle int EnvPrintRouter(
    /* all of the routers.                               */
    /*===================================================*/
 
-   if (((char *) RouterData(theEnv)->FastSaveFilePtr) == logicalName)
+   if (((const char *) RouterData(theEnv)->FastSaveFilePtr) == logicalName)
      {
       fprintf(RouterData(theEnv)->FastSaveFilePtr,"%s",str);
       return(2);
@@ -130,7 +130,7 @@ globle int EnvPrintRouter(
          if (currentPtr->environmentAware)
            { (*currentPtr->printer)(theEnv,logicalName,str); }
          else            
-           { ((int (*)(char *,char *)) (*currentPtr->printer))(logicalName,str); }
+           { ((int (*)(const char *,const char *)) (*currentPtr->printer))(logicalName,str); }
          
          return(1);
         }
@@ -150,7 +150,7 @@ globle int EnvPrintRouter(
 /**************************************************/
 globle int EnvGetcRouter(
   void *theEnv,
-  char *logicalName)
+  const char *logicalName)
   {
    struct router *currentPtr;
    int inchar;
@@ -162,13 +162,13 @@ globle int EnvGetcRouter(
    /* all of the routers.                               */
    /*===================================================*/
 
-   if (((char *) RouterData(theEnv)->FastLoadFilePtr) == logicalName)
+   if (((const char *) RouterData(theEnv)->FastLoadFilePtr) == logicalName)
      {
       inchar = getc(RouterData(theEnv)->FastLoadFilePtr);
 
       if ((inchar == '\r') || (inchar == '\n'))
         {
-         if (((char *) RouterData(theEnv)->FastLoadFilePtr) == RouterData(theEnv)->LineCountRouter)
+         if (((const char *) RouterData(theEnv)->FastLoadFilePtr) == RouterData(theEnv)->LineCountRouter)
            { IncrementLineCount(theEnv); }
         }
 
@@ -215,7 +215,7 @@ globle int EnvGetcRouter(
          if (currentPtr->environmentAware)
            { inchar = (*currentPtr->charget)(theEnv,logicalName); }
          else            
-           { inchar = ((int (*)(char *)) (*currentPtr->charget))(logicalName); }
+           { inchar = ((int (*)(const char *)) (*currentPtr->charget))(logicalName); }
 
          if ((inchar == '\r') || (inchar == '\n'))
            {
@@ -243,7 +243,7 @@ globle int EnvGetcRouter(
 globle int EnvUngetcRouter(
   void *theEnv,
   int ch,
-  char *logicalName)
+  const char *logicalName)
   {
    struct router *currentPtr;
 
@@ -254,11 +254,11 @@ globle int EnvUngetcRouter(
    /* all of the routers.                               */
    /*===================================================*/
 
-   if (((char *) RouterData(theEnv)->FastLoadFilePtr) == logicalName)
+   if (((const char *) RouterData(theEnv)->FastLoadFilePtr) == logicalName)
      {
       if ((ch == '\r') || (ch == '\n'))
         {
-         if (((char *) RouterData(theEnv)->FastLoadFilePtr) == RouterData(theEnv)->LineCountRouter)
+         if (((const char *) RouterData(theEnv)->FastLoadFilePtr) == RouterData(theEnv)->LineCountRouter)
            { DecrementLineCount(theEnv); }
         }
 
@@ -305,7 +305,7 @@ globle int EnvUngetcRouter(
          if (currentPtr->environmentAware)
            { return((*currentPtr->charunget)(theEnv,ch,logicalName)); }
          else            
-           { return(((int (*)(int,char *)) (*currentPtr->charunget))(ch,logicalName)); }
+           { return(((int (*)(int,const char *)) (*currentPtr->charunget))(ch,logicalName)); }
         }
 
       currentPtr = currentPtr->next;
@@ -389,12 +389,12 @@ globle void AbortExit(
 /* AddRouter: Adds an I/O router to the list of routers. */
 /*********************************************************/
 globle intBool AddRouter(
-  char *routerName,
+  const char *routerName,
   int priority,
-  int (*queryFunction)(char *),
-  int (*printFunction)(char *,char *),
-  int (*getcFunction)(char *),
-  int (*ungetcFunction)(int,char *),
+  int (*queryFunction)(const char *),
+  int (*printFunction)(const char *,const char *),
+  int (*getcFunction)(const char *),
+  int (*ungetcFunction)(int,const char *),
   int (*exitFunction)(int))
   {
    struct router *newPtr, *lastPtr, *currentPtr;
@@ -413,11 +413,11 @@ globle intBool AddRouter(
    newPtr->environmentAware = FALSE;
    newPtr->priority = priority;
    newPtr->context = NULL;
-   newPtr->query = (int (*)(void *,char *)) queryFunction;
-   newPtr->printer = (int (*)(void *,char *,char *)) printFunction;
+   newPtr->query = (int (*)(void *,const char *)) queryFunction;
+   newPtr->printer = (int (*)(void *,const char *,const char *)) printFunction;
    newPtr->exiter = (int (*)(void *,int)) exitFunction;
-   newPtr->charget = (int (*)(void *,char *)) getcFunction;
-   newPtr->charunget = (int (*)(void *,int,char *)) ungetcFunction;
+   newPtr->charget = (int (*)(void *,const char *)) getcFunction;
+   newPtr->charunget = (int (*)(void *,int,const char *)) ungetcFunction;
    newPtr->next = NULL;
 
    if (RouterData(theEnv)->ListOfRouters == NULL)
@@ -454,12 +454,12 @@ globle intBool AddRouter(
 /************************************************************/
 globle intBool EnvAddRouter(
   void *theEnv,
-  char *routerName,
+  const char *routerName,
   int priority,
-  int (*queryFunction)(void *,char *),
-  int (*printFunction)(void *,char *,char *),
-  int (*getcFunction)(void *,char *),
-  int (*ungetcFunction)(void *,int,char *),
+  int (*queryFunction)(void *,const char *),
+  int (*printFunction)(void *,const char *,const char *),
+  int (*getcFunction)(void *,const char *),
+  int (*ungetcFunction)(void *,int,const char *),
   int (*exitFunction)(void *,int))
   {
    return EnvAddRouterWithContext(theEnv,routerName,priority,
@@ -472,12 +472,12 @@ globle intBool EnvAddRouter(
 /***********************************************************************/
 globle intBool EnvAddRouterWithContext(
   void *theEnv,
-  char *routerName,
+  const char *routerName,
   int priority,
-  int (*queryFunction)(void *,char *),
-  int (*printFunction)(void *,char *,char *),
-  int (*getcFunction)(void *,char *),
-  int (*ungetcFunction)(void *,int,char *),
+  int (*queryFunction)(void *,const char *),
+  int (*printFunction)(void *,const char *,const char *),
+  int (*getcFunction)(void *,const char *),
+  int (*ungetcFunction)(void *,int,const char *),
   int (*exitFunction)(void *,int),
   void *context)
   {
@@ -534,7 +534,7 @@ globle intBool EnvAddRouterWithContext(
 /*****************************************************************/
 globle int EnvDeleteRouter(
   void *theEnv,
-  char *routerName)
+  const char *routerName)
   {
    struct router *currentPtr, *lastPtr;
 
@@ -568,7 +568,7 @@ globle int EnvDeleteRouter(
 /*********************************************************************/
 globle int QueryRouters(
   void *theEnv,
-  char *logicalName)
+  const char *logicalName)
   {
    struct router *currentPtr;
 
@@ -588,7 +588,7 @@ globle int QueryRouters(
 /************************************************/
 static int QueryRouter(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   struct router *currentPtr)
   {
    /*===================================================*/
@@ -617,7 +617,7 @@ static int QueryRouter(
      }
    else            
      { 
-      if (((int (*)(char *)) (*currentPtr->query))(logicalName) == TRUE)
+      if (((int (*)(const char *)) (*currentPtr->query))(logicalName) == TRUE)
         { return(TRUE); }
      }
 
@@ -629,7 +629,7 @@ static int QueryRouter(
 /*******************************************************/
 globle int EnvDeactivateRouter(
   void *theEnv,
-  char *routerName)
+  const char *routerName)
   {
    struct router *currentPtr;
 
@@ -653,7 +653,7 @@ globle int EnvDeactivateRouter(
 /***************************************************/
 globle int EnvActivateRouter(
   void *theEnv,
-  char *routerName)
+  const char *routerName)
   {
    struct router *currentPtr;
 
@@ -716,7 +716,7 @@ globle FILE *GetFastSave(
 /*****************************************************/
 globle void UnrecognizedRouterMessage(
   void *theEnv,
-  char *logicalName)
+  const char *logicalName)
   {
    PrintErrorID(theEnv,"ROUTER",1,FALSE);
    EnvPrintRouter(theEnv,WERROR,"Logical name ");
@@ -729,8 +729,8 @@ globle void UnrecognizedRouterMessage(
 /*****************************************/
 globle int PrintNRouter(
   void *theEnv,
-  char *logicalName,
-  char *str,
+  const char *logicalName,
+  const char *str,
   unsigned long length)
   {
    char *tempStr;

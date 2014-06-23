@@ -264,7 +264,7 @@ globle struct defruleModule *GetDefruleModuleItem(
 /*******************************************************************/
 globle void *EnvFindDefrule(
   void *theEnv,
-  char *defruleName)
+  const char *defruleName)
   {   
    return(FindNamedConstruct(theEnv,defruleName,DefruleData(theEnv)->DefruleConstruct)); 
   }

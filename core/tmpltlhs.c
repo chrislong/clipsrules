@@ -52,8 +52,8 @@
 /* LOCAL INTERNAL FUNCTION DEFINITIONS */
 /***************************************/
 
-   static struct lhsParseNode    *GetLHSSlots(void *,char *,struct token *,struct deftemplate *,int *);
-   static struct lhsParseNode    *GetSingleLHSSlot(void *,char *,struct token *,
+   static struct lhsParseNode    *GetLHSSlots(void *,const char *,struct token *,struct deftemplate *,int *);
+   static struct lhsParseNode    *GetSingleLHSSlot(void *,const char *,struct token *,
                                                    struct templateSlot *,int *,short);
    static intBool                 MultiplyDefinedLHSSlots(void *,struct lhsParseNode *,SYMBOL_HN *);
 
@@ -63,7 +63,7 @@
 /*********************************************/
 globle struct lhsParseNode *DeftemplateLHSParse(
   void *theEnv,
-  char *readSource,
+  const char *readSource,
   struct deftemplate *theDeftemplate)
   {
    struct lhsParseNode *head, *firstSlot;
@@ -124,7 +124,7 @@ globle struct lhsParseNode *DeftemplateLHSParse(
 /******************************************/
 static struct lhsParseNode *GetLHSSlots(
   void *theEnv,
-  char *readSource,
+  const char *readSource,
   struct token *tempToken,
   struct deftemplate *theDeftemplate,
   int *error)
@@ -238,7 +238,7 @@ static struct lhsParseNode *GetLHSSlots(
 /*****************************************************/
 static struct lhsParseNode *GetSingleLHSSlot(
   void *theEnv,
-  char *readSource,
+  const char *readSource,
   struct token *tempToken,
   struct templateSlot *slotPtr,
   int *error,

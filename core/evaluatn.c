@@ -72,7 +72,7 @@
 /***************************************/
 
    static void                    DeallocateEvaluationData(void *);
-   static void                    PrintCAddress(void *,char *,void *);
+   static void                    PrintCAddress(void *,const char *,void *);
    static void                    NewCAddress(void *,DATA_OBJECT *);
    /*
    static intBool                 DiscardCAddress(void *,void *);
@@ -542,7 +542,7 @@ globle void ReturnValues(
 /***************************************************/
 globle void PrintDataObject(
   void *theEnv,
-  char *fileid,
+  const char *fileid,
   DATA_OBJECT_PTR argPtr)
   {
    switch(argPtr->type)
@@ -737,7 +737,7 @@ globle void AtomDeinstall(
 /********************************************/
 globle int EnvFunctionCall(
   void *theEnv,
-  char *name,
+  const char *name,
   char *args,
   DATA_OBJECT *result)
   {
@@ -973,7 +973,7 @@ unsigned long GetAtomicHashValue(
 /***********************************************************/
 globle struct expr *FunctionReferenceExpression(
   void *theEnv,
-  char *name)
+  const char *name)
   {
 #if DEFGENERIC_CONSTRUCT
    void *gfunc;
@@ -1025,7 +1025,7 @@ globle struct expr *FunctionReferenceExpression(
 /******************************************************************/
 globle intBool GetFunctionReference(
   void *theEnv,
-  char *name,
+  const char *name,
   FUNCTION_REFERENCE *theReference)
   {
 #if DEFGENERIC_CONSTRUCT
@@ -1155,7 +1155,7 @@ globle int EvaluateAndStoreInDataObject(
 /*******************************************************/
 static void PrintCAddress(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   void *theValue)
   {
    char buffer[20];

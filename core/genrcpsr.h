@@ -37,10 +37,10 @@
 #define LOCALE extern
 #endif
 
-LOCALE intBool ParseDefgeneric(void *,char *);
-LOCALE intBool ParseDefmethod(void *,char *);
+LOCALE intBool ParseDefgeneric(void *,const char *);
+LOCALE intBool ParseDefmethod(void *,const char *);
 LOCALE DEFMETHOD *AddMethod(void *,DEFGENERIC *,DEFMETHOD *,int,short,EXPRESSION *,
-                            int,int,SYMBOL_HN *,EXPRESSION *,char *,int);
+                            int,int,SYMBOL_HN *,EXPRESSION *,const char *,int);
 LOCALE void PackRestrictionTypes(void *,RESTRICTION *,EXPRESSION *);
 LOCALE void DeleteTempRestricts(void *,EXPRESSION *);
 LOCALE DEFMETHOD *FindMethodByRestrictions(DEFGENERIC *,EXPRESSION *,int,

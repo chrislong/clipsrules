@@ -82,7 +82,7 @@ struct method
    unsigned trace : 1;
    RESTRICTION *restrictions;
    EXPRESSION *actions;
-   char *ppForm;
+   const char *ppForm;
    struct userData *usrData;
   };
 
@@ -160,14 +160,14 @@ LOCALE long FindMethodByIndex(DEFGENERIC *,long);
 LOCALE void PreviewGeneric(void *);
 LOCALE void PrintMethod(void *,char *,int,DEFMETHOD *);
 #endif
-LOCALE DEFGENERIC *CheckGenericExists(void *,char *,char *);
-LOCALE long CheckMethodExists(void *,char *,DEFGENERIC *,long);
+LOCALE DEFGENERIC *CheckGenericExists(void *,const char *,const char *);
+LOCALE long CheckMethodExists(void *,const char *,DEFGENERIC *,long);
 
 #if ! OBJECT_SYSTEM
-LOCALE char *TypeName(void *,int);
+LOCALE const char *TypeName(void *,int);
 #endif
 
-LOCALE void PrintGenericName(void *,char *,DEFGENERIC *);
+LOCALE void PrintGenericName(void *,const char *,DEFGENERIC *);
 
 #endif
 

@@ -45,7 +45,7 @@
 
 struct CodeGeneratorItem
   {
-   char *name;
+   const char *name;
    void (*beforeFunction)(void *);
    void (*initFunction)(void *,FILE *,int,int);
    int (*generateFunction)(void *,char *,char *,char *,int,FILE *,int,int);

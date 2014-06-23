@@ -202,7 +202,7 @@ struct messageHandler
    short maxParams;
    short localVarCount;
    EXPRESSION *actions;
-   char *ppForm;
+   const char *ppForm;
    struct userData *usrData;
   };
 

@@ -49,9 +49,9 @@
 /* LOCAL INTERNAL FUNCTION DEFINITIONS */
 /***************************************/
 
-   static void                   *ScanSymbol(void *,char *,int,unsigned short *);
-   static void                   *ScanString(void *,char *);
-   static void                    ScanNumber(void *,char *,struct token *);
+   static void                   *ScanSymbol(void *,const char *,int,unsigned short *);
+   static void                   *ScanString(void *,const char *);
+   static void                    ScanNumber(void *,const char *,struct token *);
    static void                    DeallocateScannerData(void *);
 
 /************************************************/
@@ -85,7 +85,7 @@ static void DeallocateScannerData(
 /***********************************************************************/
 globle void GetToken(
  void *theEnv,
- char *logicalName,
+ const char *logicalName,
  struct token *theToken)
  {
    int inchar;
@@ -375,7 +375,7 @@ globle void GetToken(
 /*************************************/
 static void *ScanSymbol(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   int count,
   unsigned short *type)
   {
@@ -453,7 +453,7 @@ static void *ScanSymbol(
 /*************************************/
 static void *ScanString(
   void *theEnv,
-  char *logicalName)
+  const char *logicalName)
   {
    int inchar;
    size_t pos = 0;
@@ -503,7 +503,7 @@ static void *ScanString(
 /**************************************/
 static void ScanNumber(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   struct token *theToken)
   {
    int count = 0;

@@ -188,12 +188,12 @@ globle void InitializeDefmodules(
 /******************************************************/
 globle int RegisterModuleItem(
    void *theEnv,
-   char *theItem,
+   const char *theItem,
    void *(*allocateFunction)(void *),
    void (*freeFunction)(void *,void *),
    void *(*bloadModuleReference)(void *,int),
    void  (*constructsToCModuleReference)(void *,FILE *,int,int,int),
-   void *(*findFunction)(void *,char *))
+   void *(*findFunction)(void *,const char *))
   {
    struct moduleItem *newModuleItem;
 
@@ -245,7 +245,7 @@ globle int GetNumberOfModuleItems(
 /********************************************************/
 globle struct moduleItem *FindModuleItem(
   void *theEnv,
-  char *theName)
+  const char *theName)
   {
    struct moduleItem *theModuleItem;
 
@@ -495,7 +495,7 @@ globle void *EnvGetNextDefmodule(
 /* EnvGetDefmoduleName: Returns the name */
 /*   of the specified defmodule.         */
 /*****************************************/
-globle char *EnvGetDefmoduleName(
+globle const char *EnvGetDefmoduleName(
   void *theEnv,
   void *defmodulePtr)
   { 
@@ -510,7 +510,7 @@ globle char *EnvGetDefmoduleName(
 /* EnvGetDefmodulePPForm: Returns the pretty print */
 /*   representation of the specified defmodule.    */
 /***************************************************/
-globle char *EnvGetDefmodulePPForm(
+globle const char *EnvGetDefmodulePPForm(
   void *theEnv,
   void *defmodulePtr)
   { 
@@ -635,7 +635,7 @@ static void ReturnDefmodule(
 
    if (theDefmodule->ppForm != NULL)
      {
-      rm(theEnv,theDefmodule->ppForm,
+      rm(theEnv,(void*) theDefmodule->ppForm,
          (int) sizeof(char) * (strlen(theDefmodule->ppForm) + 1));
      }
      
@@ -660,7 +660,7 @@ static void ReturnDefmodule(
 /**********************************************************************/
 globle void *EnvFindDefmodule(
   void *theEnv,
-  char *defmoduleName)
+  const char *defmoduleName)
   {
    struct defmodule *defmodulePtr;
    SYMBOL_HN *findValue;
@@ -705,7 +705,7 @@ globle void *SetCurrentModuleCommand(
   void *theEnv)
   {
    DATA_OBJECT argPtr;
-   char *argument;
+   const char *argument;
    struct defmodule *theModule;
    SYMBOL_HN *defaultReturn;
 
@@ -754,7 +754,7 @@ globle void *SetCurrentModuleCommand(
 /*************************************************/
 globle void AddAfterModuleChangeFunction(
   void *theEnv,
-  char *name,
+  const char *name,
   void (*func)(void *),
   int priority)
   {

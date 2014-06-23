@@ -63,7 +63,7 @@
 
    static void                    ResetDeffacts(void *);
    static void                    ClearDeffacts(void *);
-   static void                    SaveDeffacts(void *,void *,char *);
+   static void                    SaveDeffacts(void *,void *,const char *);
    static void                    ResetDeffactsAction(void *,struct constructHeader *,void *);
 
 /***************************************************************/
@@ -185,7 +185,7 @@ static void ClearDeffacts(
 static void SaveDeffacts(
   void *theEnv,
   void *theModule,
-  char *logicalName)
+  const char *logicalName)
   { 
    SaveConstruct(theEnv,theModule,logicalName,DeffactsData(theEnv)->DeffactsConstruct); 
   }
@@ -262,8 +262,8 @@ globle void PPDeffactsCommand(
 /************************************/
 globle int PPDeffacts(
   void *theEnv,
-  char *deffactsName,
-  char *logicalName)
+  const char *deffactsName,
+  const char *logicalName)
   { 
    return(PPConstruct(theEnv,deffactsName,logicalName,DeffactsData(theEnv)->DeffactsConstruct)); 
   }
@@ -284,7 +284,7 @@ globle void ListDeffactsCommand(
 /*************************************/
 globle void EnvListDeffacts(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   void *theModule)
   { 
    ListConstruct(theEnv,DeffactsData(theEnv)->DeffactsConstruct,logicalName,(struct defmodule *) theModule);

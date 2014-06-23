@@ -47,7 +47,7 @@
 
    static void                    ClearDefmodules(void *);
 #if DEFMODULE_CONSTRUCT
-   static void                    SaveDefmodules(void *,void *,char *);
+   static void                    SaveDefmodules(void *,void *,const char *);
 #endif
 
 /*****************************************************************/
@@ -111,9 +111,9 @@ static void ClearDefmodules(
 static void SaveDefmodules(
   void *theEnv,
   void *theModule,
-  char *logicalName)
+  const char *logicalName)
   {
-   char *ppform;
+   const char *ppform;
 
    ppform = EnvGetDefmodulePPForm(theEnv,theModule);
    if (ppform != NULL)
@@ -143,7 +143,7 @@ globle void EnvGetDefmoduleList(
 globle void PPDefmoduleCommand(
   void *theEnv)
   {
-   char *defmoduleName;
+   const char *defmoduleName;
 
    defmoduleName = GetConstructName(theEnv,"ppdefmodule","defmodule name");
    if (defmoduleName == NULL) return;
@@ -159,8 +159,8 @@ globle void PPDefmoduleCommand(
 /*************************************/
 globle int PPDefmodule(
   void *theEnv,
-  char *defmoduleName,
-  char *logicalName)
+  const char *defmoduleName,
+  const char *logicalName)
   {
    void *defmodulePtr;
 
@@ -194,7 +194,7 @@ globle void ListDefmodulesCommand(
 /***************************************/
 globle void EnvListDefmodules(
   void *theEnv,
-  char *logicalName)
+  const char *logicalName)
   {
    void *theModule;
    int count = 0;

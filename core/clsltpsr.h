@@ -47,7 +47,7 @@ typedef struct tempSlotLink
 #define LOCALE extern
 #endif
 
-LOCALE TEMP_SLOT_LINK *ParseSlot(void *,char *,TEMP_SLOT_LINK *,PACKED_CLASS_LINKS *,int,int);
+LOCALE TEMP_SLOT_LINK *ParseSlot(void *,const char *,TEMP_SLOT_LINK *,PACKED_CLASS_LINKS *,int,int);
 LOCALE void DeleteSlots(void *,TEMP_SLOT_LINK *);
 
 #ifndef _CLSLTPSR_SOURCE_

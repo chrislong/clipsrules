@@ -263,7 +263,7 @@ static void DeallocateFactData(
 /**********************************************/
 globle void PrintFactWithIdentifier(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   struct fact *factPtr)
   {
    char printSpace[20];
@@ -278,7 +278,7 @@ globle void PrintFactWithIdentifier(
 /****************************************************/
 globle void PrintFactIdentifier(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   void *factPtr)
   {
    char printSpace[20];
@@ -293,7 +293,7 @@ globle void PrintFactIdentifier(
 /********************************************/
 globle void PrintFactIdentifierInLongForm(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   void *factPtr)
   {
    if (PrintUtilityData(theEnv)->AddressesToStrings) EnvPrintRouter(theEnv,logicalName,"\"");
@@ -360,7 +360,7 @@ globle void IncrementFactBasisCount(
 /**************************************************/
 globle void PrintFact(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   struct fact *factPtr,
   int seperateLines,
   int ignoreDefaults)
@@ -907,7 +907,7 @@ globle struct fact *EnvCreateFact(
 globle intBool EnvGetFactSlot(
   void *theEnv,
   void *vTheFact,
-  char *slotName,
+  const char *slotName,
   DATA_OBJECT *theValue)
   {
    struct fact *theFact = (struct fact *) vTheFact;
@@ -970,7 +970,7 @@ globle intBool EnvGetFactSlot(
 #if ALLOW_ENVIRONMENT_GLOBALS
 globle intBool GetFactSlot(
   void *vTheFact,
-  char *slotName,
+  const char *slotName,
   DATA_OBJECT *theValue)
   {
    return(EnvGetFactSlot(GetCurrentEnvironment(),vTheFact,slotName,theValue));
@@ -984,7 +984,7 @@ globle intBool GetFactSlot(
 globle intBool EnvPutFactSlot(
   void *theEnv,
   void *vTheFact,
-  char *slotName,
+  const char *slotName,
   DATA_OBJECT *theValue)
   {
    struct fact *theFact = (struct fact *) vTheFact;
@@ -1640,7 +1640,7 @@ globle struct fact *FindIndexedFact(
 /*   to the ListOfAssertFunctions.    */
 /**************************************/
 globle intBool AddAssertFunction(
-  char *name,
+  const char *name,
   void (*functionPtr)(void *,void *),
   int priority)
   {
@@ -1661,7 +1661,7 @@ globle intBool AddAssertFunction(
 /*****************************************/
 globle intBool EnvAddAssertFunction(
   void *theEnv,
-  char *name,
+  const char *name,
   void (*functionPtr)(void *, void *),
   int priority)
   {
@@ -1678,7 +1678,7 @@ globle intBool EnvAddAssertFunction(
 /********************************************/
 globle intBool EnvAddAssertFunctionWithContext(
   void *theEnv,
-  char *name,
+  const char *name,
   void (*functionPtr)(void *, void *),
   int priority,
   void *context)
@@ -1696,7 +1696,7 @@ globle intBool EnvAddAssertFunctionWithContext(
 /***********************************************/
 globle intBool EnvRemoveAssertFunction(
   void *theEnv,
-  char *name)
+  const char *name)
   {
    int found;
 
@@ -1714,7 +1714,7 @@ globle intBool EnvRemoveAssertFunction(
 /*   to the ListOfRetractFunctions.    */
 /********************************************/
 globle intBool AddRetractFunction(
-  char *name,
+  const char *name,
   void (*functionPtr)(void *,void *),
   int priority)
   {
@@ -1735,7 +1735,7 @@ globle intBool AddRetractFunction(
 /******************************************/
 globle intBool EnvAddRetractFunction(
   void *theEnv,
-  char *name,
+  const char *name,
   void (*functionPtr)(void *, void *),
   int priority)
   {
@@ -1752,7 +1752,7 @@ globle intBool EnvAddRetractFunction(
 /*********************************************/
 globle intBool EnvAddRetractFunctionWithContext(
   void *theEnv,
-  char *name,
+  const char *name,
   void (*functionPtr)(void *, void *),
   int priority,
   void *context)
@@ -1770,7 +1770,7 @@ globle intBool EnvAddRetractFunctionWithContext(
 /************************************************/
 globle intBool EnvRemoveRetractFunction(
   void *theEnv,
-  char *name)
+  const char *name)
   {
    int found;
 
@@ -1788,7 +1788,7 @@ globle intBool EnvRemoveRetractFunction(
 /*   to the ListOfModifyFunctions.    */
 /**************************************/
 globle intBool AddModifyFunction(
-  char *name,
+  const char *name,
   void (*functionPtr)(void *,void *,void *),
   int priority)
   {
@@ -1809,7 +1809,7 @@ globle intBool AddModifyFunction(
 /*****************************************/
 globle intBool EnvAddModifyFunction(
   void *theEnv,
-  char *name,
+  const char *name,
   void (*functionPtr)(void *, void *, void *),
   int priority)
   {
@@ -1826,7 +1826,7 @@ globle intBool EnvAddModifyFunction(
 /********************************************/
 globle intBool EnvAddModifyFunctionWithContext(
   void *theEnv,
-  char *name,
+  const char *name,
   void (*functionPtr)(void *, void *, void *),
   int priority,
   void *context)
@@ -1845,7 +1845,7 @@ globle intBool EnvAddModifyFunctionWithContext(
 /***********************************************/
 globle intBool EnvRemoveModifyFunction(
   void *theEnv,
-  char *name)
+  const char *name)
   {
    int found;
 

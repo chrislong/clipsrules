@@ -61,7 +61,7 @@
 /***************************************/
 
 #if RUN_TIME || BLOAD_ONLY || BLOAD || BLOAD_AND_BSAVE
-   static void                       NoSuchTemplateError(void *,char *);
+   static void                       NoSuchTemplateError(void *,const char *);
 #endif
 
 #if (! RUN_TIME)
@@ -75,12 +75,12 @@
 /**********************************************************************/
 globle struct expr *BuildRHSAssert(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   struct token *theToken,
   int *error,
   int atLeastOne,
   int readFirstParen,
-  char *whereParsed)
+  const char *whereParsed)
   {
    struct expr *lastOne, *nextOne, *assertList, *stub;
 
@@ -196,7 +196,7 @@ globle struct expr *BuildRHSAssert(
 /***************************************************************/
 globle struct expr *GetRHSPattern(
   void *theEnv,
-  char *readSource,
+  const char *readSource,
   struct token *tempToken,
   int *error,
   int constantsOnly,
@@ -209,7 +209,7 @@ globle struct expr *GetRHSPattern(
    int printError, count;
    struct deftemplate *theDeftemplate;
    struct symbolHashNode *templateName;
-   char *nullBitMap = "\0";
+   const char *nullBitMap = "\0";
 
    /*=================================================*/
    /* Get the opening parenthesis of the RHS pattern. */
@@ -418,7 +418,7 @@ globle struct expr *GetRHSPattern(
 /********************************************************************/
 globle struct expr *GetAssertArgument(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   struct token *theToken,
   int *error,
   int endType,
@@ -622,7 +622,7 @@ globle struct fact *StringToFact(
 /*********************************************************/
 static void NoSuchTemplateError(
   void *theEnv,
-  char *templateName)
+  const char *templateName)
   {
    PrintErrorID(theEnv,"FACTRHS",1,FALSE);
    EnvPrintRouter(theEnv,WERROR,"Template ");

@@ -62,10 +62,10 @@
    =========================================
    ***************************************** */
 
-static EXPRESSION *ParseQueryRestrictions(void *,EXPRESSION *,char *,struct token *);
+static EXPRESSION *ParseQueryRestrictions(void *,EXPRESSION *,const char *,struct token *);
 static intBool ReplaceClassNameWithReference(void *,EXPRESSION *);
-static int ParseQueryTestExpression(void *,EXPRESSION *,char *);
-static int ParseQueryActionExpression(void *,EXPRESSION *,char *,EXPRESSION *,struct token *);
+static int ParseQueryTestExpression(void *,EXPRESSION *,const char *);
+static int ParseQueryActionExpression(void *,EXPRESSION *,const char *,EXPRESSION *,struct token *);
 static void ReplaceInstanceVariables(void *,EXPRESSION *,EXPRESSION *,int,int);
 static void ReplaceSlotReference(void *,EXPRESSION *,EXPRESSION *,
                                  struct FunctionDefinition *,int);
@@ -109,7 +109,7 @@ static int IsQueryFunction(EXPRESSION *);
 globle EXPRESSION *ParseQueryNoAction(
   void *theEnv,
   EXPRESSION *top,
-  char *readSource)
+  const char *readSource)
   {
    EXPRESSION *insQuerySetVars;
    struct token queryInputToken;
@@ -171,7 +171,7 @@ globle EXPRESSION *ParseQueryNoAction(
 globle EXPRESSION *ParseQueryAction(
   void *theEnv,
   EXPRESSION *top,
-  char *readSource)
+  const char *readSource)
   {
    EXPRESSION *insQuerySetVars;
    struct token queryInputToken;
@@ -232,7 +232,7 @@ globle EXPRESSION *ParseQueryAction(
 static EXPRESSION *ParseQueryRestrictions(
   void *theEnv,
   EXPRESSION *top,
-  char *readSource,
+  const char *readSource,
   struct token *queryInputToken)
   {
    EXPRESSION *insQuerySetVars = NULL,*lastInsQuerySetVars = NULL,
@@ -341,7 +341,7 @@ static intBool ReplaceClassNameWithReference(
   void *theEnv,
   EXPRESSION *theExp)
   {
-   char *theClassName;
+   const char *theClassName;
    void *theDefclass;
 
    if (theExp->type == SYMBOL)
@@ -374,7 +374,7 @@ static intBool ReplaceClassNameWithReference(
 static int ParseQueryTestExpression(
   void *theEnv,
   EXPRESSION *top,
-  char *readSource)
+  const char *readSource)
   {
    EXPRESSION *qtest;
    int error;
@@ -433,7 +433,7 @@ static int ParseQueryTestExpression(
 static int ParseQueryActionExpression(
   void *theEnv,
   EXPRESSION *top,
-  char *readSource,
+  const char *readSource,
   EXPRESSION *insQuerySetVars,
   struct token *queryInputToken)
   {

@@ -47,7 +47,7 @@
 #define LOCALE extern
 #endif
 
-   LOCALE void                           PrintPartialMatch(void *,char *,struct partialMatch *);
+   LOCALE void                           PrintPartialMatch(void *,const char *,struct partialMatch *);
    LOCALE struct partialMatch           *CopyPartialMatch(void *,struct partialMatch *);
    LOCALE struct partialMatch           *MergePartialMatches(void *,struct partialMatch *,struct partialMatch *);
    LOCALE long int                       IncrementPseudoFactIndex(void);
@@ -69,7 +69,7 @@
    LOCALE struct multifieldMarker       *CopyMultifieldMarkers(void *,struct multifieldMarker *);
    LOCALE struct partialMatch           *CreateAlphaMatch(void *,void *,struct multifieldMarker *,
                                                           struct patternNodeHeader *,unsigned long);
-   LOCALE void                           TraceErrorToRule(void *,struct joinNode *,char *);
+   LOCALE void                           TraceErrorToRule(void *,struct joinNode *,const char *);
    LOCALE void                           InitializePatternHeader(void *,struct patternNodeHeader *);
    LOCALE void                           MarkRuleNetwork(void *,int);
    LOCALE void                           TagRuleNetwork(void *,long *,long *,long *,long *);

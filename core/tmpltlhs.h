@@ -39,7 +39,7 @@
 #define LOCALE extern
 #endif
 
-   LOCALE struct lhsParseNode           *DeftemplateLHSParse(void *,char *,struct deftemplate *);
+   LOCALE struct lhsParseNode           *DeftemplateLHSParse(void *,const char *,struct deftemplate *);
 
 #endif
 

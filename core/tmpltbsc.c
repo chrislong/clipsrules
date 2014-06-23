@@ -73,7 +73,7 @@
    static void                    ResetDeftemplates(void *);
 #endif
    static void                    ClearDeftemplates(void *);
-   static void                    SaveDeftemplates(void *,void *,char *);
+   static void                    SaveDeftemplates(void *,void *,const char *);
 
 /*********************************************************************/
 /* DeftemplateBasicCommands: Initializes basic deftemplate commands. */
@@ -151,7 +151,7 @@ static void ClearDeftemplates(
 static void SaveDeftemplates(
   void *theEnv,
   void *theModule,
-  char *logicalName)
+  const char *logicalName)
   {   
    SaveConstruct(theEnv,theModule,logicalName,DeftemplateData(theEnv)->DeftemplateConstruct);
   }
@@ -228,8 +228,8 @@ globle void PPDeftemplateCommand(
 /***************************************/
 globle int PPDeftemplate(
   void *theEnv,
-  char *deftemplateName,
-  char *logicalName)
+  const char *deftemplateName,
+  const char *logicalName)
   {   
    return(PPConstruct(theEnv,deftemplateName,logicalName,DeftemplateData(theEnv)->DeftemplateConstruct)); 
   }
@@ -250,7 +250,7 @@ globle void ListDeftemplatesCommand(
 /*****************************************/
 globle void EnvListDeftemplates(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   void *theModule)
   {   
    ListConstruct(theEnv,DeftemplateData(theEnv)->DeftemplateConstruct,logicalName,(struct defmodule *) theModule); 
@@ -311,7 +311,7 @@ globle unsigned DeftemplateWatchAccess(
 /*************************************************************************/
 globle unsigned DeftemplateWatchPrint(
   void *theEnv,
-  char *logName,
+  const char *logName,
   int code,
   EXPRESSION *argExprs)
   {

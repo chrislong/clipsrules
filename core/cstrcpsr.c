@@ -56,14 +56,14 @@
 /* LOCAL INTERNAL FUNCTION DEFINITIONS */
 /***************************************/
 
-   static int                     FindConstructBeginning(void *,char *,struct token *,int,int *);
+   static int                     FindConstructBeginning(void *,const char *,struct token *,int,int *);
 
 /************************************************/
 /* Load: C access routine for the load command. */
 /************************************************/
 #if ALLOW_ENVIRONMENT_GLOBALS
 globle int Load(
-  char *fileName)
+  const char *fileName)
   {
    return EnvLoad(GetCurrentEnvironment(),fileName);
   }
@@ -78,10 +78,10 @@ globle int Load(
 /************************************************************/
 globle int EnvLoad(
   void *theEnv,
-  char *fileName)
+  const char *fileName)
   {
    FILE *theFile;
-   char *oldParsingFileName;
+   const char *oldParsingFileName;
    int noErrorsDetected;
 
    /*=======================================*/
@@ -101,7 +101,7 @@ globle int EnvLoad(
    oldParsingFileName = CopyString(theEnv,EnvGetParsingFileName(theEnv));
    EnvSetParsingFileName(theEnv,fileName);
    
-   noErrorsDetected = LoadConstructsFromLogicalName(theEnv,(char *) theFile);
+   noErrorsDetected = LoadConstructsFromLogicalName(theEnv,(const char *) theFile);
    
    EnvSetParsingFileName(theEnv,oldParsingFileName);
    DeleteString(theEnv,oldParsingFileName);
@@ -130,7 +130,7 @@ globle int EnvLoad(
 /*******************************************************/
 globle void EnvSetParsingFileName(
   void *theEnv,
-  char *fileName)
+  const char *fileName)
   {
    char *fileNameCopy = NULL;
 
@@ -152,7 +152,7 @@ globle void EnvSetParsingFileName(
 /* EnvGetParsingFileName: Returns the file name currently */
 /*   being parsed by the load/batch command.              */
 /**********************************************************/
-globle char *EnvGetParsingFileName(
+globle const char *EnvGetParsingFileName(
   void *theEnv)
   {
    return ConstructData(theEnv)->ParsingFileName;
@@ -164,7 +164,7 @@ globle char *EnvGetParsingFileName(
 /**********************************************/
 globle void EnvSetErrorFileName(
   void *theEnv,
-  char *fileName)
+  const char *fileName)
   {
    char *fileNameCopy = NULL;
 
@@ -186,7 +186,7 @@ globle void EnvSetErrorFileName(
 /* EnvGetErrorFileName: Returns the file name */
 /*   associated with the last error detected. */
 /**********************************************/
-globle char *EnvGetErrorFileName(
+globle const char *EnvGetErrorFileName(
   void *theEnv)
   {
    return ConstructData(theEnv)->ErrorFileName;
@@ -198,7 +198,7 @@ globle char *EnvGetErrorFileName(
 /************************************************/
 globle void EnvSetWarningFileName(
   void *theEnv,
-  char *fileName)
+  const char *fileName)
   {
    char *fileNameCopy = NULL;
 
@@ -220,7 +220,7 @@ globle void EnvSetWarningFileName(
 /* EnvGetWarningFileName: Returns the file name */
 /*   associated with the last warning detected. */
 /************************************************/
-globle char *EnvGetWarningFileName(
+globle const char *EnvGetWarningFileName(
   void *theEnv)
   {
    return ConstructData(theEnv)->WarningFileName;
@@ -232,7 +232,7 @@ globle char *EnvGetWarningFileName(
 /*****************************************************************/
 globle int LoadConstructsFromLogicalName(
   void *theEnv,
-  char *readSource)
+  const char *readSource)
   {
    int constructFlag;
    struct token theToken;
@@ -241,7 +241,7 @@ globle int LoadConstructsFromLogicalName(
    struct garbageFrame newGarbageFrame;
    struct garbageFrame *oldGarbageFrame;
    long oldLineCountValue;
-   char *oldLineCountRouter;
+   const char *oldLineCountRouter;
 
    /*===================================================*/
    /* Create a router to capture the error information. */
@@ -406,7 +406,7 @@ globle int LoadConstructsFromLogicalName(
 /********************************************************************/
 static int FindConstructBeginning(
   void *theEnv,
-  char *readSource,
+  const char *readSource,
   struct token *theToken,
   int errorCorrection,
   int *noErrors)
@@ -508,7 +508,7 @@ static int FindConstructBeginning(
 /*************************************************/
 static int FindError(
   void *theEnv,
-  char *logicalName)
+  const char *logicalName)
   {
 #if MAC_XCD
 #pragma unused(theEnv)
@@ -526,8 +526,8 @@ static int FindError(
 /***************************************************/
 static int PrintError(
   void *theEnv,
-  char *logicalName,
-  char *str)
+  const char *logicalName,
+  const char *str)
   {
    if (strcmp(logicalName,WERROR) == 0)
      {
@@ -670,8 +670,8 @@ globle void FlushParsingMessages(
 /***********************************************************/
 globle int ParseConstruct(
   void *theEnv,
-  char *name,
-  char *logicalName)
+  const char *name,
+  const char *logicalName)
   {
    struct construct *currentPtr;
    int rv, ov;
@@ -747,12 +747,12 @@ globle int ParseConstruct(
 /*********************************************************/
 globle SYMBOL_HN *GetConstructNameAndComment(
   void *theEnv,
-  char *readSource,
+  const char *readSource,
   struct token *inputToken,
-  char *constructName,
-  void *(*findFunction)(void *,char *),
+  const char *constructName,
+  void *(*findFunction)(void *,const char *),
   int (*deleteFunction)(void *,void *),
-  char *constructSymbol,
+  const char *constructSymbol,
   int fullMessageCR,
   int getComment,
   int moduleNameAllowed)
@@ -884,7 +884,7 @@ globle SYMBOL_HN *GetConstructNameAndComment(
    if ((EnvGetWatchItem(theEnv,"compilations") == TRUE) &&
        GetPrintWhileLoading(theEnv) && (! ConstructData(theEnv)->CheckSyntaxMode))
      {
-      char *outRouter = WDIALOG;
+      const char *outRouter = WDIALOG;
       if (redefining) 
         {
          outRouter = WWARNING;
@@ -997,10 +997,10 @@ globle void RemoveConstructFromModule(
 /******************************************************/
 globle void ImportExportConflictMessage(
   void *theEnv,
-  char *constructName,
-  char *itemName,
-  char *causedByConstruct,
-  char *causedByName)
+  const char *constructName,
+  const char *itemName,
+  const char *causedByConstruct,
+  const char *causedByName)
   {
    PrintErrorID(theEnv,"CSTRCPSR",3,TRUE);
    EnvPrintRouter(theEnv,WERROR,"Cannot define ");

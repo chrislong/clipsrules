@@ -60,13 +60,13 @@ typedef struct handlerSlotReference
 #endif
 
    LOCALE void             UnboundHandlerErr(void *);
-   LOCALE void             PrintNoHandlerError(void *,char *);
+   LOCALE void             PrintNoHandlerError(void *,const char *);
    LOCALE int              CheckHandlerArgCount(void *);
-   LOCALE void             SlotAccessViolationError(void *,char *,intBool,void *);
+   LOCALE void             SlotAccessViolationError(void *,const char *,intBool,void *);
    LOCALE void             SlotVisibilityViolationError(void *,SLOT_DESC *,DEFCLASS *);
 
 #if ! RUN_TIME
-   LOCALE void             NewSystemHandler(void *,char *,char *,char *,int);
+   LOCALE void             NewSystemHandler(void *,const char *,const char *,const char *,int);
    LOCALE HANDLER         *InsertHandlerHeader(void *,DEFCLASS *,SYMBOL_HN *,int);
 #endif
 
@@ -76,19 +76,19 @@ typedef struct handlerSlotReference
    LOCALE int              DeleteHandler(void *,DEFCLASS *,SYMBOL_HN *,int,int);
    LOCALE void             DeallocateMarkedHandlers(void *,DEFCLASS *);
 #endif
-   LOCALE unsigned         HandlerType(void *,char *,char *);
-   LOCALE int              CheckCurrentMessage(void *,char *,int);
-   LOCALE void             PrintHandler(void *,char *,HANDLER *,int);
+   LOCALE unsigned         HandlerType(void *,const char *,const char *);
+   LOCALE int              CheckCurrentMessage(void *,const char *,int);
+   LOCALE void             PrintHandler(void *,const char *,HANDLER *,int);
    LOCALE HANDLER         *FindHandlerByAddress(DEFCLASS *,SYMBOL_HN *,unsigned);
    LOCALE int              FindHandlerByIndex(DEFCLASS *,SYMBOL_HN *,unsigned);
    LOCALE int              FindHandlerNameGroup(DEFCLASS *,SYMBOL_HN *);
-   LOCALE void             HandlerDeleteError(void *,char *);
+   LOCALE void             HandlerDeleteError(void *,const char *);
 
 #if DEBUGGING_FUNCTIONS
-   LOCALE void             DisplayCore(void *,char *,HANDLER_LINK *,int);
+   LOCALE void             DisplayCore(void *,const char *,HANDLER_LINK *,int);
    LOCALE HANDLER_LINK    *FindPreviewApplicableHandlers(void *,DEFCLASS *,SYMBOL_HN *);
-   LOCALE void             WatchMessage(void *,char *,char *);
-   LOCALE void             WatchHandler(void *,char *,HANDLER_LINK *,char *);
+   LOCALE void             WatchMessage(void *,const char *,const char *);
+   LOCALE void             WatchHandler(void *,const char *,HANDLER_LINK *,const char *);
 #endif
 
 #endif

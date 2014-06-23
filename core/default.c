@@ -259,7 +259,7 @@ static void *FindDefaultValue(
 /**********************************************/
 globle struct expr *ParseDefault(
   void *theEnv,
-  char *readSource,
+  const char *readSource,
   int multifield,
   int dynamic,
   int evalStatic,

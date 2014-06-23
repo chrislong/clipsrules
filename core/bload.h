@@ -74,15 +74,15 @@ struct bloadData
 
    LOCALE void                    InitializeBloadData(void *);
    LOCALE int                     BloadCommand(void *);
-   LOCALE intBool                 EnvBload(void *,char *);
+   LOCALE intBool                 EnvBload(void *,const char *);
    LOCALE void                    BloadandRefresh(void *,long,size_t,void (*)(void *,void *,long));
    LOCALE intBool                 Bloaded(void *);
-   LOCALE void                    AddBeforeBloadFunction(void *,char *,void (*)(void *),int);
-   LOCALE void                    AddAfterBloadFunction(void *,char *,void (*)(void *),int);
-   LOCALE void                    AddBloadReadyFunction(void *,char *,int (*)(void),int);
-   LOCALE void                    AddClearBloadReadyFunction(void *,char *,int (*)(void *),int);
-   LOCALE void                    AddAbortBloadFunction(void *,char *,void (*)(void *),int);
-   LOCALE void                    CannotLoadWithBloadMessage(void *,char *);
+   LOCALE void                    AddBeforeBloadFunction(void *,const char *,void (*)(void *),int);
+   LOCALE void                    AddAfterBloadFunction(void *,const char *,void (*)(void *),int);
+   LOCALE void                    AddBloadReadyFunction(void *,const char *,int (*)(void),int);
+   LOCALE void                    AddClearBloadReadyFunction(void *,const char *,int (*)(void *),int);
+   LOCALE void                    AddAbortBloadFunction(void *,const char *,void (*)(void *),int);
+   LOCALE void                    CannotLoadWithBloadMessage(void *,const char *);
 
 #endif
 

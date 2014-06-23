@@ -40,8 +40,8 @@
 #endif
 
    LOCALE int                            FactPatternParserFind(SYMBOL_HN *);
-   LOCALE struct lhsParseNode           *FactPatternParse(void *,char *,struct token *);
-   LOCALE struct lhsParseNode           *SequenceRestrictionParse(void *,char *,struct token *);
+   LOCALE struct lhsParseNode           *FactPatternParse(void *,const char *,struct token *);
+   LOCALE struct lhsParseNode           *SequenceRestrictionParse(void *,const char *,struct token *);
    LOCALE struct lhsParseNode           *CreateInitialFactPattern(void *);
 
 #endif

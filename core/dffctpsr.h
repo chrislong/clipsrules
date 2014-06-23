@@ -32,7 +32,7 @@
 #define LOCALE extern
 #endif
 
-   LOCALE int                            ParseDeffacts(void *,char *);
+   LOCALE int                            ParseDeffacts(void *,const char *);
 
 #endif
 

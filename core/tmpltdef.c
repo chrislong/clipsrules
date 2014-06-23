@@ -229,7 +229,7 @@ globle struct deftemplateModule *GetDeftemplateModuleItem(
 /*****************************************************/
 globle void *EnvFindDeftemplate(
   void *theEnv,
-  char *deftemplateName)
+  const char *deftemplateName)
   {  
    return(FindNamedConstruct(theEnv,deftemplateName,DeftemplateData(theEnv)->DeftemplateConstruct)); 
   }
@@ -439,7 +439,7 @@ globle void *CreateDeftemplateScopeMap(
   {
    unsigned scopeMapSize;
    char *scopeMap;
-   char *templateName;
+   const char *templateName;
    struct defmodule *matchModule, *theModule;
    int moduleID,count;
    void *theBitMap;

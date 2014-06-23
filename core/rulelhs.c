@@ -51,18 +51,18 @@
 /* LOCAL INTERNAL FUNCTION DEFINITIONS */
 /***************************************/
 
-   static struct lhsParseNode    *RuleBodyParse(void *,char *,struct token *,char *,int *);
-   static void                    DeclarationParse(void *,char *,char *,int *);
-   static struct lhsParseNode    *LHSPattern(void *,char *,int,char *,int *,int,
-                                             struct token *,char *);
-   static struct lhsParseNode    *ConnectedPatternParse(void *,char *,struct token *,int *);
-   static struct lhsParseNode    *GroupPatterns(void *,char *,int,char *,int *);
-   static struct lhsParseNode    *TestPattern(void *,char *,int *);
-   static struct lhsParseNode    *AssignmentParse(void *,char *,SYMBOL_HN *,int *);
+   static struct lhsParseNode    *RuleBodyParse(void *,const char *,struct token *,const char *,int *);
+   static void                    DeclarationParse(void *,const char *,const char *,int *);
+   static struct lhsParseNode    *LHSPattern(void *,const char *,int,const char *,int *,int,
+                                             struct token *,const char *);
+   static struct lhsParseNode    *ConnectedPatternParse(void *,const char *,struct token *,int *);
+   static struct lhsParseNode    *GroupPatterns(void *,const char *,int,const char *,int *);
+   static struct lhsParseNode    *TestPattern(void *,const char *,int *);
+   static struct lhsParseNode    *AssignmentParse(void *,const char *,SYMBOL_HN *,int *);
    static void                    TagLHSLogicalNodes(struct lhsParseNode *);
-   static struct lhsParseNode    *SimplePatternParse(void *,char *,struct token *,int *);
-   static void                    ParseSalience(void *,char *,char *,int *);
-   static void                    ParseAutoFocus(void *,char *,int *);
+   static struct lhsParseNode    *SimplePatternParse(void *,const char *,struct token *,int *);
+   static void                    ParseSalience(void *,const char *,const char *,int *);
+   static void                    ParseAutoFocus(void *,const char *,int *);
 
 /*******************************************************************/
 /* ParseRuleLHS: Coordinates all the actions necessary for parsing */
@@ -71,9 +71,9 @@
 /*******************************************************************/
 globle struct lhsParseNode *ParseRuleLHS(
   void *theEnv,
-  char *readSource,
+  const char *readSource,
   struct token *theToken,
-  char *ruleName,
+  const char *ruleName,
   int *error)
   {
    struct lhsParseNode *theLHS;
@@ -129,9 +129,9 @@ globle struct lhsParseNode *ParseRuleLHS(
 /*********************************************************/
 static struct lhsParseNode *RuleBodyParse(
   void *theEnv,
-  char *readSource,
+  const char *readSource,
   struct token *theToken,
-  char *ruleName,
+  const char *ruleName,
   int *error)
   {
    struct lhsParseNode *theNode, *otherNodes;
@@ -205,8 +205,8 @@ static struct lhsParseNode *RuleBodyParse(
 /********************************************************/
 static void DeclarationParse(
   void *theEnv,
-  char *readSource,
-  char *ruleName,
+  const char *readSource,
+  const char *ruleName,
   int *error)
   {
    struct token theToken;
@@ -362,8 +362,8 @@ static void DeclarationParse(
 /************************************************************/
 static void ParseSalience(
   void *theEnv,
-  char *readSource,
-  char *ruleName,
+  const char *readSource,
+  const char *ruleName,
   int *error)
   {
    int salience;
@@ -434,7 +434,7 @@ static void ParseSalience(
 /**************************************************************/
 static void ParseAutoFocus(
   void *theEnv,
-  char *readSource,
+  const char *readSource,
   int *error)
   {
    struct token theToken;
@@ -484,13 +484,13 @@ static void ParseAutoFocus(
 /*****************************************************************/
 static struct lhsParseNode *LHSPattern(
   void *theEnv,
-  char *readSource,
+  const char *readSource,
   int terminator,
-  char *terminatorString,
+  const char *terminatorString,
   int *error,
   int allowDeclaration,
   struct token *firstToken,
-  char *ruleName)
+  const char *ruleName)
   {
    struct token theToken;
    struct lhsParseNode *theNode;
@@ -633,13 +633,13 @@ static struct lhsParseNode *LHSPattern(
 /*********************************************************************/
 static struct lhsParseNode *ConnectedPatternParse(
   void *theEnv,
-  char *readSource,
+  const char *readSource,
   struct token *theToken,
   int *error)
   {
    unsigned short connectorValue = 0;
    struct lhsParseNode *theNode, *tempNode, *theGroup;
-   char *errorCE = NULL;
+   const char *errorCE = NULL;
    int logical = FALSE;
    int tempValue;
 
@@ -878,9 +878,9 @@ static struct lhsParseNode *ConnectedPatternParse(
 /***********************************************/
 static struct lhsParseNode *GroupPatterns(
   void *theEnv,
-  char *readSource,
+  const char *readSource,
   int terminator,
-  char *terminatorString,
+  const char *terminatorString,
   int *error)
   {
    struct lhsParseNode *lastNode, *newNode, *theNode;
@@ -955,7 +955,7 @@ static struct lhsParseNode *GroupPatterns(
 /**************************************************************/
 static struct lhsParseNode *TestPattern(
   void *theEnv,
-  char *readSource,
+  const char *readSource,
   int *error)
   {
    struct lhsParseNode *theNode;
@@ -1008,7 +1008,7 @@ static struct lhsParseNode *TestPattern(
 /****************************************************************/
 static struct lhsParseNode *AssignmentParse(
   void *theEnv,
-  char *readSource,
+  const char *readSource,
   SYMBOL_HN *factAddress,
   int *error)
   {
@@ -1109,7 +1109,7 @@ static void TagLHSLogicalNodes(
 /***********************************************************/
 static struct lhsParseNode *SimplePatternParse(
   void *theEnv,
-  char *readSource,
+  const char *readSource,
   struct token *theToken,
   int *error)
   {

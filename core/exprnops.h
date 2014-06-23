@@ -41,7 +41,7 @@
 #endif
 
    LOCALE intBool                        ConstantExpression(struct expr *);
-   LOCALE void                           PrintExpression(void *,char *,struct expr *);
+   LOCALE void                           PrintExpression(void *,const char *,struct expr *);
    LOCALE long                           ExpressionSize(struct expr *);
    LOCALE int                            CountArguments(struct expr *);
    LOCALE struct expr                   *CopyExpression(void *,struct expr *);

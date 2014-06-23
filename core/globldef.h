@@ -107,7 +107,7 @@ struct defglobalModule
 #define SetGlobalsChanged(a) EnvSetGlobalsChanged(GetCurrentEnvironment(),a)
 
    LOCALE void                           InitializeDefglobals(void *);
-   LOCALE void                          *EnvFindDefglobal(void *,char *);
+   LOCALE void                          *EnvFindDefglobal(void *,const char *);
    LOCALE void                          *EnvGetNextDefglobal(void *,void *);
    LOCALE void                           CreateInitialFactDefglobal(void);
    LOCALE intBool                        EnvIsDefglobalDeletable(void *,void *);
@@ -117,8 +117,8 @@ struct defglobalModule
    LOCALE void                           EnvGetDefglobalValueForm(void *,char *,unsigned,void *);
    LOCALE int                            EnvGetGlobalsChanged(void *);
    LOCALE void                           EnvSetGlobalsChanged(void *,int);
-   LOCALE intBool                        EnvGetDefglobalValue(void *,char *,DATA_OBJECT_PTR);
-   LOCALE intBool                        EnvSetDefglobalValue(void *,char *,DATA_OBJECT_PTR);
+   LOCALE intBool                        EnvGetDefglobalValue(void *,const char *,DATA_OBJECT_PTR);
+   LOCALE intBool                        EnvSetDefglobalValue(void *,const char *,DATA_OBJECT_PTR);
    LOCALE void                           UpdateDefglobalScope(void *);
    LOCALE void                          *GetNextDefglobalInScope(void *,void *);
    LOCALE int                            QGetDefglobalValue(void *,void *,DATA_OBJECT_PTR);

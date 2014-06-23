@@ -87,9 +87,9 @@
 #define Undefmethod(a,b) EnvUndefmethod(GetCurrentEnvironment(),a,b)
 
 LOCALE void SetupGenericFunctions(void *);
-LOCALE void *EnvFindDefgeneric(void *,char *);
-LOCALE DEFGENERIC *LookupDefgenericByMdlOrScope(void *,char *);
-LOCALE DEFGENERIC *LookupDefgenericInScope(void *,char *);
+LOCALE void *EnvFindDefgeneric(void *,const char *);
+LOCALE DEFGENERIC *LookupDefgenericByMdlOrScope(void *,const char *);
+LOCALE DEFGENERIC *LookupDefgenericInScope(void *,const char *);
 LOCALE void *EnvGetNextDefgeneric(void *,void *);
 LOCALE long EnvGetNextDefmethod(void *,void *,long);
 LOCALE int EnvIsDefgenericDeletable(void *,void *);
@@ -115,10 +115,10 @@ LOCALE void EnvSetDefmethodWatch(void *,unsigned,void *,long);
 LOCALE void PPDefgenericCommand(void *);
 LOCALE void PPDefmethodCommand(void *);
 LOCALE void ListDefmethodsCommand(void *);
-LOCALE char *EnvGetDefmethodPPForm(void *,void *,long);
+LOCALE const char *EnvGetDefmethodPPForm(void *,void *,long);
 LOCALE void ListDefgenericsCommand(void *);
-LOCALE void EnvListDefgenerics(void *,char *,struct defmodule *);
-LOCALE void EnvListDefmethods(void *,char *,void *);
+LOCALE void EnvListDefgenerics(void *,const char *,struct defmodule *);
+LOCALE void EnvListDefmethods(void *,const char *,void *);
 #endif
 
 LOCALE void GetDefgenericListFunction(void *,DATA_OBJECT *);

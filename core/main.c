@@ -45,7 +45,7 @@
 #include "setup.h"
 #include "clips.h"
 
-int main(int,char *[]);
+int main(int,const char *[]);
 void UserFunctions(void);
 void EnvUserFunctions(void *);
 
@@ -55,7 +55,7 @@ void EnvUserFunctions(void *);
 /****************************************/
 int main(
   int argc,
-  char *argv[])
+  const char *argv[])
   {
    void *theEnv;
 

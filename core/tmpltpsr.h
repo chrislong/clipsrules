@@ -39,7 +39,7 @@
 #define LOCALE extern
 #endif
 
-   LOCALE int                            ParseDeftemplate(void *,char *);
+   LOCALE int                            ParseDeftemplate(void *,const char *);
    LOCALE void                           InstallDeftemplate(void *,struct deftemplate *);
 
 #endif

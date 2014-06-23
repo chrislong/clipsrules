@@ -39,8 +39,8 @@
 #define LOCALE extern
 #endif
 
-LOCALE EXPRESSION *FactParseQueryNoAction(void *,EXPRESSION *,char *);
-LOCALE EXPRESSION *FactParseQueryAction(void *,EXPRESSION *,char *);
+LOCALE EXPRESSION *FactParseQueryNoAction(void *,EXPRESSION *,const char *);
+LOCALE EXPRESSION *FactParseQueryAction(void *,EXPRESSION *,const char *);
 
 #ifndef _FACTQPSR_SOURCE_
 #endif

@@ -371,7 +371,7 @@ globle void *CopyMultifield(
 /*********************************************/
 globle void PrintMultifield(
   void *theEnv,
-  char *fileid,
+  const char *fileid,
   struct multifield *segment,
   long begin,
   long end,
@@ -701,7 +701,7 @@ globle void *ImplodeMultifield(
   {
    size_t strsize = 0;
    long i, j;
-   char *tmp_str;
+   const char *tmp_str;
    char *ret_str;
    void *rv;
    struct multifield *theMultifield;

@@ -46,7 +46,7 @@
 /************************************************************/
 globle int ParseDeffacts(
   void *theEnv,
-  char *readSource)
+  const char *readSource)
   {
 #if (! RUN_TIME) && (! BLOAD_ONLY)
    SYMBOL_HN *deffactsName;

@@ -69,9 +69,9 @@
 /* LOCAL INTERNAL FUNCTION DEFINITIONS */
 /***************************************/
 
-   static void                    PrintActivation(void *,char *,void *);
+   static void                    PrintActivation(void *,const char *,void *);
    static void                    AgendaClearFunction(void *);
-   static char                   *SalienceEvaluationName(int);
+   static const char             *SalienceEvaluationName(int);
    static int                     EvaluateSalience(void *,void *);
    static struct salienceGroup   *ReuseOrCreateSalienceGroup(void *,struct defruleModule *,int);
    static struct salienceGroup   *FindSalienceGroup(struct defruleModule *,int);
@@ -327,7 +327,7 @@ globle void *EnvGetNextActivation(
 /* EnvGetActivationName: Returns the name of */
 /*   the rule associated with an activation. */
 /*********************************************/
-globle char *EnvGetActivationName(
+globle const char *EnvGetActivationName(
   void *theEnv,
   void *actPtr)
   {
@@ -528,7 +528,7 @@ globle intBool DetachActivation(
 /****************************************************************************/
 static void PrintActivation(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   void *vTheActivation)
   {
    struct activation *theActivation = (struct activation *) vTheActivation;
@@ -547,7 +547,7 @@ static void PrintActivation(
 /*******************************/
 globle void EnvAgenda(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   void *vTheModule)
   {
    struct defmodule *theModule = (struct defmodule *) vTheModule;
@@ -850,7 +850,7 @@ globle unsigned long GetNumberOfActivations(
 globle void RefreshCommand(
   void *theEnv)
   {
-   char *ruleName;
+   const char *ruleName;
    void *rulePtr;
 
    /*===========================*/
@@ -1068,7 +1068,7 @@ globle void *SetSalienceEvaluationCommand(
   void *theEnv)
   {
    DATA_OBJECT argPtr;
-   char *argument, *oldValue;
+   const char *argument, *oldValue;
 
    /*==================================================*/
    /* Get the current setting for salience evaluation. */
@@ -1132,10 +1132,10 @@ globle void *GetSalienceEvaluationCommand(
 /*   to a specified salience evaluation behavior, returns a      */
 /*   character string of the behavior's name.                    */
 /*****************************************************************/
-static char *SalienceEvaluationName(
+static const char *SalienceEvaluationName(
   int strategy)
   {
-   char *sname;
+   const char *sname;
 
    switch (strategy)
      {

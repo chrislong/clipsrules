@@ -130,7 +130,7 @@ globle intBool DirectMessage(
 globle void EnvSend(
   void *theEnv,
   DATA_OBJECT *idata,
-  char *msg,
+  const char *msg,
   char *args,
   DATA_OBJECT *result)
   {
@@ -532,7 +532,7 @@ globle HANDLER_LINK *JoinHandlerLinks(
  ***************************************************/
 globle void PrintHandlerSlotGetFunction(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   void *theValue)
   {
 #if DEVELOPER
@@ -652,7 +652,7 @@ HandlerGetError:
  ***************************************************/
 globle void PrintHandlerSlotPutFunction(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   void *theValue)
   {
 #if DEVELOPER

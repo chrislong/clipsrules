@@ -214,7 +214,8 @@ globle SYMBOL_HN *GetFullInstanceName(
   void *theEnv,
   INSTANCE_TYPE *ins)
   {
-   char *moduleName,*buffer;
+   const char *moduleName;
+   char *buffer;
    size_t bufsz;
    SYMBOL_HN *iname;
 

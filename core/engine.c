@@ -154,7 +154,7 @@ globle long long EnvRun(
    struct patternEntity *theMatchingItem;
    struct partialMatch *theBasis;
    ACTIVATION *theActivation;
-   char *ruleFiring;
+   const char *ruleFiring;
 #if PROFILING_FUNCTIONS
    struct profileFrameInfo profileFrame;
 #endif
@@ -892,7 +892,7 @@ globle void EnvClearFocusStack(
 /*   to the ListOfRunFunctions.    */
 /***********************************/
 globle intBool AddRunFunction(
-  char *name,
+  const char *name,
   void (*functionPtr)(void),
   int priority)
   {
@@ -911,7 +911,7 @@ globle intBool AddRunFunction(
 /*   to the ListOfBeforeRunFunctions.    */
 /*****************************************/
 globle intBool AddBeforeRunFunction(
-  char *name,
+  const char *name,
   void (*functionPtr)(void *),
   int priority)
   {
@@ -932,7 +932,7 @@ globle intBool AddBeforeRunFunction(
 /**************************************/
 globle intBool EnvAddRunFunction(
   void *theEnv,
-  char *name,
+  const char *name,
   void (*functionPtr)(void *),
   int priority)
   {
@@ -948,7 +948,7 @@ globle intBool EnvAddRunFunction(
 /********************************************/
 globle intBool EnvAddBeforeRunFunction(
   void *theEnv,
-  char *name,
+  const char *name,
   void (*functionPtr)(void *, void *),
   int priority)
   {
@@ -964,7 +964,7 @@ globle intBool EnvAddBeforeRunFunction(
 /*****************************************/
 globle intBool EnvAddRunFunctionWithContext(
   void *theEnv,
-  char *name,
+  const char *name,
   void (*functionPtr)(void *),
   int priority,
   void *context)
@@ -982,7 +982,7 @@ globle intBool EnvAddRunFunctionWithContext(
 /***********************************************/
 globle intBool EnvAddBeforeRunFunctionWithContext(
   void *theEnv,
-  char *name,
+  const char *name,
   void (*functionPtr)(void *, void *),
   int priority,
   void *context)
@@ -1000,7 +1000,7 @@ globle intBool EnvAddBeforeRunFunctionWithContext(
 /********************************************/
 globle intBool EnvRemoveRunFunction(
   void *theEnv,
-  char *name)
+  const char *name)
   {
    int found;
 
@@ -1018,7 +1018,7 @@ globle intBool EnvRemoveRunFunction(
 /**************************************************/
 globle intBool EnvRemoveBeforeRunFunction(
   void *theEnv,
-  char *name)
+  const char *name)
   {
    int found;
 
@@ -1147,12 +1147,12 @@ globle void RemoveAllBreakpoints(
 /***********************************/
 globle void EnvShowBreaks(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   void *vTheModule)
   {
    ListItemsDriver(theEnv,logicalName,(struct defmodule *) vTheModule,
                    NULL,NULL,
-                   EnvGetNextDefrule,(char *(*)(void *)) GetConstructNameString,
+                   EnvGetNextDefrule,(const char *(*)(void *))GetConstructNameString,
                    NULL,EnvDefruleHasBreakpoint);
    }
 
@@ -1179,7 +1179,7 @@ globle void SetBreakCommand(
   void *theEnv)
   {
    DATA_OBJECT argPtr;
-   char *argument;
+   const char *argument;
    void *defrulePtr;
 
    if (EnvArgCountCheck(theEnv,"set-break",EXACTLY,1) == -1) return;
@@ -1205,7 +1205,7 @@ globle void RemoveBreakCommand(
   void *theEnv)
   {
    DATA_OBJECT argPtr;
-   char *argument;
+   const char *argument;
    int nargs;
    void *defrulePtr;
 
@@ -1277,7 +1277,7 @@ globle void ListFocusStackCommand(
 /***************************************/
 globle void EnvListFocusStack(
   void *theEnv,
-  char *logicalName)
+  const char *logicalName)
   {
    struct focus *theFocus;
 
@@ -1413,7 +1413,7 @@ globle int FocusCommand(
   void *theEnv)
   {
    DATA_OBJECT argPtr;
-   char *argument;
+   const char *argument;
    struct defmodule *theModule;
    int argCount, i;
 

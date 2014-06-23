@@ -79,15 +79,15 @@
    =========================================
    ***************************************** */
 
-static intBool ValidGenericName(void *,char *);
-static SYMBOL_HN *ParseMethodNameAndIndex(void *,char *,int *);
+static intBool ValidGenericName(void *,const char *);
+static SYMBOL_HN *ParseMethodNameAndIndex(void *,const char *,int *);
 
 #if DEBUGGING_FUNCTIONS
 static void CreateDefaultGenericPPForm(void *,DEFGENERIC *);
 #endif
 
-static int ParseMethodParameters(void *,char *,EXPRESSION **,SYMBOL_HN **);
-static RESTRICTION *ParseRestriction(void *,char *);
+static int ParseMethodParameters(void *,const char *,EXPRESSION **,SYMBOL_HN **);
+static RESTRICTION *ParseRestriction(void *,const char *);
 static void ReplaceCurrentArgRefs(void *,EXPRESSION *);
 static int DuplicateParameters(void *,EXPRESSION *,EXPRESSION **,SYMBOL_HN *);
 static EXPRESSION *AddParameter(void *,EXPRESSION *,EXPRESSION *,SYMBOL_HN *,RESTRICTION *);
@@ -116,7 +116,7 @@ static DEFGENERIC *NewGeneric(void *,SYMBOL_HN *);
  ***************************************************************************/
 globle intBool ParseDefgeneric(
   void *theEnv,
-  char *readSource)
+  const char *readSource)
   {
    SYMBOL_HN *gname;
    DEFGENERIC *gfunc;
@@ -185,7 +185,7 @@ globle intBool ParseDefgeneric(
  ***************************************************************************/
 globle intBool ParseDefmethod(
   void *theEnv,
-  char *readSource)
+  const char *readSource)
   {
    SYMBOL_HN *gname;
    int rcnt,mposn,mi,newMethod,mnew = FALSE,lvars,error;
@@ -399,7 +399,7 @@ globle DEFMETHOD *AddMethod(
   int lvars,
   SYMBOL_HN *wildcard,
   EXPRESSION *actions,
-  char *ppForm,
+  const char *ppForm,
   int copyRestricts)
   {
    RESTRICTION *rptr,*rtmp;
@@ -637,7 +637,7 @@ globle DEFMETHOD *FindMethodByRestrictions(
  ***********************************************************/
 static intBool ValidGenericName(
   void *theEnv,
-  char *theDefgenericName)
+  const char *theDefgenericName)
   {
    struct constructHeader *theDefgeneric;
 #if DEFFUNCTION_CONSTRUCT
@@ -741,7 +741,8 @@ static void CreateDefaultGenericPPForm(
   void *theEnv,
   DEFGENERIC *gfunc)
   {
-   char *moduleName,*genericName,*buf;
+   const char *moduleName,*genericName;
+   char *buf;
 
    moduleName = EnvGetDefmoduleName(theEnv,(void *) ((struct defmodule *) EnvGetCurrentModule(theEnv)));
    genericName = EnvGetDefgenericName(theEnv,(void *) gfunc);
@@ -765,7 +766,7 @@ static void CreateDefaultGenericPPForm(
  *******************************************************/
 static SYMBOL_HN *ParseMethodNameAndIndex(
   void *theEnv,
-  char *readSource,
+  const char *readSource,
   int *theIndex)
   {
    SYMBOL_HN *gname;
@@ -824,7 +825,7 @@ static SYMBOL_HN *ParseMethodNameAndIndex(
  ************************************************************************/
 static int ParseMethodParameters(
   void *theEnv,
-  char *readSource,
+  const char *readSource,
   EXPRESSION **params,
   SYMBOL_HN **wildcard)
   {
@@ -937,7 +938,7 @@ static int ParseMethodParameters(
  ************************************************************/
 static RESTRICTION *ParseRestriction(
   void *theEnv,
-  char *readSource)
+  const char *readSource)
   {
    EXPRESSION *types = NULL,*new_types,
               *typesbot,*tmp,*tmp2,
@@ -1236,7 +1237,7 @@ static intBool RedundantClasses(
   void *c1,
   void *c2)
   {
-   char *tname;
+   const char *tname;
 
 #if OBJECT_SYSTEM
    if (HasSuperclass((DEFCLASS *) c1,(DEFCLASS *) c2))

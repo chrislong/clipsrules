@@ -46,9 +46,9 @@
 /***************************************/
 
    static int                     ExitFile(void *,int);
-   static int                     PrintFile(void *,char *,char *);
-   static int                     GetcFile(void *,char *);
-   static int                     UngetcFile(void *,int,char *);
+   static int                     PrintFile(void *,const char *,const char *);
+   static int                     GetcFile(void *,const char *);
+   static int                     UngetcFile(void *,int,const char *);
    static void                    DeallocateFileRouterData(void *);
 
 /***************************************************************/
@@ -78,7 +78,7 @@ static void DeallocateFileRouterData(
      {
       nextPtr = tmpPtr->next;
       GenClose(theEnv,tmpPtr->stream);
-      rm(theEnv,tmpPtr->logicalName,strlen(tmpPtr->logicalName) + 1);
+      rm(theEnv,(void*) tmpPtr->logicalName,strlen(tmpPtr->logicalName) + 1);
       rtn_struct(theEnv,fileRouter,tmpPtr);
       tmpPtr = nextPtr;
      }
@@ -90,7 +90,7 @@ static void DeallocateFileRouterData(
 /*****************************************/
 globle FILE *FindFptr(
   void *theEnv,
-  char *logicalName)
+  const char *logicalName)
   {
    struct fileRouter *fptr;
 
@@ -137,7 +137,7 @@ globle FILE *FindFptr(
 /*****************************************************/
 globle int FindFile(
   void *theEnv,
-  char *logicalName)
+  const char *logicalName)
   {
    if (FindFptr(theEnv,logicalName) != NULL) return(TRUE);
 
@@ -169,8 +169,8 @@ static int ExitFile(
 /*********************************************/
 static int PrintFile(
   void *theEnv,
-  char *logicalName,
-  char *str)
+  const char *logicalName,
+  const char *str)
   {
    FILE *fptr;
 
@@ -186,7 +186,7 @@ static int PrintFile(
 /*******************************************/
 static int GetcFile(
   void *theEnv,
-  char *logicalName)
+  const char *logicalName)
   {
    FILE *fptr;
    int theChar;
@@ -214,7 +214,7 @@ static int GetcFile(
 static int UngetcFile(
   void *theEnv,
   int ch,
-  char *logicalName)
+  const char *logicalName)
   {
    FILE *fptr;
 
@@ -234,9 +234,9 @@ static int UngetcFile(
 /*********************************************************/
 globle int OpenAFile(
   void *theEnv,
-  char *fileName,
-  char *accessMode,
-  char *logicalName)
+  const char *fileName,
+  const char *accessMode,
+  const char *logicalName)
   {
    FILE *newstream;
    struct fileRouter *newRouter;
@@ -281,7 +281,7 @@ globle int OpenAFile(
 /*************************************************************/
 globle int CloseFile(
   void *theEnv,
-  char *fid)
+  const char *fid)
   {
    struct fileRouter *fptr, *prev;
 
@@ -292,7 +292,7 @@ globle int CloseFile(
       if (strcmp(fptr->logicalName,fid) == 0)
         {
          GenClose(theEnv,fptr->stream);
-         rm(theEnv,fptr->logicalName,strlen(fptr->logicalName) + 1);
+         rm(theEnv,(void*) fptr->logicalName,strlen(fptr->logicalName) + 1);
          if (prev == NULL)
            { FileRouterData(theEnv)->ListOfFileRouters = fptr->next; }
          else
@@ -326,7 +326,7 @@ globle int CloseAllFiles(
      {
       GenClose(theEnv,fptr->stream);
       prev = fptr;
-      rm(theEnv,fptr->logicalName,strlen(fptr->logicalName) + 1);
+      rm(theEnv,(void*) fptr->logicalName,strlen(fptr->logicalName) + 1);
       fptr = fptr->next;
       rm(theEnv,prev,(int) sizeof(struct fileRouter));
      }

@@ -47,7 +47,7 @@ struct BinaryItem;
 
 struct BinaryItem
   {
-   char *name;
+   const char *name;
    void (*findFunction)(void *);
    void (*bloadStorageFunction)(void *);
    void (*bloadFunction)(void *);
@@ -92,12 +92,12 @@ struct bsaveData
    LOCALE void                    InitializeBsaveData(void *);
    LOCALE int                     BsaveCommand(void *);
 #if BLOAD_AND_BSAVE
-   LOCALE intBool                 EnvBsave(void *,char *);
+   LOCALE intBool                 EnvBsave(void *,const char *);
    LOCALE void                    MarkNeededItems(void *,struct expr *);
    LOCALE void                    SaveBloadCount(void *,long);
    LOCALE void                    RestoreBloadCount(void *,long *);
 #endif
-   LOCALE intBool                 AddBinaryItem(void *,char *,int,
+   LOCALE intBool                 AddBinaryItem(void *,const char *,int,
                                                 void (*)(void *),
                                                 void (*)(void *,FILE *),
                                                 void (*)(void *,FILE *),

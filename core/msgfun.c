@@ -55,8 +55,8 @@
    ***************************************** */
 
 #if DEBUGGING_FUNCTIONS
-static HANDLER_LINK *DisplayPrimaryCore(void *,char *,HANDLER_LINK *,int);
-static void PrintPreviewHandler(void *,char *,HANDLER_LINK *,int,char *);
+static HANDLER_LINK *DisplayPrimaryCore(void *,const char *,HANDLER_LINK *,int);
+static void PrintPreviewHandler(void *,const char *,HANDLER_LINK *,int,const char *);
 #endif
 
 /* =========================================
@@ -92,7 +92,7 @@ globle void UnboundHandlerErr(
  *****************************************************************/
 globle void PrintNoHandlerError(
   void *theEnv,
-  char *msg)
+  const char *msg)
   {
    PrintErrorID(theEnv,"MSGFUN",1,FALSE);
    EnvPrintRouter(theEnv,WERROR,"No applicable primary message-handlers found for ");
@@ -155,7 +155,7 @@ globle int CheckHandlerArgCount(
  ***************************************************/
 globle void SlotAccessViolationError(
   void *theEnv,
-  char *slotName,
+  const char *slotName,
   intBool instanceFlag,
   void *theInstanceOrClass)
   {
@@ -222,9 +222,9 @@ globle void SlotVisibilityViolationError(
  *******************************************************************************/
 globle void NewSystemHandler(
   void *theEnv,
-  char *cname,
-  char *mname,
-  char *fname,
+  const char *cname,
+  const char *mname,
+  const char *fname,
   int extraargs)
   {
    DEFCLASS *cls;
@@ -552,8 +552,8 @@ globle void DeallocateMarkedHandlers(
  *****************************************************/
 globle unsigned HandlerType(
   void *theEnv,
-  char *func,
-  char *str)
+  const char *func,
+  const char *str)
   {
    register unsigned i;
 
@@ -584,7 +584,7 @@ globle unsigned HandlerType(
  *****************************************************************/
 globle int CheckCurrentMessage(
   void *theEnv,
-  char *func,
+  const char *func,
   int ins_reqd)
   {
    register DATA_OBJECT *activeMsgArg;
@@ -629,7 +629,7 @@ globle int CheckCurrentMessage(
  ***************************************************/
 globle void PrintHandler(
   void *theEnv,
-  char *logName,
+  const char *logName,
   HANDLER *theHandler,
   int crtn)
   {
@@ -787,7 +787,7 @@ globle int FindHandlerNameGroup(
  ***************************************************/
 globle void HandlerDeleteError(
   void *theEnv,
-  char *cname)
+  const char *cname)
   {
    PrintErrorID(theEnv,"MSGFUN",8,FALSE);
    EnvPrintRouter(theEnv,WERROR,"Unable to delete message-handler(s) from class ");
@@ -818,7 +818,7 @@ globle void HandlerDeleteError(
  ********************************************************************/
 globle void DisplayCore(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   HANDLER_LINK *core,
   int sdepth)
   {
@@ -891,8 +891,8 @@ globle HANDLER_LINK *FindPreviewApplicableHandlers(
  ***********************************************************/
 globle void WatchMessage(
   void *theEnv,
-  char *logName,
-  char *tstring)
+  const char *logName,
+  const char *tstring)
   {
    EnvPrintRouter(theEnv,logName,"MSG ");
    EnvPrintRouter(theEnv,logName,tstring);
@@ -917,9 +917,9 @@ globle void WatchMessage(
  ***********************************************************/
 globle void WatchHandler(
   void *theEnv,
-  char *logName,
+  const char *logName,
   HANDLER_LINK *hndl,
-  char *tstring)
+  const char *tstring)
   {
    HANDLER *hnd;
    
@@ -964,7 +964,7 @@ globle void WatchHandler(
  ********************************************************************/
 static HANDLER_LINK *DisplayPrimaryCore(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   HANDLER_LINK *core,
   int pdepth)
   {
@@ -992,10 +992,10 @@ static HANDLER_LINK *DisplayPrimaryCore(
  ***************************************************/
 static void PrintPreviewHandler(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   HANDLER_LINK *cptr,
   int sdepth,
-  char *tstr)
+  const char *tstr)
   {
    register int i;
 

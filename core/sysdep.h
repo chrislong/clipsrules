@@ -65,23 +65,23 @@
    LOCALE void                        (*GetRedrawFunction(void *))(void *);
    LOCALE void                        (*GetPauseEnvFunction(void *))(void *);
    LOCALE void                        (*GetContinueEnvFunction(void *))(void *,int);
-   LOCALE void                        RerouteStdin(void *,int,char *[]);
+   LOCALE void                        RerouteStdin(void *,int,const char *[]);
    LOCALE double                      gentime(void);
    LOCALE void                        gensystem(void *theEnv);
-   LOCALE void                        VMSSystem(char *);
-   LOCALE int                         GenOpenReadBinary(void *,char *,char *);
+   LOCALE void                        VMSSystem(const char *);
+   LOCALE int                         GenOpenReadBinary(void *,const char *,const char *);
    LOCALE void                        GetSeekCurBinary(void *,long);
    LOCALE void                        GetSeekSetBinary(void *,long);
    LOCALE void                        GenTellBinary(void *,long *);
    LOCALE void                        GenCloseBinary(void *);
    LOCALE void                        GenReadBinary(void *,void *,size_t);
-   LOCALE FILE                       *GenOpen(void *,char *,char *);
+   LOCALE FILE                       *GenOpen(void *,const char *,const char *);
    LOCALE int                         GenClose(void *,FILE *);
    LOCALE void                        genexit(void *,int);
    LOCALE int                         genrand(void);
    LOCALE void                        genseed(int);
-   LOCALE int                         genremove(char *);
-   LOCALE int                         genrename(char *,char *);
+   LOCALE int                         genremove(const char *);
+   LOCALE int                         genrename(const char *,const char *);
    LOCALE char                       *gengetcwd(char *,int);
    LOCALE void                        GenWrite(void *,size_t,FILE *);
    LOCALE int                       (*EnvSetBeforeOpenFunction(void *,int (*)(void *)))(void *);
@@ -92,7 +92,7 @@
    LOCALE char                       *genstrcat(char *,const char *);
    LOCALE char                       *genstrncat(char *,const char *,size_t);
    LOCALE void                        SetJmpBuffer(void *,jmp_buf *);
-   LOCALE void                        genprintfile(void *,FILE *,char *);
+   LOCALE void                        genprintfile(void *,FILE *,const char *);
    LOCALE int                         gengetchar(void *);
    LOCALE int                         genungetchar(void *,int);
    

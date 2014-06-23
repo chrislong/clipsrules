@@ -126,7 +126,7 @@ static void StrOrSymCatFunction(
    char *theString;
    SYMBOL_HN **arrayOfStrings;
    SYMBOL_HN *hashPtr;
-   char *functionName;
+   const char *functionName;
 
    /*============================================*/
    /* Determine the calling function name.       */
@@ -285,7 +285,8 @@ globle void UpcaseFunction(
    DATA_OBJECT theArg;
    unsigned i;
    size_t slen;
-   char *osptr, *nsptr;
+   const char *osptr;
+   char *nsptr;
 
    /*===============================================*/
    /* Function upcase expects exactly one argument. */
@@ -334,7 +335,7 @@ globle void UpcaseFunction(
 
    SetpType(returnValue,GetType(theArg));
    SetpValue(returnValue,(void *) EnvAddSymbol(theEnv,nsptr));
-   rm(theEnv,nsptr,slen);
+   rm(theEnv,(void*) nsptr,slen);
   }
 
 /*****************************************/
@@ -348,7 +349,8 @@ globle void LowcaseFunction(
    DATA_OBJECT theArg;
    unsigned i;
    size_t slen;
-   char *osptr, *nsptr;
+   const char *osptr;
+   char *nsptr;
 
    /*================================================*/
    /* Function lowcase expects exactly one argument. */
@@ -397,7 +399,7 @@ globle void LowcaseFunction(
 
    SetpType(returnValue,GetType(theArg));
    SetpValue(returnValue,(void *) EnvAddSymbol(theEnv,nsptr));
-   rm(theEnv,nsptr,slen);
+   rm(theEnv,(void*) nsptr,slen);
   }
 
 /********************************************/
@@ -464,7 +466,8 @@ globle void *SubStringFunction(
   void *theEnv)
   {
    DATA_OBJECT theArgument;
-   char *tempString, *returnString;
+   const char *tempString;
+   char *returnString;
    size_t start, end, i, j, length;
    void *returnValue;
 
@@ -535,7 +538,7 @@ globle void *SubStringFunction(
    /*========================*/
 
    returnValue = (void *) EnvAddSymbol(theEnv,returnString);
-   rm(theEnv,returnString,(unsigned) (end - start + 2));
+   rm(theEnv,(void*) returnString,(unsigned) (end - start + 2));
    return(returnValue);
   }
 
@@ -548,7 +551,7 @@ globle void StrIndexFunction(
   DATA_OBJECT_PTR result)
   {
    DATA_OBJECT theArgument1, theArgument2;
-   char *strg1, *strg2, *strg3;
+   const char *strg1, *strg2, *strg3;
    size_t i, j;
 
    result->type = SYMBOL;
@@ -891,7 +894,7 @@ globle void EvalFunction(
 /*****************************************************/
 globle int EnvEval(
   void *theEnv,
-  char *theString,
+  const char *theString,
   DATA_OBJECT_PTR returnValue)
   {
    PrintErrorID(theEnv,"STRNGFUN",1,FALSE);
@@ -953,7 +956,7 @@ globle int EnvBuild(
   void *theEnv,
   char *theString)
   {
-   char *constructType;
+   const char *constructType;
    struct token theToken;
    int errorFlag;
 
@@ -1065,7 +1068,7 @@ globle int BuildFunction(
 /******************************************************/
 globle int EnvBuild(
   void *theEnv,
-  char *theString)
+  const char *theString)
   { 
    PrintErrorID(theEnv,"STRNGFUN",1,FALSE);
    EnvPrintRouter(theEnv,WERROR,"Function build does not work in run time modules.\n");

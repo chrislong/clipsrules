@@ -55,8 +55,8 @@
 /***************************************/
 
 #if (! RUN_TIME) && (! BLOAD_ONLY)
-   static struct lhsParseNode            *ConjuctiveRestrictionParse(void *,char *,struct token *,int *);
-   static struct lhsParseNode            *LiteralRestrictionParse(void *,char *,struct token *,int *);
+   static struct lhsParseNode            *ConjuctiveRestrictionParse(void *,const char *,struct token *,int *);
+   static struct lhsParseNode            *LiteralRestrictionParse(void *,const char *,struct token *,int *);
    static int                             CheckForVariableMixing(void *,struct lhsParseNode *);
    static void                            TallyFieldTypes(struct lhsParseNode *);
 #endif
@@ -248,8 +248,8 @@ globle void *FindHashedPatternNode(
 /******************************************************************/
 void AddReservedPatternSymbol(
   void *theEnv,
-  char *theSymbol,
-  char *reservedBy)
+  const char *theSymbol,
+  const char *reservedBy)
   {
    struct reservedSymbol *newSymbol;
 
@@ -268,8 +268,8 @@ void AddReservedPatternSymbol(
 /******************************************************************/
 intBool ReservedPatternSymbol(
   void *theEnv,
-  char *theSymbol,
-  char *checkedBy)
+  const char *theSymbol,
+  const char *checkedBy)
   {
    struct reservedSymbol *currentSymbol;
 
@@ -297,8 +297,8 @@ intBool ReservedPatternSymbol(
 /********************************************************/
 void ReservedPatternSymbolErrorMsg(
   void *theEnv,
-  char *theSymbol,
-  char *usedFor)
+  const char *theSymbol,
+  const char *usedFor)
   {
    PrintErrorID(theEnv,"PATTERN",1,TRUE);
    EnvPrintRouter(theEnv,WERROR,"The symbol ");
@@ -467,7 +467,7 @@ globle intBool AddPatternParser(
 /****************************************************/
 globle struct patternParser *FindPatternParser(
   void *theEnv,
-  char *name)
+  const char *name)
   {
    struct patternParser *tempParser;
 
@@ -569,7 +569,7 @@ globle intBool PostPatternAnalysis(
 /******************************************************************/
 struct lhsParseNode *RestrictionParse(
   void *theEnv,
-  char *readSource,
+  const char *readSource,
   struct token *theToken,
   int multifieldSlot,
   struct symbolHashNode *theSlot,
@@ -888,7 +888,7 @@ static void TallyFieldTypes(
 /*******************************************************************/
 static struct lhsParseNode *ConjuctiveRestrictionParse(
   void *theEnv,
-  char *readSource,
+  const char *readSource,
   struct token *theToken,
   int *error)
   {
@@ -1116,7 +1116,7 @@ static int CheckForVariableMixing(
 /***********************************************************/
 static struct lhsParseNode *LiteralRestrictionParse(
   void *theEnv,
-  char *readSource,
+  const char *readSource,
   struct token *theToken,
   int *error)
   {

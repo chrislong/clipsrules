@@ -93,11 +93,11 @@ struct IOFunctionData
 
 #if IO_FUNCTIONS
    static void             ReadTokenFromStdin(void *,struct token *);
-   static char            *ControlStringCheck(void *,int);
-   static char             FindFormatFlag(char *,size_t *,char *,size_t);
-   static char            *PrintFormatFlag(void *,char *,int,int);
-   static char            *FillBuffer(void *,char *,size_t *,size_t *);
-   static void             ReadNumber(void *,char *,struct token *,int);
+   static const char      *ControlStringCheck(void *,int);
+   static char             FindFormatFlag(const char *,size_t *,char *,size_t);
+   static const char      *PrintFormatFlag(void *,const char *,int,int);
+   static const char      *FillBuffer(void *,const char *,size_t *,size_t *);
+   static void             ReadNumber(void *,const char *,struct token *,int);
 #endif
 
 /**************************************/
@@ -146,7 +146,7 @@ globle void IOFunctionDefinitions(
 globle void PrintoutFunction(
   void *theEnv)
   {
-   char *dummyid;
+   const char *dummyid;
    int i, argCount;
    DATA_OBJECT theArgument;
 
@@ -254,7 +254,7 @@ globle void ReadFunction(
   {
    struct token theToken;
    int numberOfArguments;
-   char *logicalName = NULL;
+   const char *logicalName = NULL;
 
    /*===============================================*/
    /* Check for an appropriate number of arguments. */
@@ -399,7 +399,7 @@ static void ReadTokenFromStdin(
       OpenStringSource(theEnv,"read",inputString,0);
       GetToken(theEnv,"read",theToken);
       CloseStringSource(theEnv,"read");
-      if (inputStringSize > 0) rm(theEnv,inputString,inputStringSize);
+      if (inputStringSize > 0) rm(theEnv,(void*) inputString,inputStringSize);
 
       /*===========================================*/
       /* Pressing control-c (or comparable action) */
@@ -434,7 +434,7 @@ globle int OpenFunction(
   void *theEnv)
   {
    int numberOfArguments;
-   char *fileName, *logicalName, *accessMode = NULL;
+   const char *fileName, *logicalName, *accessMode = NULL;
    DATA_OBJECT theArgument;
 
    /*========================================*/
@@ -530,7 +530,7 @@ globle int CloseFunction(
   void *theEnv)
   {
    int numberOfArguments;
-   char *logicalName;
+   const char *logicalName;
 
    /*======================================*/
    /* Check for valid number of arguments. */
@@ -576,7 +576,7 @@ globle int GetCharFunction(
   void *theEnv)
   {
    int numberOfArguments;
-   char *logicalName;
+   const char *logicalName;
 
    if ((numberOfArguments = EnvArgCountCheck(theEnv,"get-char",NO_MORE_THAN,1)) == -1)
      { return(-1); }
@@ -614,7 +614,7 @@ globle void PutCharFunction(
   void *theEnv)
   {
    int numberOfArguments;
-   char *logicalName;
+   const char *logicalName;
    DATA_OBJECT theValue;
    long long theChar;
    FILE *theFile;
@@ -678,7 +678,7 @@ globle void PutCharFunction(
 globle int RemoveFunction(
   void *theEnv)
   {
-   char *theFileName;
+   const char *theFileName;
 
    /*======================================*/
    /* Check for valid number of arguments. */
@@ -707,7 +707,7 @@ globle int RemoveFunction(
 globle int RenameFunction(
   void *theEnv)
   {
-   char *oldFileName, *newFileName;
+   const char *oldFileName, *newFileName;
 
    /*========================================*/
    /* Check for a valid number of arguments. */
@@ -739,7 +739,7 @@ globle void *FormatFunction(
   {
    int argCount;
    size_t start_pos;
-   char *formatString, *logicalName;
+   const char *formatString, *logicalName;
    char formatFlagType;
    int  f_cur_arg = 3;
    size_t form_pos = 0;
@@ -748,7 +748,7 @@ globle void *FormatFunction(
    size_t fmaxm = 0;
    size_t fpos = 0;
    void *hptr;
-   char *theString;
+   const char *theString;
 
    /*======================================*/
    /* Set default return value for errors. */
@@ -816,7 +816,7 @@ globle void *FormatFunction(
            {
             if ((theString = PrintFormatFlag(theEnv,percentBuffer,f_cur_arg,formatFlagType)) == NULL)
               {
-               if (fstr != NULL) rm(theEnv,fstr,fmaxm);
+               if (fstr != NULL) rm(theEnv,(void*) fstr,fmaxm);
                return (hptr);
               }
             fstr = AppendToString(theEnv,theString,fstr,&fpos,&fmaxm);
@@ -835,7 +835,7 @@ globle void *FormatFunction(
      {
       hptr = EnvAddSymbol(theEnv,fstr);
       if (strcmp(logicalName,"nil") != 0) EnvPrintRouter(theEnv,logicalName,fstr);
-      rm(theEnv,fstr,fmaxm);
+      rm(theEnv,(void *) fstr,fmaxm);
      }
    else
      { hptr = EnvAddSymbol(theEnv,""); }
@@ -847,12 +847,12 @@ globle void *FormatFunction(
 /* ControlStringCheck:  Checks the 2nd parameter which is the format */
 /*   control string to see if there are enough matching arguments.   */
 /*********************************************************************/
-static char *ControlStringCheck(
+static const char *ControlStringCheck(
   void *theEnv,
   int argCount)
   {
    DATA_OBJECT t_ptr;
-   char *str_array;
+   const char *str_array;
    char print_buff[FLAG_MAX];
    size_t i;
    int per_count;
@@ -899,7 +899,7 @@ static char *ControlStringCheck(
 /*   a format flag in the format string.       */
 /***********************************************/
 static char FindFormatFlag(
-  char *formatString,
+  const char *formatString,
   size_t *a,
   char *formatBuffer,
   size_t bufferMax)
@@ -1015,14 +1015,15 @@ static char FindFormatFlag(
 /* PrintFormatFlag:  Prints out part of the total format string along */
 /*   with the argument for that part of the format string.            */
 /**********************************************************************/
-static char *PrintFormatFlag(
+static const char *PrintFormatFlag(
   void *theEnv,
-  char *formatString,
+  const char *formatString,
   int whichArg,
   int formatType)
   {
    DATA_OBJECT theResult;
-   char *theString, *printBuffer;
+   const char *theString;
+   char *printBuffer;
    size_t theLength;
    void *oldLocale;
       
@@ -1119,10 +1120,10 @@ globle void ReadlineFunction(
   void *theEnv,
   DATA_OBJECT_PTR returnValue)
   {
-   char *buffer;
+   const char *buffer;
    size_t line_max = 0;
    int numberOfArguments;
-   char *logicalName;
+   const char *logicalName;
 
    returnValue->type = STRING;
 
@@ -1165,7 +1166,7 @@ globle void ReadlineFunction(
    if (GetHaltExecution(theEnv))
      {
       returnValue->value = (void *) EnvAddSymbol(theEnv,"*** READ ERROR ***");
-      if (buffer != NULL) rm(theEnv,buffer,(int) sizeof (char) * line_max);
+      if (buffer != NULL) rm(theEnv,(void*) buffer,(int) sizeof (char) * line_max);
       return;
      }
 
@@ -1177,7 +1178,7 @@ globle void ReadlineFunction(
      }
 
    returnValue->value = (void *) EnvAddSymbol(theEnv,buffer);
-   rm(theEnv,buffer,(int) sizeof (char) * line_max);
+   rm(theEnv,(void*) buffer,(int) sizeof (char) * line_max);
    return;
   }
 
@@ -1186,9 +1187,9 @@ globle void ReadlineFunction(
 /*   and places them into a buffer until a carriage return   */
 /*   or end-of-file character is read.                       */
 /*************************************************************/
-static char *FillBuffer(
+static const char *FillBuffer(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   size_t *currentPosition,
   size_t *maximumSize)
   {
@@ -1294,7 +1295,7 @@ globle void ReadNumberFunction(
   {
    struct token theToken;
    int numberOfArguments;
-   char *logicalName = NULL;
+   const char *logicalName = NULL;
 
    /*===============================================*/
    /* Check for an appropriate number of arguments. */
@@ -1390,7 +1391,7 @@ globle void ReadNumberFunction(
 /********************************************/
 static void ReadNumber(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   struct token *theToken,
   int isStdin)
   {
@@ -1447,7 +1448,7 @@ static void ReadNumber(
      {
       theToken->type = STRING;
       theToken->value = (void *) EnvAddSymbol(theEnv,"*** READ ERROR ***");
-      if (inputStringSize > 0) rm(theEnv,inputString,inputStringSize);
+      if (inputStringSize > 0) rm(theEnv,(void*) inputString,inputStringSize);
       return;
      }
 
@@ -1462,7 +1463,7 @@ static void ReadNumber(
      {
       theToken->type = SYMBOL;
       theToken->value = (void *) EnvAddSymbol(theEnv,"EOF");
-      if (inputStringSize > 0) rm(theEnv,inputString,inputStringSize);
+      if (inputStringSize > 0) rm(theEnv,(void*) inputString,inputStringSize);
       return;
      }
 
@@ -1497,7 +1498,7 @@ static void ReadNumber(
      {
       theToken->type = INTEGER;
       theToken->value = (void *) EnvAddLong(theEnv,theLong);
-      if (inputStringSize > 0) rm(theEnv,inputString,inputStringSize);
+      if (inputStringSize > 0) rm(theEnv,(void*) inputString,inputStringSize);
       setlocale(LC_NUMERIC,ValueToString(oldLocale));
       return;
      }

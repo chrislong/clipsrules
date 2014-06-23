@@ -91,7 +91,7 @@ globle int BsaveCommand(
   void *theEnv)
   {
 #if (! RUN_TIME) && BLOAD_AND_BSAVE
-   char *fileName;
+   const char *fileName;
 
    if (EnvArgCountCheck(theEnv,"bsave",EXACTLY,1) == -1) return(FALSE);
    fileName = GetFileName(theEnv,"bsave",1);
@@ -113,7 +113,7 @@ globle int BsaveCommand(
 /******************************/
 globle intBool EnvBsave(
   void *theEnv,
-  char *fileName)
+  const char *fileName)
   {
    FILE *fp;
    struct BinaryItem *biPtr;
@@ -515,7 +515,7 @@ static void WriteBinaryFooter(
 /**********************************************************/
 globle intBool AddBinaryItem(
   void *theEnv,
-  char *name,
+  const char *name,
   int priority,
   void (*findFunction)(void *),
   void (*expressionFunction)(void *,FILE *),

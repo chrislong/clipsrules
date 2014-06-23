@@ -54,7 +54,7 @@
 /* LOCAL INTERNAL FUNCTION DEFINITIONS */
 /***************************************/
 
-   static void                        TraceErrorToRuleDriver(void *,struct joinNode *,char *,int,int);
+   static void                        TraceErrorToRuleDriver(void *,struct joinNode *,const char *,int,int);
    static struct alphaMemoryHash     *FindAlphaMemory(void *,struct patternNodeHeader *,unsigned long);
    static unsigned long               AlphaMemoryHashValue(struct patternNodeHeader *,unsigned long);
    static void                        UnlinkAlphaMemory(void *,struct patternNodeHeader *,struct alphaMemoryHash *);
@@ -75,7 +75,7 @@
 /***********************************************************/
 globle void PrintPartialMatch(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   struct partialMatch *list)
   {
    struct patternEntity *matchingItem;
@@ -843,7 +843,7 @@ globle int GetPatternNumberFromJoin(
 globle void TraceErrorToRule(
   void *theEnv,
   struct joinNode *joinPtr,
-  char *indentSpaces)
+  const char *indentSpaces)
   {
    int patternCount;
    
@@ -863,11 +863,11 @@ globle void TraceErrorToRule(
 static void TraceErrorToRuleDriver(
   void *theEnv,
   struct joinNode *joinPtr,
-  char *indentSpaces,
+  const char *indentSpaces,
   int priorRightJoinPatterns,
   int enteredJoinFromRight)
   {
-   char *name;
+   const char *name;
    int priorPatternCount;
    struct joinLink *theLinks;
 

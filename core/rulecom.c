@@ -238,7 +238,7 @@ globle int GetBetaMemoryResizingCommand(
 globle void MatchesCommand(
   void *theEnv)
   {
-   char *ruleName;
+   const char *ruleName;
    void *rulePtr;
 
    ruleName = GetConstructName(theEnv,"matches","rule name");
@@ -495,7 +495,7 @@ static void PrintMatchesMemory(
 globle long long JoinActivityCommand(
   void *theEnv)
   {
-   char *ruleName;
+   const char *ruleName;
    void *rulePtr;
 
    ruleName = GetConstructName(theEnv,"join-activity","rule name");
@@ -623,7 +623,7 @@ static int ListBetaJoinActivity(
 globle void MatchesCountCommand(
   void *theEnv)
   {
-   char *ruleName;
+   const char *ruleName;
    void *rulePtr;
 
    ruleName = GetConstructName(theEnv,"matches-count","rule name");
@@ -851,7 +851,7 @@ globle long long TimetagFunction(
 globle long RuleComplexityCommand(
   void *theEnv)
   {
-   char *ruleName;
+   const char *ruleName;
    struct defrule *rulePtr;
 
    ruleName = GetConstructName(theEnv,"rule-complexity","rule name");
@@ -874,7 +874,7 @@ globle long RuleComplexityCommand(
 globle void ShowJoinsCommand(
   void *theEnv)
   {
-   char *ruleName;
+   const char *ruleName;
    void *rulePtr;
 
    ruleName = GetConstructName(theEnv,"show-joins","rule name");

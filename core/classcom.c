@@ -64,7 +64,7 @@
 #if (! BLOAD_ONLY) && (! RUN_TIME) && DEBUGGING_FUNCTIONS
 static void SaveDefclass(void *,struct constructHeader *,void *);
 #endif
-static char *GetClassDefaultsModeName(unsigned short);
+static const char *GetClassDefaultsModeName(unsigned short);
 
 /* =========================================
    *****************************************
@@ -83,12 +83,12 @@ static char *GetClassDefaultsModeName(unsigned short);
  ******************************************************************/
 globle void *EnvFindDefclass(
   void *theEnv,
-  char *classAndModuleName)
+  const char *classAndModuleName)
   {
    SYMBOL_HN *classSymbol = NULL;
    DEFCLASS *cls;
    struct defmodule *theModule = NULL;
-   char *className;
+   const char *className;
 
    SaveCurrentModule(theEnv);
    className = ExtractModuleAndConstructName(theEnv,classAndModuleName);
@@ -128,10 +128,10 @@ globle void *EnvFindDefclass(
  ***************************************************/
 globle DEFCLASS *LookupDefclassByMdlOrScope(
   void *theEnv,
-  char *classAndModuleName)
+  const char *classAndModuleName)
   {
    DEFCLASS *cls;
-   char *className;
+   const char *className;
    SYMBOL_HN *classSymbol;
    struct defmodule *theModule;
 
@@ -171,7 +171,7 @@ globle DEFCLASS *LookupDefclassByMdlOrScope(
  ****************************************************/
 globle DEFCLASS *LookupDefclassInScope(
   void *theEnv,
-  char *className)
+  const char *className)
   {
    DEFCLASS *cls;
    SYMBOL_HN *classSymbol;
@@ -204,7 +204,7 @@ globle DEFCLASS *LookupDefclassInScope(
 globle DEFCLASS *LookupDefclassAnywhere(
   void *theEnv,
   struct defmodule *theModule,
-  char *className)
+  const char *className)
   {
    DEFCLASS *cls;
    SYMBOL_HN *classSymbol;
@@ -242,9 +242,9 @@ globle intBool DefclassInScope(
   {
 #if DEFMODULE_CONSTRUCT
    int moduleID;
-   char *scopeMap;
+   const char *scopeMap;
 
-   scopeMap = (char *) ValueToBitMap(theDefclass->scopeMap);
+   scopeMap = (const char *) ValueToBitMap(theDefclass->scopeMap);
    if (theModule == NULL)
      theModule = ((struct defmodule *) EnvGetCurrentModule(theEnv));
    moduleID = (int) theModule->bsaveID;
@@ -390,7 +390,7 @@ globle void ListDefclassesCommand(
  ***************************************************/
 globle void EnvListDefclasses(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   struct defmodule *theModule)
   {
    ListConstruct(theEnv,DefclassData(theEnv)->DefclassConstruct,logicalName,theModule);
@@ -533,7 +533,7 @@ globle unsigned DefclassWatchAccess(
  ***********************************************************************/
 globle unsigned DefclassWatchPrint(
   void *theEnv,
-  char *logName,
+  const char *logName,
   int code,
   EXPRESSION *argExprs)
   {
@@ -616,7 +616,7 @@ globle int HasSuperclass(
  ********************************************************************/
 globle SYMBOL_HN *CheckClassAndSlot(
    void *theEnv,
-   char *func,
+   const char *func,
    DEFCLASS **cls)
   {
    DATA_OBJECT temp;
@@ -648,7 +648,7 @@ globle SYMBOL_HN *CheckClassAndSlot(
 globle void SaveDefclasses(
   void *theEnv,
   void *theModule,
-  char *logName)
+  const char *logName)
   {
 #if DEBUGGING_FUNCTIONS
    DoForAllConstructsInModule(theEnv,theModule,SaveDefclass,DefclassData(theEnv)->DefclassModuleIndex,FALSE,(void *) logName);
@@ -684,9 +684,9 @@ static void SaveDefclass(
   struct constructHeader *theDefclass,
   void *userBuffer)
   {
-   char *logName = (char *) userBuffer;
+   const char *logName = (const char *) userBuffer;
    unsigned hnd;
-   char *ppForm;
+   const char *ppForm;
 
    ppForm = EnvGetDefclassPPForm(theEnv,(void *) theDefclass);
    if (ppForm != NULL)
@@ -754,7 +754,7 @@ globle void *SetClassDefaultsModeCommand(
   void *theEnv)
   {
    DATA_OBJECT argPtr;
-   char *argument;
+   const char *argument;
    unsigned short oldMode;
    
    oldMode = DefclassData(theEnv)->ClassDefaultsMode;
@@ -798,10 +798,10 @@ globle void *SetClassDefaultsModeCommand(
 /*   to a specified class defaults mode, return a character string */
 /*   of the class defaults mode's name.                            */
 /*******************************************************************/
-static char *GetClassDefaultsModeName(
+static const char *GetClassDefaultsModeName(
   unsigned short mode)
   {
-   char *sname;
+   const char *sname;
 
    switch (mode)
      {

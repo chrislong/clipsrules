@@ -42,7 +42,7 @@ struct token
   {
    unsigned short type;
    void *value;
-   char *printForm;
+    const char *printForm;
   };
 
 #define SCANNER_DATA 57
@@ -59,7 +59,7 @@ struct scannerData
 #define ScannerData(theEnv) ((struct scannerData *) GetEnvironmentData(theEnv,SCANNER_DATA))
 
    LOCALE void                           InitializeScannerData(void *);
-   LOCALE void                           GetToken(void *,char *,struct token *);
+   LOCALE void                           GetToken(void *,const char *,struct token *);
    LOCALE void                           CopyToken(struct token *,struct token *);
    LOCALE void                           ResetLineCount(void *);
    LOCALE long                           GetLineCount(void *);

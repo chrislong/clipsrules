@@ -37,7 +37,7 @@
 #define LOCALE extern
 #endif
 
-LOCALE PACKED_CLASS_LINKS *ParseSuperclasses(void *,char *,SYMBOL_HN *);
+LOCALE PACKED_CLASS_LINKS *ParseSuperclasses(void *,const char *,SYMBOL_HN *);
 LOCALE PACKED_CLASS_LINKS *FindPrecedenceList(void *,DEFCLASS *,PACKED_CLASS_LINKS *);
 LOCALE void PackClassLinks(void *,PACKED_CLASS_LINKS *,CLASS_LINK *);
 

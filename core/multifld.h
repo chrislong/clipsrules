@@ -102,7 +102,7 @@ struct multifieldData
    LOCALE void                           AddToMultifieldList(void *,struct multifield *);
    LOCALE void                           FlushMultifields(void *);
    LOCALE void                           DuplicateMultifield(void *,struct dataObject *,struct dataObject *);
-   LOCALE void                           PrintMultifield(void *,char *,SEGMENT_PTR,long,long,int);
+   LOCALE void                           PrintMultifield(void *,const char *,SEGMENT_PTR,long,long,int);
    LOCALE intBool                        MultifieldDOsEqual(DATA_OBJECT_PTR,DATA_OBJECT_PTR);
    LOCALE void                           StoreInMultifield(void *,DATA_OBJECT *,EXPRESSION *,int);
    LOCALE void                          *CopyMultifield(void *,struct multifield *);

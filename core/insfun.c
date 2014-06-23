@@ -504,7 +504,7 @@ globle int PutSlotValue(
   INSTANCE_SLOT *sp,
   DATA_OBJECT *val,
   DATA_OBJECT *setVal,
-  char *theCommand)
+  const char *theCommand)
   {
    if (ValidSlotValue(theEnv,val,sp->desc,ins,theCommand) == FALSE)
      {
@@ -729,7 +729,7 @@ globle int ValidSlotValue(
   DATA_OBJECT *val,
   SLOT_DESC *sd,
   INSTANCE_TYPE *ins,
-  char *theCommand)
+  const char *theCommand)
   {
    register int violationCode;
 
@@ -793,7 +793,7 @@ globle int ValidSlotValue(
  ********************************************************/
 globle INSTANCE_TYPE *CheckInstance(
   void *theEnv,
-  char *func)
+  const char *func)
   {
    INSTANCE_TYPE *ins;
    DATA_OBJECT temp;
@@ -844,8 +844,8 @@ globle INSTANCE_TYPE *CheckInstance(
  ***************************************************/
 globle void NoInstanceError(
   void *theEnv,
-  char *iname,
-  char *func)
+  const char *iname,
+  const char *func)
   {
    PrintErrorID(theEnv,"INSFUN",2,FALSE);
    EnvPrintRouter(theEnv,WERROR,"No such instance ");
@@ -868,7 +868,7 @@ globle void NoInstanceError(
  ***************************************************/
 globle void StaleInstanceAddress(
   void *theEnv,
-  char *func,
+  const char *func,
   int whichArg)
   {
    PrintErrorID(theEnv,"INSFUN",4,FALSE);
@@ -928,10 +928,10 @@ globle void EnvSetInstancesChanged(
  *******************************************************************/
 globle void PrintSlot(
   void *theEnv,
-  char *logName,
+  const char *logName,
   SLOT_DESC *sd,
   INSTANCE_TYPE *ins,
-  char *theCommand)
+  const char *theCommand)
   {
    EnvPrintRouter(theEnv,logName,"slot ");
    EnvPrintRouter(theEnv,logName,ValueToString(sd->slotName->name));
@@ -966,7 +966,7 @@ globle void PrintSlot(
  *****************************************************/
 globle void PrintInstanceNameAndClass(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   INSTANCE_TYPE *theInstance,
   intBool linefeedFlag)
   {
@@ -989,7 +989,7 @@ globle void PrintInstanceNameAndClass(
  ***************************************************/
 globle void PrintInstanceName(
   void *theEnv,
-  char *logName,
+  const char *logName,
   void *vins)
   {
    INSTANCE_TYPE *ins;
@@ -1021,7 +1021,7 @@ globle void PrintInstanceName(
  ***************************************************/
 globle void PrintInstanceLongForm(
   void *theEnv,
-  char *logName,
+  const char *logName,
   void *vins)
   {
    INSTANCE_TYPE *ins = (INSTANCE_TYPE *) vins;

@@ -52,14 +52,14 @@
    LOCALE int                            FactExistpFunction(void *);
    LOCALE int                            EnvFactExistp(void *,void *);
    LOCALE void                           FactSlotValueFunction(void *,DATA_OBJECT *);
-   LOCALE void                           FactSlotValue(void *,void *,char *,DATA_OBJECT *);
+   LOCALE void                           FactSlotValue(void *,void *,const char *,DATA_OBJECT *);
    LOCALE void                           FactSlotNamesFunction(void *,DATA_OBJECT *);
    LOCALE void                           EnvFactSlotNames(void *,void *,DATA_OBJECT *);
    LOCALE void                           GetFactListFunction(void *,DATA_OBJECT *);
    LOCALE void                           EnvGetFactList(void *,DATA_OBJECT *,void *);
    LOCALE void                           PPFactFunction(void *);
-   LOCALE void                           EnvPPFact(void *,void *,char *,int);
-   LOCALE struct fact                   *GetFactAddressOrIndexArgument(void *,char *,int,int);
+   LOCALE void                           EnvPPFact(void *,void *,const char *,int);
+   LOCALE struct fact                   *GetFactAddressOrIndexArgument(void *,const char *,int,int);
 
 #endif
 

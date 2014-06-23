@@ -624,8 +624,8 @@ globle void PrintMethod(
  ***************************************************/
 globle DEFGENERIC *CheckGenericExists(
   void *theEnv,
-  char *fname,
-  char *gname)
+  const char *fname,
+  const char *gname)
   {
    DEFGENERIC *gfunc;
 
@@ -657,7 +657,7 @@ globle DEFGENERIC *CheckGenericExists(
  ***************************************************/
 globle long CheckMethodExists(
   void *theEnv,
-  char *fname,
+  const char *fname,
   DEFGENERIC *gfunc,
   long mi)
   {
@@ -694,7 +694,7 @@ globle long CheckMethodExists(
                  printed for unrecognized types
   NOTES        : Used only when COOL is not present
  *******************************************************/
-globle char *TypeName(
+globle const char *TypeName(
   void *theEnv,
   int tcode)
   {
@@ -737,7 +737,7 @@ globle char *TypeName(
  ******************************************************/
 globle void PrintGenericName(
   void *theEnv,
-  char *logName,
+  const char *logName,
   DEFGENERIC *gfunc)
   {
    if (gfunc->header.whichModule->theModule != ((struct defmodule *) EnvGetCurrentModule(theEnv)))

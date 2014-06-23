@@ -44,9 +44,9 @@
 #define LOCALE extern
 #endif
 
-   LOCALE struct expr                   *BuildRHSAssert(void *,char *,struct token *,int *,int,int,char *);
-   LOCALE struct expr                   *GetAssertArgument(void *,char *,struct token *,int *,int,int,int *);
-   LOCALE struct expr                   *GetRHSPattern(void *,char *,struct token *,int *,int,
+   LOCALE struct expr                   *BuildRHSAssert(void *,const char *,struct token *,int *,int,int,const char *);
+   LOCALE struct expr                   *GetAssertArgument(void *,const char *,struct token *,int *,int,int,int *);
+   LOCALE struct expr                   *GetRHSPattern(void *,const char *,struct token *,int *,int,
                                                        int,int,int);
    LOCALE struct fact                   *StringToFact(void *,char *);
 

@@ -75,7 +75,7 @@
    =========================================
    ***************************************** */
 
-static intBool IsParameterSlotReference(void *,char *);
+static intBool IsParameterSlotReference(void *,const char *);
 static int SlotReferenceVar(void *,EXPRESSION *,void *);
 static int BindSlotReference(void *,EXPRESSION *,void *);
 static SLOT_DESC *CheckSlotReference(void *,DEFCLASS *,int,void *,intBool,EXPRESSION *);
@@ -103,7 +103,7 @@ static void GenHandlerSlotReference(void *,EXPRESSION *,unsigned short,SLOT_DESC
  ***********************************************************************/
 globle int ParseDefmessageHandler(
   void *theEnv,
-  char *readSource)
+  const char *readSource)
   {
    DEFCLASS *cls;
    SYMBOL_HN *cname,*mname,*wildcard;
@@ -316,12 +316,13 @@ globle void CreateGetAndPutHandlers(
   void *theEnv,
   SLOT_DESC *sd)
   {
-   char *className,*slotName;
+   const char *className,*slotName;
    size_t bufsz;
-   char *buf,*handlerRouter = "*** Default Public Handlers ***";
+   char *buf;
+   const char *handlerRouter = "*** Default Public Handlers ***";
    int oldPWL,oldCM;
-   char *oldRouter;
-   char *oldString;
+   const char *oldRouter;
+   const char *oldString;
    long oldIndex;
 
    if ((sd->createReadAccessor == 0) && (sd->createWriteAccessor == 0))
@@ -417,7 +418,7 @@ globle void CreateGetAndPutHandlers(
  *****************************************************************/
 static intBool IsParameterSlotReference(
   void *theEnv,
-  char *pname)
+  const char *pname)
   {
    if ((strncmp(pname,SELF_STRING,SELF_LEN) == 0) ?
                   (pname[SELF_LEN] == SELF_SLOT_REF) : FALSE)

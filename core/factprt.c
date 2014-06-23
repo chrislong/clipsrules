@@ -40,7 +40,7 @@
 /***************************************/
 globle void PrintFactJNCompVars1(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   void *theValue)
   {
 #if DEVELOPER
@@ -88,7 +88,7 @@ globle void PrintFactJNCompVars1(
 /***************************************/
 globle void PrintFactJNCompVars2(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   void *theValue)
   {
 #if DEVELOPER
@@ -148,7 +148,7 @@ globle void PrintFactJNCompVars2(
 /***************************************/
 globle void PrintFactPNCompVars1(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   void *theValue)
   {
 #if DEVELOPER
@@ -177,7 +177,7 @@ globle void PrintFactPNCompVars1(
 /**************************************/
 globle void PrintFactSlotLength(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   void *theValue)
   {
 #if DEVELOPER
@@ -207,7 +207,7 @@ globle void PrintFactSlotLength(
 /*************************************/
 globle void PrintFactJNGetVar1(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   void *theValue)
   {
 #if DEVELOPER
@@ -247,7 +247,7 @@ globle void PrintFactJNGetVar1(
 /*************************************/
 globle void PrintFactJNGetVar2(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   void *theValue)
   {
 #if DEVELOPER
@@ -280,7 +280,7 @@ globle void PrintFactJNGetVar2(
 /*************************************/
 globle void PrintFactJNGetVar3(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   void *theValue)
   {
 #if DEVELOPER
@@ -323,7 +323,7 @@ globle void PrintFactJNGetVar3(
 /*************************************/
 globle void PrintFactPNGetVar1(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   void *theValue)
   {
 #if DEVELOPER
@@ -355,7 +355,7 @@ globle void PrintFactPNGetVar1(
 /*************************************/
 globle void PrintFactPNGetVar2(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   void *theValue)
   {
 #if DEVELOPER
@@ -380,7 +380,7 @@ globle void PrintFactPNGetVar2(
 /*************************************/
 globle void PrintFactPNGetVar3(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   void *theValue)
   {
 #if DEVELOPER
@@ -415,7 +415,7 @@ globle void PrintFactPNGetVar3(
 /***************************************/
 globle void PrintFactPNConstant1(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   void *theValue)
   {
 #if DEVELOPER
@@ -447,7 +447,7 @@ globle void PrintFactPNConstant1(
 /***************************************/
 globle void PrintFactPNConstant2(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   void *theValue)
   {
 #if DEVELOPER

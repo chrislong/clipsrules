@@ -40,7 +40,7 @@ struct commandLineData
    char *CommandString;
    size_t MaximumCharacters;
    int ParsingTopLevelCommand;
-   char *BannerString;
+   const char *BannerString;
    int (*EventFunction)(void *);
    int (*AfterPromptFunction)(void *);
    int (*BeforeCommandExecutionFunction)(void *);
@@ -62,11 +62,11 @@ struct commandLineData
    LOCALE void                           InitializeCommandLineData(void *);
    LOCALE int                            ExpandCommandString(void *,int);
    LOCALE void                           FlushCommandString(void *);
-   LOCALE void                           SetCommandString(void *,char *);
-   LOCALE void                           AppendCommandString(void *,char *);
-   LOCALE void                           InsertCommandString(void *,char *,unsigned);
+   LOCALE void                           SetCommandString(void *,const char *);
+   LOCALE void                           AppendCommandString(void *,const char *);
+   LOCALE void                           InsertCommandString(void *,const char *,unsigned);
    LOCALE char                          *GetCommandString(void *);
-   LOCALE int                            CompleteCommand(char *);
+   LOCALE int                            CompleteCommand(const char *);
    LOCALE void                           CommandLoop(void *);
    LOCALE void                           CommandLoopBatch(void *);
    LOCALE void                           CommandLoopBatchDriver(void *);
@@ -77,9 +77,9 @@ struct commandLineData
    LOCALE intBool                        RouteCommand(void *,char *,int);
    LOCALE int                          (*SetEventFunction(void *,int (*)(void *)))(void *);
    LOCALE intBool                        TopLevelCommand(void *);
-   LOCALE void                           AppendNCommandString(void *,char *,unsigned);
-   LOCALE void                           SetNCommandString(void *,char *,unsigned);
-   LOCALE char                          *GetCommandCompletionString(void *,char *,size_t);
+   LOCALE void                           AppendNCommandString(void *,const char *,unsigned);
+   LOCALE void                           SetNCommandString(void *,const char *,unsigned);
+   LOCALE const char                    *GetCommandCompletionString(void *,char *,size_t);
    LOCALE intBool                        ExecuteIfCommandComplete(void *);
    LOCALE void                           CommandLoopOnceThenBatch(void *);
    LOCALE intBool                        CommandCompleteAndNotEmpty(void *);

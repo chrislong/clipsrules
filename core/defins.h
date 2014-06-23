@@ -102,7 +102,7 @@ struct definstancesData
 
 LOCALE void SetupDefinstances(void *);
 LOCALE void *EnvGetNextDefinstances(void *,void *);
-LOCALE void *EnvFindDefinstances(void *,char *);
+LOCALE void *EnvFindDefinstances(void *,const char *);
 LOCALE int EnvIsDefinstancesDeletable(void *,void *);
 LOCALE void UndefinstancesCommand(void *);
 LOCALE void *GetDefinstancesModuleCommand(void *);
@@ -111,7 +111,7 @@ LOCALE intBool EnvUndefinstances(void *,void *);
 #if DEBUGGING_FUNCTIONS
 LOCALE void PPDefinstancesCommand(void *);
 LOCALE void ListDefinstancesCommand(void *);
-LOCALE void EnvListDefinstances(void *,char *,struct defmodule *);
+LOCALE void EnvListDefinstances(void *,const char *,struct defmodule *);
 #endif
 
 LOCALE void GetDefinstancesListFunction(void *,DATA_OBJECT *);

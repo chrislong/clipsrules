@@ -45,13 +45,13 @@
    LOCALE void                           RetractCommand(void *);
    LOCALE void                           AssertStringFunction(void *,DATA_OBJECT_PTR);
    LOCALE void                           FactsCommand(void *);
-   LOCALE void                           EnvFacts(void *,char *,void *,long long,long long,long long);
+   LOCALE void                           EnvFacts(void *,const char *,void *,long long,long long,long long);
    LOCALE int                            SetFactDuplicationCommand(void *);
    LOCALE int                            GetFactDuplicationCommand(void *);
    LOCALE int                            SaveFactsCommand(void *);
    LOCALE int                            LoadFactsCommand(void *);
-   LOCALE int                            EnvSaveFacts(void *,char *,int,struct expr *);
-   LOCALE int                            EnvLoadFacts(void *,char *);
+   LOCALE int                            EnvSaveFacts(void *,const char *,int,struct expr *);
+   LOCALE int                            EnvLoadFacts(void *,const char *);
    LOCALE int                            EnvLoadFactsFromString(void *,char *,int);
    LOCALE long long                      FactIndexFunction(void *);
 

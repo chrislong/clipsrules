@@ -103,7 +103,7 @@ globle void DestroyPPBuffer(void *theEnv)
 /*********************************************/
 globle void SavePPBuffer(
   void *theEnv,
-  char *str)
+  const char *str)
   {
    size_t increment;
 
@@ -174,7 +174,7 @@ globle void PPBackup(
 /* CopyPPBuffer: Makes a copy of the pretty print */
 /*   save buffer.                                 */
 /**************************************************/
-globle char *CopyPPBuffer(
+globle const char *CopyPPBuffer(
   void *theEnv)
   {
    size_t length;
@@ -190,7 +190,7 @@ globle char *CopyPPBuffer(
 /************************************************************/
 /* GetPPBuffer: Returns a pointer to the PrettyPrintBuffer. */
 /************************************************************/
-globle char *GetPPBuffer(
+globle const char *GetPPBuffer(
   void *theEnv)
   {
    return(PrettyPrintData(theEnv)->PrettyPrintBuffer);

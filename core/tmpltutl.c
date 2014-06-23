@@ -65,8 +65,8 @@
 /********************************************************/
 globle void InvalidDeftemplateSlotMessage(
   void *theEnv,
-  char *slotName,
-  char *deftemplateName,
+  const char *slotName,
+  const char *deftemplateName,
   int printCR)
   {
    PrintErrorID(theEnv,"TMPLTDEF",1,printCR);
@@ -84,7 +84,7 @@ globle void InvalidDeftemplateSlotMessage(
 /**********************************************************/
 globle void SingleFieldSlotCardinalityError(
   void *theEnv,
-  char *slotName)
+  const char *slotName)
   {
    PrintErrorID(theEnv,"TMPLTDEF",2,TRUE);
    EnvPrintRouter(theEnv,WERROR,"The single field slot ");
@@ -206,10 +206,10 @@ globle intBool CheckRHSSlotTypes(
   void *theEnv,
   struct expr *rhsSlots,
   struct templateSlot *slotPtr,
-  char *thePlace)
+  const char *thePlace)
   {
    int rv;
-   char *theName;
+   const char *theName;
 
    if (EnvGetStaticConstraintChecking(theEnv) == FALSE) return(TRUE);
       rv = ConstraintCheckExpressionChain(theEnv,rhsSlots,slotPtr->constraints);
@@ -276,7 +276,7 @@ globle int FindSlotPosition(
 /*******************************************************************/
 globle void PrintTemplateFact(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   struct fact *theFact,
   int seperateLines,
   int ignoreDefaults)

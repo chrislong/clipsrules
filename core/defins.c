@@ -87,12 +87,12 @@
    ***************************************** */
 
 #if (! BLOAD_ONLY) && (! RUN_TIME)
-static int ParseDefinstances(void *,char *);
-static SYMBOL_HN *ParseDefinstancesName(void *,char *,int *);
+static int ParseDefinstances(void *,const char *);
+static SYMBOL_HN *ParseDefinstancesName(void *,const char *,int *);
 static void RemoveDefinstances(void *,void *);
-static void SaveDefinstances(void *,void *,char *);
+static void SaveDefinstances(void *,void *,const char *);
 static intBool RemoveAllDefinstances(void *);
-static void DefinstancesDeleteError(void *,char *);
+static void DefinstancesDeleteError(void *,const char *);
 
 #if DEFRULE_CONSTRUCT
 static void CreateInitialDefinstances(void *);
@@ -297,7 +297,7 @@ globle void *EnvGetNextDefinstances(
  ***************************************************/
 globle void *EnvFindDefinstances(
   void *theEnv,
-  char *name)
+  const char *name)
   {
    return(FindNamedConstruct(theEnv,name,DefinstancesData(theEnv)->DefinstancesConstruct));
   }
@@ -427,7 +427,7 @@ globle void ListDefinstancesCommand(
  ***************************************************/
 globle void EnvListDefinstances(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   struct defmodule *theModule)
   {
    ListConstruct(theEnv,DefinstancesData(theEnv)->DefinstancesConstruct,logicalName,theModule);
@@ -497,7 +497,7 @@ globle void EnvGetDefinstancesList(
  *********************************************************************/
 static int ParseDefinstances(
   void *theEnv,
-  char *readSource)
+  const char *readSource)
   {
    SYMBOL_HN *dname;
    void *mkinsfcall;
@@ -614,7 +614,7 @@ static int ParseDefinstances(
  *************************************************************/
 static SYMBOL_HN *ParseDefinstancesName(
   void *theEnv,
-  char *readSource,
+  const char *readSource,
   int *active)
   {
    SYMBOL_HN *dname;
@@ -685,7 +685,7 @@ static void RemoveDefinstances(
 static void SaveDefinstances(
   void *theEnv,
   void *theModule,
-  char *logName)
+  const char *logName)
   {
    SaveConstruct(theEnv,theModule,logName,DefinstancesData(theEnv)->DefinstancesConstruct);
   }
@@ -741,7 +741,7 @@ static intBool RemoveAllDefinstances(
  ***************************************************/
 static void DefinstancesDeleteError(
   void *theEnv,
-  char *dname)
+  const char *dname)
   {
    CantDeleteItemErrorMessage(theEnv,"definstances",dname);
   }

@@ -36,7 +36,7 @@
 #define LOCALE extern
 #endif
 
-LOCALE int ParseDefclass(void *,char *);
+LOCALE int ParseDefclass(void *,const char *);
 
 #if DEFMODULE_CONSTRUCT
 LOCALE void *CreateClassScopeMap(void *,DEFCLASS *);

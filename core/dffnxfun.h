@@ -114,9 +114,9 @@ struct deffunctionData
 #define Undeffunction(a) EnvUndeffunction(GetCurrentEnvironment(),a)
 
 LOCALE void SetupDeffunctions(void *);
-LOCALE void *EnvFindDeffunction(void *,char *);
-LOCALE DEFFUNCTION *LookupDeffunctionByMdlOrScope(void *,char *);
-LOCALE DEFFUNCTION *LookupDeffunctionInScope(void *,char *);
+LOCALE void *EnvFindDeffunction(void *,const char *);
+LOCALE DEFFUNCTION *LookupDeffunctionByMdlOrScope(void *,const char *);
+LOCALE DEFFUNCTION *LookupDeffunctionInScope(void *,const char *);
 LOCALE intBool EnvUndeffunction(void *,void *);
 LOCALE void *EnvGetNextDeffunction(void *,void *);
 LOCALE int EnvIsDeffunctionDeletable(void *,void *);
@@ -129,7 +129,7 @@ LOCALE int CheckDeffunctionCall(void *,void *,int);
 #if DEBUGGING_FUNCTIONS
 LOCALE void PPDeffunctionCommand(void *);
 LOCALE void ListDeffunctionsCommand(void *);
-LOCALE void EnvListDeffunctions(void *,char *,struct defmodule *);
+LOCALE void EnvListDeffunctions(void *,const char *,struct defmodule *);
 LOCALE void EnvSetDeffunctionWatch(void *,unsigned,void *);
 LOCALE unsigned EnvGetDeffunctionWatch(void *,void *);
 #endif

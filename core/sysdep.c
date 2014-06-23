@@ -520,7 +520,7 @@ globle void (*GetContinueEnvFunction(void *theEnv))(void *,int)
 globle void RerouteStdin(
   void *theEnv,
   int argc,
-  char *argv[])
+  const char *argv[])
   {
    int i;
    int theSwitch = NO_SWITCH;
@@ -720,7 +720,7 @@ globle void gensystem(
    size_t bufferMaximum = 0;
    int numa, i;
    DATA_OBJECT tempValue;
-   char *theString;
+   const char *theString;
 
    /*===========================================*/
    /* Check for the corret number of arguments. */
@@ -782,7 +782,7 @@ globle void gensystem(
    /* Return the string buffer containing the command. */
    /*==================================================*/
 
-   rm(theEnv,commandBuffer,bufferMaximum);
+   rm(theEnv,(void*) commandBuffer,bufferMaximum);
 
    return;
   }
@@ -792,7 +792,7 @@ globle void gensystem(
 /* VMSSystem: Implements system command for VMS. */
 /*************************************************/
 globle void VMSSystem(
-  char *cmd)
+  const char *cmd)
   {
    long status, complcode;
    struct dsc$descriptor_s cmd_desc;
@@ -829,7 +829,7 @@ globle int gengetchar(
       
       SystemDependentData(theEnv)->getcLength = 
          WideCharToMultiByte(CP_UTF8,0,&wBuffer,1,
-                             (char *) SystemDependentData(theEnv)->getcBuffer,
+                             (const char *) SystemDependentData(theEnv)->getcBuffer,
                              7,NULL,NULL);
                              
       SystemDependentData(theEnv)->getcPosition = 0;
@@ -876,7 +876,7 @@ globle int genungetchar(
 globle void genprintfile(
   void *theEnv,
   FILE *fptr,
-  char *str)
+  const char *str)
   {
    if (fptr != stdout)
      {
@@ -1122,7 +1122,7 @@ globle char *gengetcwd(
 /* genremove: Generic function for removing a file. */
 /****************************************************/
 globle int genremove(
-  char *fileName)
+  const char *fileName)
   {
    if (remove(fileName)) return(FALSE);
 
@@ -1133,8 +1133,8 @@ globle int genremove(
 /* genrename: Generic function for renaming a file. */
 /****************************************************/
 globle int genrename(
-  char *oldFileName,
-  char *newFileName)
+  const char *oldFileName,
+  const char *newFileName)
   {
    if (rename(oldFileName,newFileName)) return(FALSE);
 
@@ -1174,8 +1174,8 @@ globle int (*EnvSetAfterOpenFunction(void *theEnv,
 /*********************************************/
 globle FILE *GenOpen(
   void *theEnv,
-  char *fileName,
-  char *accessType)
+  const char *fileName,
+  const char *accessType)
   {
    FILE *theFile;
    
@@ -1226,8 +1226,8 @@ globle int GenClose(
 /************************************************************/
 globle int GenOpenReadBinary(
   void *theEnv,
-  char *funcName,
-  char *fileName)
+  const char *funcName,
+  const char *fileName)
   {
    if (SystemDependentData(theEnv)->BeforeOpenFunction != NULL)
      { (*SystemDependentData(theEnv)->BeforeOpenFunction)(theEnv); }
@@ -1271,9 +1271,9 @@ globle void GenReadBinary(
   size_t size)
   {
 #if WIN_MVC
-   char *tempPtr;
+   const char *tempPtr;
 
-   tempPtr = (char *) dataPtr;
+   tempPtr = (const char *) dataPtr;
    while (size > INT_MAX)
      {
       _read(SystemDependentData(theEnv)->BinaryFileHandle,tempPtr,INT_MAX);

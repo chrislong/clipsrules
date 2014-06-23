@@ -131,14 +131,14 @@ struct agendaData
    LOCALE void                    AddActivation(void *,void *,void *);
    LOCALE void                    ClearRuleFromAgenda(void *,void *);
    LOCALE void                   *EnvGetNextActivation(void *,void *);
-   LOCALE char                   *EnvGetActivationName(void *,void *);
+   LOCALE const char             *EnvGetActivationName(void *,void *);
    LOCALE int                     EnvSetActivationSalience(void *,void *,int);
    LOCALE void                    EnvGetActivationPPForm(void *,char *,unsigned,void *);
    LOCALE void                    EnvGetActivationBasisPPForm(void *,char *,unsigned,void *);
    LOCALE intBool                 MoveActivationToTop(void *,void *);
    LOCALE intBool                 EnvDeleteActivation(void *,void *);
    LOCALE intBool                 DetachActivation(void *,void *);
-   LOCALE void                    EnvAgenda(void *,char *,void *);
+   LOCALE void                    EnvAgenda(void *,const char *,void *);
    LOCALE void                    RemoveActivation(void *,void *,int,int);
    LOCALE void                    RemoveAllActivations(void *);
    LOCALE int                     EnvGetAgendaChanged(void *);
@@ -159,9 +159,3 @@ struct agendaData
 #endif
 
 #endif
-
-
-
-
-
-

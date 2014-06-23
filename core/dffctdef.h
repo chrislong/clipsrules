@@ -91,7 +91,7 @@ struct deffactsModule
 #define IsDeffactsDeletable(a) EnvIsDeffactsDeletable(GetCurrentEnvironment(),a)
 
    LOCALE void                           InitializeDeffacts(void *);
-   LOCALE void                          *EnvFindDeffacts(void *,char *);
+   LOCALE void                          *EnvFindDeffacts(void *,const char *);
    LOCALE void                          *EnvGetNextDeffacts(void *,void *);
    LOCALE void                           CreateInitialFactDeffacts(void);
    LOCALE intBool                        EnvIsDeffactsDeletable(void *,void *);

@@ -1122,7 +1122,7 @@ globle void FuncallFunction(
    int argCount, i, j;
    DATA_OBJECT theValue;
    FUNCTION_REFERENCE theReference;
-   char *name;
+   const char *name;
    struct multifield *theMultifield;
    struct expr *lastAdd = NULL, *nextAdd, *multiAdd;
    struct FunctionDefinition *theFunction;

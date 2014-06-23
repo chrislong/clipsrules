@@ -112,12 +112,12 @@
 
 static SLOT_DESC *NewSlot(void *,SYMBOL_HN *);
 static TEMP_SLOT_LINK *InsertSlot(void *,TEMP_SLOT_LINK *,SLOT_DESC *);
-static int ParseSimpleFacet(void *,char *,char*,char *,int,char *,char *,char *,char *,SYMBOL_HN **);
-static intBool ParseDefaultFacet(void *,char *,char *,SLOT_DESC *);
-static void BuildCompositeFacets(void *,SLOT_DESC *,PACKED_CLASS_LINKS *,char *,
+static int ParseSimpleFacet(void *,const char *,char *,const char *,int,const char *,const char *,const char *,const char *,SYMBOL_HN **);
+static intBool ParseDefaultFacet(void *,const char *,char *,SLOT_DESC *);
+static void BuildCompositeFacets(void *,SLOT_DESC *,PACKED_CLASS_LINKS *,const char *,
                                  CONSTRAINT_PARSE_RECORD *);
 static intBool CheckForFacetConflicts(void *,SLOT_DESC *,CONSTRAINT_PARSE_RECORD *);
-static intBool EvaluateSlotDefaultValue(void *,SLOT_DESC *,char *);
+static intBool EvaluateSlotDefaultValue(void *,SLOT_DESC *,const char *);
 
 /* =========================================
    *****************************************
@@ -146,7 +146,7 @@ static intBool EvaluateSlotDefaultValue(void *,SLOT_DESC *,char *);
  ************************************************************/
 globle TEMP_SLOT_LINK *ParseSlot(
   void *theEnv,
-  char *readSource,
+  const char *readSource,
   TEMP_SLOT_LINK *slist,
   PACKED_CLASS_LINKS *preclist,
   int multiSlot,
@@ -519,14 +519,14 @@ static TEMP_SLOT_LINK *InsertSlot(
  *****************************************************************/
 static int ParseSimpleFacet(
   void *theEnv,
-  char *readSource,
+  const char *readSource,
   char *specbits,
-  char *facetName,
+  const char *facetName,
   int testBit,
-  char *clearRelation,
-  char *setRelation,
-  char *alternateRelation,
-  char *varRelation,
+  const char *clearRelation,
+  const char *setRelation,
+  const char *alternateRelation,
+  const char *varRelation,
   SYMBOL_HN **facetSymbolicValue)
   {
    int rtnCode;
@@ -604,7 +604,7 @@ ParseSimpleFacetError:
  *************************************************************/
 static intBool ParseDefaultFacet(
   void *theEnv,
-  char *readSource,
+  const char *readSource,
   char *specbits,
   SLOT_DESC *slot)
   {
@@ -673,7 +673,7 @@ static void BuildCompositeFacets(
   void *theEnv,
   SLOT_DESC *sd,
   PACKED_CLASS_LINKS *preclist,
-  char *specbits,
+  const char *specbits,
   CONSTRAINT_PARSE_RECORD *parsedConstraint)
   {
    SLOT_DESC *compslot = NULL;
@@ -811,7 +811,7 @@ static intBool CheckForFacetConflicts(
 static intBool EvaluateSlotDefaultValue(
   void *theEnv,
   SLOT_DESC *sd,
-  char *specbits)
+  const char *specbits)
   {
    DATA_OBJECT temp;
    int oldce,olddcc,vCode;

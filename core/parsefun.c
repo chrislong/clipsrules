@@ -63,8 +63,8 @@ struct parseFunctionData
 /***************************************/
 
 #if (! RUN_TIME) && (! BLOAD_ONLY)
-   static int                     FindErrorCapture(void *,char *);
-   static int                     PrintErrorCapture(void *,char *,char *);
+   static int                     FindErrorCapture(void *,const char *);
+   static int                     PrintErrorCapture(void *,const char *,const char *);
    static void                    DeactivateErrorCapture(void *);
    static void                    SetErrorCaptureValues(void *,DATA_OBJECT_PTR);
 #endif
@@ -131,7 +131,7 @@ globle int CheckSyntax(
   char *theString,
   DATA_OBJECT_PTR returnValue)
   {
-   char *name;
+   const char *name;
    struct token theToken;
    struct expr *top;
    short rv;
@@ -273,13 +273,13 @@ static void DeactivateErrorCapture(
   {   
    if (ParseFunctionData(theEnv)->ErrorString != NULL)
      {
-      rm(theEnv,ParseFunctionData(theEnv)->ErrorString,ParseFunctionData(theEnv)->ErrorMaximumPosition);
+       rm(theEnv,(void*) ParseFunctionData(theEnv)->ErrorString,ParseFunctionData(theEnv)->ErrorMaximumPosition);
       ParseFunctionData(theEnv)->ErrorString = NULL;
      }
 
    if (ParseFunctionData(theEnv)->WarningString != NULL)
      {
-      rm(theEnv,ParseFunctionData(theEnv)->WarningString,ParseFunctionData(theEnv)->WarningMaximumPosition);
+       rm(theEnv,(void*) ParseFunctionData(theEnv)->WarningString,ParseFunctionData(theEnv)->WarningMaximumPosition);
       ParseFunctionData(theEnv)->WarningString = NULL;
      }
 
@@ -341,7 +341,7 @@ static void SetErrorCaptureValues(
 /**********************************/
 static int FindErrorCapture(
   void *theEnv,
-  char *logicalName)
+  const char *logicalName)
   {
 #if MAC_XCD
 #pragma unused(theEnv)
@@ -360,8 +360,8 @@ static int FindErrorCapture(
 /************************************/
 static int PrintErrorCapture(
   void *theEnv,
-  char *logicalName,
-  char *str)
+  const char *logicalName,
+  const char *str)
   {
    if (strcmp(logicalName,WERROR) == 0)
      {
@@ -400,7 +400,7 @@ globle void CheckSyntaxFunction(
 /************************************************/
 globle int CheckSyntax(
   void *theEnv,
-  char *theString,
+  const char *theString,
   DATA_OBJECT_PTR returnValue)
   {
    PrintErrorID(theEnv,"PARSEFUN",1,FALSE);

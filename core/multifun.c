@@ -83,13 +83,13 @@ typedef struct fieldVarStack
 #if MULTIFIELD_FUNCTIONS
    static intBool                 MVRangeCheck(long,long,long *,int);
 #if (! BLOAD_ONLY) && (! RUN_TIME)
-   static struct expr            *MultifieldPrognParser(void *,struct expr *,char *);
-   static struct expr            *ForeachParser(void *,struct expr *,char *);
+   static struct expr            *MultifieldPrognParser(void *,struct expr *,const char *);
+   static struct expr            *ForeachParser(void *,struct expr *,const char *);
    static void                    ReplaceMvPrognFieldVars(void *,SYMBOL_HN *,struct expr *,int);
 #endif
 #endif
-   static void                    MVRangeError(void *,long,long,long,char *);
-   static void                    MultifieldPrognDriver(void *,DATA_OBJECT_PTR,char *);
+   static void                    MVRangeError(void *,long,long,long,const char *);
+   static void                    MultifieldPrognDriver(void *,DATA_OBJECT_PTR,const char *);
 #endif
 
 /***************************************/
@@ -1019,7 +1019,7 @@ static intBool MVRangeCheck(
 static struct expr *MultifieldPrognParser(
   void *theEnv,
   struct expr *top,
-  char *infile)
+  const char *infile)
   {
    struct BindInfo *oldBindList,*newBindList,*prev;
    struct token tkn;
@@ -1140,7 +1140,7 @@ MvPrognParseError:
 static struct expr *ForeachParser(
   void *theEnv,
   struct expr *top,
-  char *infile)
+  const char *infile)
   {
    struct BindInfo *oldBindList,*newBindList,*prev;
    struct token tkn;
@@ -1292,7 +1292,7 @@ globle void ForeachFunction(
 static void MultifieldPrognDriver(
   void *theEnv,
   DATA_OBJECT_PTR result,
-  char *functionName)
+  const char *functionName)
   {
    EXPRESSION *theExp;
    DATA_OBJECT argval;
@@ -1425,7 +1425,7 @@ globle int ReplaceMultiValueField(
   long rb,
   long re,
   DATA_OBJECT *field,
-  char *funcName)
+  const char *funcName)
   {
    long i,j,k;
    struct field *deptr;
@@ -1506,7 +1506,7 @@ globle int InsertMultiValueField(
   DATA_OBJECT *src,
   long theIndex,
   DATA_OBJECT *field,
-  char *funcName)
+  const char *funcName)
   {
    long i,j,k;
    register FIELD *deptr, *septr;
@@ -1595,7 +1595,7 @@ static void MVRangeError(
   long brb,
   long bre,
   long max,
-  char *funcName)
+  const char *funcName)
   {
    PrintErrorID(theEnv,"MULTIFUN",1,FALSE);
    EnvPrintRouter(theEnv,WERROR,"Multifield index ");
@@ -1639,7 +1639,7 @@ globle int DeleteMultiValueField(
   DATA_OBJECT *src,
   long rb,
   long re,
-  char *funcName)
+  const char *funcName)
   {
    long i,j;
    register FIELD_PTR deptr,septr;

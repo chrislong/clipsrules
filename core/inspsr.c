@@ -163,7 +163,7 @@ static intBool ReplaceClassNameWithReference(void *,EXPRESSION *);
 globle EXPRESSION *ParseInitializeInstance(
   void *theEnv,
   EXPRESSION *top,
-  char *readSource)
+  const char *readSource)
   {
    int error,fcalltype,readclass;
 
@@ -329,7 +329,7 @@ ParseInitializeInstanceError:
  ********************************************************************************/
 globle EXPRESSION *ParseSlotOverrides(
   void *theEnv,
-  char *readSource,
+  const char *readSource,
   int *error)
   {
    EXPRESSION *top = NULL,*bot = NULL,*theExp;
@@ -413,7 +413,7 @@ globle EXPRESSION *ParseSlotOverrides(
 globle EXPRESSION *ParseSimpleInstance(
   void *theEnv,
   EXPRESSION *top,
-  char *readSource)
+  const char *readSource)
   {
    EXPRESSION *theExp,*vals = NULL,*vbot,*tval;
    unsigned short type;
@@ -532,7 +532,7 @@ static intBool ReplaceClassNameWithReference(
   void *theEnv,
   EXPRESSION *theExp)
   {
-   char *theClassName;
+   const char *theClassName;
    void *theDefclass;
 
    if (theExp->type == SYMBOL)

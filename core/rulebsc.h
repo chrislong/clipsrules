@@ -59,15 +59,15 @@
    LOCALE void                          *DefruleModuleFunction(void *);
 #if DEBUGGING_FUNCTIONS
    LOCALE void                           PPDefruleCommand(void *);
-   LOCALE int                            PPDefrule(void *,char *,char *);
+   LOCALE int                            PPDefrule(void *,const char *,const char *);
    LOCALE void                           ListDefrulesCommand(void *);
-   LOCALE void                           EnvListDefrules(void *,char *,void *);
+   LOCALE void                           EnvListDefrules(void *,const char *,void *);
    LOCALE unsigned                       EnvGetDefruleWatchFirings(void *,void *);
    LOCALE unsigned                       EnvGetDefruleWatchActivations(void *,void *);
    LOCALE void                           EnvSetDefruleWatchFirings(void *,unsigned,void *);
    LOCALE void                           EnvSetDefruleWatchActivations(void *,unsigned,void *);
    LOCALE unsigned                       DefruleWatchAccess(void *,int,unsigned,struct expr *);
-   LOCALE unsigned                       DefruleWatchPrint(void *,char *,int,struct expr *);
+   LOCALE unsigned                       DefruleWatchPrint(void *,const char *,int,struct expr *);
 #endif
 
 #endif

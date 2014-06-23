@@ -81,12 +81,12 @@
    ***************************************** */
 
 #if DEBUGGING_FUNCTIONS
-static long ListInstancesInModule(void *,int,char *,char *,intBool,intBool);
-static long TabulateInstances(void *,int,char *,DEFCLASS *,intBool,intBool);
+static long ListInstancesInModule(void *,int,const char *,const char *,intBool,intBool);
+static long TabulateInstances(void *,int,const char *,DEFCLASS *,intBool,intBool);
 #endif
 
-static void PrintInstance(void *,char *,INSTANCE_TYPE *,char *);
-static INSTANCE_SLOT *FindISlotByName(void *,INSTANCE_TYPE *,char *);
+static void PrintInstance(void *,const char *,INSTANCE_TYPE *,const char *);
+static INSTANCE_SLOT *FindISlotByName(void *,INSTANCE_TYPE *,const char *);
 static void DeallocateInstanceData(void *);
 
 /* =========================================
@@ -398,7 +398,7 @@ globle void InstancesCommand(
   {
    int argno, inheritFlag = FALSE;
    void *theDefmodule;
-   char *className = NULL;
+   const char *className = NULL;
    DATA_OBJECT temp;
 
    theDefmodule = (void *) EnvGetCurrentModule(theEnv);
@@ -486,9 +486,9 @@ globle void PPInstanceCommand(
  **************************************************************/
 globle void EnvInstances(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   void *theVModule,
-  char *className,
+  const char *className,
   int inheritFlag)
   {
    int id;
@@ -561,7 +561,7 @@ globle void *EnvMakeInstance(
   void *theEnv,
   char *mkstr)
   {
-   char *router = "***MKINS***";
+   const char *router = "***MKINS***";
    struct token tkn;
    EXPRESSION *top;
    DATA_OBJECT result;
@@ -620,7 +620,7 @@ globle void *EnvMakeInstance(
 globle void *EnvCreateRawInstance(
   void *theEnv,
   void *cptr,
-  char *iname)
+  const char *iname)
   {
    return((void *) BuildInstance(theEnv,(SYMBOL_HN *) EnvAddSymbol(theEnv,iname),(DEFCLASS *) cptr,FALSE));
   }
@@ -636,7 +636,7 @@ globle void *EnvCreateRawInstance(
 globle void *EnvFindInstance(
   void *theEnv,
   void *theModule,
-  char *iname,
+  const char *iname,
   unsigned searchImports)
   {
    SYMBOL_HN *isym;
@@ -682,7 +682,7 @@ globle int EnvValidInstanceAddress(
 globle void EnvDirectGetSlot(
   void *theEnv,
   void *ins,
-  char *sname,
+  const char *sname,
   DATA_OBJECT *result)
   {
    INSTANCE_SLOT *sp;
@@ -730,7 +730,7 @@ globle void EnvDirectGetSlot(
 globle int EnvDirectPutSlot(
   void *theEnv,
   void *ins,
-  char *sname,
+  const char *sname,
   DATA_OBJECT *val)
   {
    INSTANCE_SLOT *sp;
@@ -769,7 +769,7 @@ globle int EnvDirectPutSlot(
   SIDE EFFECTS : None
   NOTES        : None
  ***************************************************/
-globle char *EnvGetInstanceName(
+globle const char *EnvGetInstanceName(
   void *theEnv,
   void *iptr)
   {
@@ -791,7 +791,7 @@ globle char *EnvGetInstanceName(
   NOTES        : None
  ***************************************************/
 #if ALLOW_ENVIRONMENT_GLOBALS
-globle char *GetInstanceName(
+globle const char *GetInstanceName(
   void *iptr)
   {
    return EnvGetInstanceName(GetCurrentEnvironment(),iptr);
@@ -980,7 +980,7 @@ globle void EnvGetInstancePPForm(
   unsigned buflen,
   void *iptr)
   {
-   char *pbuf = "***InstancePPForm***";
+   const char *pbuf = "***InstancePPForm***";
 
    if (((INSTANCE_TYPE *) iptr)->garbage == 1)
      return;
@@ -1005,7 +1005,7 @@ globle void ClassCommand(
   DATA_OBJECT *result)
   {
    INSTANCE_TYPE *ins;
-   char *func;
+   const char *func;
    DATA_OBJECT temp;
 
    func = ValueToString(((struct FunctionDefinition *)
@@ -1425,8 +1425,8 @@ globle intBool InstanceExistPCommand(
 static long ListInstancesInModule(
   void *theEnv,
   int id,
-  char *logicalName,
-  char *className,
+  const char *logicalName,
+  const char *className,
   intBool inheritFlag,
   intBool allModulesFlag)
   {
@@ -1510,7 +1510,7 @@ static long ListInstancesInModule(
 static long TabulateInstances(
   void *theEnv,
   int id,
-  char *logicalName,
+  const char *logicalName,
   DEFCLASS *cls,
   intBool inheritFlag,
   intBool allModulesFlag)
@@ -1559,9 +1559,9 @@ static long TabulateInstances(
  ***************************************************/
 static void PrintInstance(
   void *theEnv,
-  char *logicalName,
+  const char *logicalName,
   INSTANCE_TYPE *ins,
-  char *separator)
+  const char *separator)
   {
    long i;
    register INSTANCE_SLOT *sp;
@@ -1602,7 +1602,7 @@ static void PrintInstance(
 static INSTANCE_SLOT *FindISlotByName(
   void *theEnv,
   INSTANCE_TYPE *ins,
-  char *sname)
+  const char *sname)
   {
    SYMBOL_HN *ssym;
 
