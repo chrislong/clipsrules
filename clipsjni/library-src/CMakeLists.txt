@@ -10,7 +10,7 @@ add_custom_command(
   DEPENDS ${CLIPS_JARFILE}
   )
 
-add_library(CLIPSJNI_native MODULE CLIPSJNI_Environment.c CLIPSJNI_Environment.h)
+add_library(CLIPSJNI_native MODULE CLIPSJNI_Environment.cpp CLIPSJNI_Environment.h)
 set_target_properties(CLIPSJNI_native PROPERTIES OUTPUT_NAME CLIPSJNI)
 if (APPLE)
   # In java you want:
