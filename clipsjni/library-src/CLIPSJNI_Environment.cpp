@@ -11,6 +11,7 @@ struct clipsJNIData
 
    jclass classClass;
    jmethodID classGetCanonicalNameMethod;
+   jmethodID objectToStringMethod;
    
    jclass longClass;
    jmethodID longInitMethod;
@@ -47,6 +48,9 @@ struct clipsJNIData
 
    jclass instanceAddressValueClass;
    jmethodID instanceAddressValueInitMethod;
+
+   jclass javaObjectValueClass;
+   jmethodID javaObjectValueInitMethod;
   };
 
 #define CLIPSJNIData(theEnv) ((struct clipsJNIData *) GetEnvironmentData(theEnv,CLIPSJNI_DATA))
@@ -62,6 +66,7 @@ static jobject    ConvertDataObject(JNIEnv *,jobject,void *,DATA_OBJECT *);
 static void      *JLongToPointer(jlong);
 static jlong      PointerToJLong(void *);
 static void       PrintJavaAddress(void *,const char *,void *);
+static void       PrintJavaObject(void *,const char *,void *);
 static void       NewJavaAddress(void *,DATA_OBJECT *);
 static intBool    CallJavaMethod(void *,DATA_OBJECT *,DATA_OBJECT *);
 static intBool    DiscardJavaAddress(void *,void *);
@@ -287,6 +292,7 @@ JNIEXPORT jlong JNICALL Java_CLIPSJNI_Environment_createEnvironment(
    void *theEnv;
    jclass theClassClass; 
    jmethodID theClassGetCanonicalNameMethod;
+   jmethodID theObjectToStringMethod;
    jclass theLongClass; 
    jmethodID theLongInitMethod;
    jclass theDoubleClass; 
@@ -306,7 +312,7 @@ JNIEXPORT jlong JNICALL Java_CLIPSJNI_Environment_createEnvironment(
    jmethodID theFactAddressValueInitMethod;
    jclass theInstanceAddressValueClass;
    jmethodID theInstanceAddressValueInitMethod;
-   struct externalAddressType javaPointer = { "java", PrintJavaAddress, PrintJavaAddress, DiscardJavaAddress, NewJavaAddress, CallJavaMethod };
+   struct externalAddressType javaPointer = { "java", PrintJavaAddress, PrintJavaObject, DiscardJavaAddress, NewJavaAddress, CallJavaMethod };
 
    /*===========================*/
    /* Look up the Java classes. */
@@ -350,6 +356,7 @@ JNIEXPORT jlong JNICALL Java_CLIPSJNI_Environment_createEnvironment(
    /*================================*/
    
    theClassGetCanonicalNameMethod = env->GetMethodID(theClassClass,"getCanonicalName","()Ljava/lang/String;");
+   theObjectToStringMethod = env->GetMethodID(theClassClass,"toString","()Ljava/lang/String;");
    theLongInitMethod = env->GetMethodID(theLongClass,"<init>","(J)V");
    theDoubleInitMethod = env->GetMethodID(theDoubleClass,"<init>","(D)V");
    theArrayListInitMethod = env->GetMethodID(theArrayListClass,"<init>","(I)V");
@@ -370,6 +377,7 @@ JNIEXPORT jlong JNICALL Java_CLIPSJNI_Environment_createEnvironment(
    /*==============================================*/
    
    if ((theClassGetCanonicalNameMethod == NULL) ||
+       (theObjectToStringMethod == NULL) ||
        (theLongInitMethod == NULL) || (theDoubleInitMethod == NULL) || 
        (theArrayListInitMethod == NULL) || (theArrayListAddMethod == NULL) ||
        (theVoidValueInitMethod == NULL) ||
@@ -402,6 +410,7 @@ JNIEXPORT jlong JNICALL Java_CLIPSJNI_Environment_createEnvironment(
 
    CLIPSJNIData(theEnv)->classClass = static_cast<jclass>(env->NewGlobalRef(theClassClass));
    CLIPSJNIData(theEnv)->classGetCanonicalNameMethod = theClassGetCanonicalNameMethod;
+   CLIPSJNIData(theEnv)->objectToStringMethod = theObjectToStringMethod;
 
    CLIPSJNIData(theEnv)->longClass = static_cast<jclass>(env->NewGlobalRef(theLongClass));
    CLIPSJNIData(theEnv)->longInitMethod = theLongInitMethod;
@@ -1531,6 +1540,28 @@ static void PrintJavaAddress(
   }
 
 /*******************************************************/
+/* PrintJavaObject:  */
+/*******************************************************/
+static void PrintJavaObject(
+  void *theEnv,
+  const char *logicalName,
+  void *theValue)
+  {
+   jobject theObject = reinterpret_cast<jobject>(ValueToExternalAddress(theValue));
+   if (theObject != NULL) {
+    JNIEnv *env = reinterpret_cast<JNIEnv*>(GetEnvironmentContext(theEnv));
+    jstring str = static_cast<jstring>(env->CallObjectMethod(theObject,CLIPSJNIData(theEnv)->objectToStringMethod));
+    const char *cStr = env->GetStringUTFChars(str,NULL);
+
+    EnvPrintRouter(theEnv,logicalName,cStr);
+    env->ReleaseStringUTFChars(str,cStr);
+   }
+   else {
+    EnvPrintRouter(theEnv,logicalName,"null");
+   }
+  }
+
+/*******************************************************/
 /* NewJavaAddress:  */
 /*******************************************************/
 static void NewJavaAddress(
@@ -2189,3 +2220,8 @@ static intBool DiscardJavaAddress(
    
    return TRUE;
   }
+
+
+// Local Variables:
+// c-basic-offset: 1
+// End:

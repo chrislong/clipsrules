@@ -1,8 +1,8 @@
 include(UseJava)
 
+set(CMAKE_JAVA_JAR_ENTRY_POINT CLIPSJNI/Environment)
+set(CMAKE_JAVA_TARGET_OUTPUT_NAME CLIPSJNI)
 add_jar(CLIPSJNI_jar
-  ENTRY_POINT CLIPSJNI/Environment
-  SOURCES
   CLIPSJNI/CLIPSTerminal.java
   CLIPSJNI/ConsoleRouter.java
   CLIPSJNI/ConsoleUTF8Router.java
@@ -21,5 +21,4 @@ add_jar(CLIPSJNI_jar
   CLIPSJNI/StringValue.java
   CLIPSJNI/SymbolValue.java
   CLIPSJNI/VoidValue.java
-  OUTPUT_NAME CLIPSJNI
 )

@@ -343,3 +343,7 @@ add_executable(clips main.c ${CORE_SOURCES} ${CORE_HEADERS})
 
 add_library(libclips SHARED ${CORE_SOURCES} ${CORE_HEADERS})
 set_target_properties(libclips PROPERTIES OUTPUT_NAME clips)
+if(UNIX)
+  target_link_libraries(clips m)
+  target_link_libraries(libclips m)
+endif(UNIX)
