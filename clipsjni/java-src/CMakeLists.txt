@@ -13,6 +13,7 @@ add_jar(CLIPSJNI_jar
   CLIPSJNI/InstanceNameValue.java
   CLIPSJNI/InstanceValue.java
   CLIPSJNI/IntegerValue.java
+  CLIPSJNI/JavaObjectValue.java
   CLIPSJNI/JTextAreaCommandPromptRouter.java
   CLIPSJNI/JTextAreaRouter.java
   CLIPSJNI/MultifieldValue.java
