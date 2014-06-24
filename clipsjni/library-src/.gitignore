@@ -5,3 +5,4 @@
 /cmake_install.cmake
 /libCLIPSJNI.jnilib
 /libCLIPSJNI.so
+/CLIPSJNI_Environment.h

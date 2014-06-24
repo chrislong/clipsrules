@@ -95,6 +95,7 @@ static void DeallocateJNIData(
    env->DeleteGlobalRef(CLIPSJNIData(theEnv)->multifieldValueClass);
    env->DeleteGlobalRef(CLIPSJNIData(theEnv)->factAddressValueClass);
    env->DeleteGlobalRef(CLIPSJNIData(theEnv)->instanceAddressValueClass);
+   env->DeleteGlobalRef(CLIPSJNIData(theEnv)->javaObjectValueClass);
   }
 
 /*************************************************/
@@ -312,6 +313,10 @@ JNIEXPORT jlong JNICALL Java_CLIPSJNI_Environment_createEnvironment(
    jmethodID theFactAddressValueInitMethod;
    jclass theInstanceAddressValueClass;
    jmethodID theInstanceAddressValueInitMethod;
+
+   jclass theJavaObjectValueClass;
+   jmethodID theJavaObjectValueInitMethod;
+   
    struct externalAddressType javaPointer = { "java", PrintJavaAddress, PrintJavaObject, DiscardJavaAddress, NewJavaAddress, CallJavaMethod };
 
    /*===========================*/
@@ -321,6 +326,7 @@ JNIEXPORT jlong JNICALL Java_CLIPSJNI_Environment_createEnvironment(
    theClassClass = env->FindClass("java/lang/Class"); 
    theLongClass = env->FindClass("java/lang/Long"); 
    theDoubleClass = env->FindClass("java/lang/Double"); 
+   theJavaObjectValueClass = env->FindClass("CLIPSJNI/JavaObjectValue");
    theStringClass = env->FindClass("java/lang/String"); 
    theArrayListClass = env->FindClass("java/util/ArrayList"); 
    theVoidValueClass = env->FindClass("CLIPSJNI/VoidValue");
@@ -332,6 +338,7 @@ JNIEXPORT jlong JNICALL Java_CLIPSJNI_Environment_createEnvironment(
    theMultifieldValueClass = env->FindClass("CLIPSJNI/MultifieldValue");
    theFactAddressValueClass = env->FindClass("CLIPSJNI/FactAddressValue");
    theInstanceAddressValueClass = env->FindClass("CLIPSJNI/InstanceAddressValue");
+   theJavaObjectValueClass = env->FindClass("CLIPSJNI/JavaObjectValue");
                 
    /*=========================================*/
    /* If the Java classes could not be found, */
@@ -348,7 +355,8 @@ JNIEXPORT jlong JNICALL Java_CLIPSJNI_Environment_createEnvironment(
        (theInstanceNameValueClass == NULL) ||
        (theMultifieldValueClass == NULL) ||
        (theFactAddressValueClass == NULL) ||
-       (theInstanceAddressValueClass == NULL))
+       (theInstanceAddressValueClass == NULL) ||
+       (theJavaObjectValueClass == NULL))
      { return((jlong) NULL); }
      
    /*================================*/
@@ -370,6 +378,7 @@ JNIEXPORT jlong JNICALL Java_CLIPSJNI_Environment_createEnvironment(
    theMultifieldValueInitMethod = env->GetMethodID(theMultifieldValueClass,"<init>","(Ljava/util/List;)V");
    theFactAddressValueInitMethod = env->GetMethodID(theFactAddressValueClass,"<init>","(JLCLIPSJNI/Environment;)V");
    theInstanceAddressValueInitMethod = env->GetMethodID(theInstanceAddressValueClass,"<init>","(JLCLIPSJNI/Environment;)V");
+   theJavaObjectValueInitMethod = env->GetMethodID(theJavaObjectValueClass,"<init>","(Ljava/lang/Object;)V");
 
    /*==============================================*/
    /* If the Java init methods could not be found, */
@@ -386,7 +395,8 @@ JNIEXPORT jlong JNICALL Java_CLIPSJNI_Environment_createEnvironment(
        (theInstanceNameValueInitMethod == NULL) ||
        (theMultifieldValueInitMethod == NULL) ||
        (theFactAddressValueInitMethod == NULL) ||
-       (theInstanceAddressValueInitMethod == NULL))
+       (theInstanceAddressValueInitMethod == NULL) ||
+       (theJavaObjectValueInitMethod == NULL))
      { return((jlong) NULL); }
      
    /*=========================*/
@@ -444,6 +454,9 @@ JNIEXPORT jlong JNICALL Java_CLIPSJNI_Environment_createEnvironment(
 
    CLIPSJNIData(theEnv)->instanceAddressValueClass = static_cast<jclass>(env->NewGlobalRef(theInstanceAddressValueClass));
    CLIPSJNIData(theEnv)->instanceAddressValueInitMethod = theInstanceAddressValueInitMethod;
+
+   CLIPSJNIData(theEnv)->javaObjectValueClass = static_cast<jclass>(env->NewGlobalRef(theJavaObjectValueClass));
+   CLIPSJNIData(theEnv)->javaObjectValueInitMethod = theJavaObjectValueInitMethod;
    
    /*======================================*/
    /* Store the java environment for later */
@@ -468,6 +481,7 @@ JNIEXPORT jlong JNICALL Java_CLIPSJNI_Environment_createEnvironment(
    env->DeleteLocalRef(theInstanceNameValueClass);
    env->DeleteLocalRef(theMultifieldValueClass);
    env->DeleteLocalRef(theFactAddressValueClass);
+   env->DeleteLocalRef(theJavaObjectValueClass);
    env->DeleteLocalRef(theInstanceAddressValueClass);
 
    /*=================================*/
@@ -746,6 +760,7 @@ static jobject ConvertDataObject(
       case FLOAT:
       case FACT_ADDRESS:
       case INSTANCE_ADDRESS:
+      case EXTERNAL_ADDRESS:
         result = ConvertSingleFieldValue(env,javaEnv,clipsEnv,GetpType(theDO),GetpValue(theDO));
         break;
 
@@ -845,6 +860,11 @@ static jobject ConvertSingleFieldValue(
                                    PointerToJLong(value),javaEnv);
         break;
 
+     case EXTERNAL_ADDRESS:
+          result = env->NewObject(
+                                     CLIPSJNIData(clipsEnv)->javaObjectValueClass,
+                                     CLIPSJNIData(clipsEnv)->javaObjectValueInitMethod,
+                                     reinterpret_cast<jobject>(ValueToExternalAddress(value)));
       default: 
         break;
      }
@@ -2008,25 +2028,29 @@ static intBool CallJavaMethod(
 
             cStr = (const char *) env->GetStringUTFChars(str,NULL);
              
-            printf("p[%d] = %s\n",(int) p,cStr);
+            printf("p[%d] = %s\t%d\n",(int) p,cStr, GetType(newArgs[p]));
             
             switch (GetType(newArgs[p])) {
             case INTEGER:
-               if (strcmp(cStr,"byte") == 0)  
+               if (strcmp(cStr,"byte") == 0) 
                  { 
                   javaArgs[p].b = DOToInteger(newArgs[p]);
+                  break;
                  }
-               else if (strcmp(cStr,"int") == 0)  
+               else if (strcmp(cStr,"int") == 0) 
                  { 
                   javaArgs[p].i = DOToInteger(newArgs[p]);
+                  break;
                  }
                else if (strcmp(cStr,"long") == 0)
                  { 
                   javaArgs[p].j = DOToLong(newArgs[p]);
+                  break;
                  }
                else if (strcmp(cStr,"short") == 0)  
                  { 
                   javaArgs[p].s = DOToInteger(newArgs[p]);
+                  break;
                  }
                // fall through to allow a CLIPS INTEGER to be passed to a float/double Java func
             case FLOAT:
