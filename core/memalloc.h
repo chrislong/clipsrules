@@ -25,6 +25,7 @@
 #ifndef _H_memalloc
 
 #include <string.h>
+#include <stddef.h>
 
 #define _H_memalloc
 

@@ -40,6 +40,7 @@
 #include "utility.h"
 
 #include <stdlib.h>
+#include <stddef.h>
 
 #if WIN_MVC
 #include <malloc.h>

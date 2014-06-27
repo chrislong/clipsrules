@@ -2,6 +2,7 @@
 #include "CLIPSJNI_Environment.h"
 
 #include "clips.h"
+#include <cstddef>
 
 #define CLIPSJNI_DATA 67
 
