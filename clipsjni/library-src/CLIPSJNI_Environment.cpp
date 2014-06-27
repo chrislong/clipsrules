@@ -3,22 +3,52 @@
 
 #include "clips.h"
 
+#include <cstddef>
+#include <cstring>
+#include <cstdio>
+
+/* These error numbers are for the PrintErrorID function. Calls to it in the CLIPS core
+ * just use integer literals, so there's no explanation for what they should be.
+ * This value is chosen to avoid conflict with existing ones
+ * (and so masking with 0xff will give a "java" error number.)*/
+
+#define JAVA_UNKNOWN_ERROR 257
+
+#define JAVA_MODULE "JAVA"
+
 #define CLIPSJNI_DATA 67
 
 struct clipsJNIData
   { 
    int javaExternalAddressID;
 
+   jclass objectClass;
+
    jclass classClass;
    jmethodID classGetCanonicalNameMethod;
    jmethodID objectToStringMethod;
    
+   jclass booleanClass;
+   jmethodID booleanValueMethod;
+   
+   jclass byteClass;
+   jmethodID byteInitMethod;
+   jclass shortClass;
+   jmethodID shortInitMethod;
+   jclass intClass;
+   jmethodID intInitMethod;
+   jmethodID intValueMethod;
    jclass longClass;
    jmethodID longInitMethod;
+   jmethodID longValueMethod;
 
+   jclass floatClass;
+   jmethodID floatInitMethod;
+   jmethodID floatValueMethod;
    jclass doubleClass;
    jmethodID doubleInitMethod;
-   
+   jmethodID doubleValueMethod;
+
    jclass stringClass;
 
    jclass arrayListClass;
@@ -51,6 +81,11 @@ struct clipsJNIData
 
    jclass javaObjectValueClass;
    jmethodID javaObjectValueInitMethod;
+
+   jclass expressionClass;
+   jmethodID expressionInitMethod;
+   jmethodID expressionExecuteMethod;
+   jmethodID expressionGetValueMethod;
   };
 
 #define CLIPSJNIData(theEnv) ((struct clipsJNIData *) GetEnvironmentData(theEnv,CLIPSJNI_DATA))
@@ -82,8 +117,14 @@ static void DeallocateJNIData(
    
    env = (JNIEnv *) GetEnvironmentContext(theEnv);
   
+   env->DeleteGlobalRef(CLIPSJNIData(theEnv)->objectClass);
    env->DeleteGlobalRef(CLIPSJNIData(theEnv)->classClass);
+   env->DeleteGlobalRef(CLIPSJNIData(theEnv)->booleanClass);
+   env->DeleteGlobalRef(CLIPSJNIData(theEnv)->byteClass);
+   env->DeleteGlobalRef(CLIPSJNIData(theEnv)->shortClass);
+   env->DeleteGlobalRef(CLIPSJNIData(theEnv)->intClass);
    env->DeleteGlobalRef(CLIPSJNIData(theEnv)->longClass);
+   env->DeleteGlobalRef(CLIPSJNIData(theEnv)->floatClass);
    env->DeleteGlobalRef(CLIPSJNIData(theEnv)->doubleClass);
    env->DeleteGlobalRef(CLIPSJNIData(theEnv)->arrayListClass);
    env->DeleteGlobalRef(CLIPSJNIData(theEnv)->voidValueClass);
@@ -96,6 +137,7 @@ static void DeallocateJNIData(
    env->DeleteGlobalRef(CLIPSJNIData(theEnv)->factAddressValueClass);
    env->DeleteGlobalRef(CLIPSJNIData(theEnv)->instanceAddressValueClass);
    env->DeleteGlobalRef(CLIPSJNIData(theEnv)->javaObjectValueClass);
+   env->DeleteGlobalRef(CLIPSJNIData(theEnv)->expressionClass);
   }
 
 /*************************************************/
@@ -291,13 +333,28 @@ JNIEXPORT jlong JNICALL Java_CLIPSJNI_Environment_createEnvironment(
   jobject obj)
   {
    void *theEnv;
+   jclass theObjectClass; 
    jclass theClassClass; 
    jmethodID theClassGetCanonicalNameMethod;
    jmethodID theObjectToStringMethod;
+   jclass theBooleanClass;
+   jmethodID theBooleanValueMethod;
+   jclass theByteClass;
+   jmethodID theByteInitMethod;
+   jclass theShortClass;
+   jmethodID theShortInitMethod;
+   jclass theIntClass;
+   jmethodID theIntInitMethod;
+   jmethodID theIntValueMethod;
    jclass theLongClass; 
    jmethodID theLongInitMethod;
-   jclass theDoubleClass; 
+   jmethodID theLongValueMethod;
+   jclass theFloatClass;
+   jmethodID theFloatInitMethod;
+   jmethodID theFloatValueMethod;
+   jclass theDoubleClass;
    jmethodID theDoubleInitMethod;
+   jmethodID theDoubleValueMethod;
    jclass theStringClass; 
    jclass theArrayListClass; 
    jmethodID theArrayListInitMethod, theArrayListAddMethod;
@@ -313,9 +370,10 @@ JNIEXPORT jlong JNICALL Java_CLIPSJNI_Environment_createEnvironment(
    jmethodID theFactAddressValueInitMethod;
    jclass theInstanceAddressValueClass;
    jmethodID theInstanceAddressValueInitMethod;
-
    jclass theJavaObjectValueClass;
    jmethodID theJavaObjectValueInitMethod;
+   jclass theExpressionClass;
+   jmethodID theExpressionInitMethod, theExpressionExecuteMethod, theExpressionGetValueMethod;
    
    struct externalAddressType javaPointer = { "java", PrintJavaAddress, PrintJavaObject, DiscardJavaAddress, NewJavaAddress, CallJavaMethod };
 
@@ -323,10 +381,15 @@ JNIEXPORT jlong JNICALL Java_CLIPSJNI_Environment_createEnvironment(
    /* Look up the Java classes. */
    /*===========================*/
 
+   theObjectClass = env->FindClass("java/lang/Object"); 
    theClassClass = env->FindClass("java/lang/Class"); 
-   theLongClass = env->FindClass("java/lang/Long"); 
-   theDoubleClass = env->FindClass("java/lang/Double"); 
-   theJavaObjectValueClass = env->FindClass("CLIPSJNI/JavaObjectValue");
+   theBooleanClass = env->FindClass("java/lang/Boolean");
+   theByteClass = env->FindClass("java/lang/Byte");
+   theShortClass = env->FindClass("java/lang/Short");
+   theIntClass = env->FindClass("java/lang/Integer");
+   theLongClass = env->FindClass("java/lang/Long");
+   theFloatClass = env->FindClass("java/lang/Float");
+   theDoubleClass = env->FindClass("java/lang/Double");
    theStringClass = env->FindClass("java/lang/String"); 
    theArrayListClass = env->FindClass("java/util/ArrayList"); 
    theVoidValueClass = env->FindClass("CLIPSJNI/VoidValue");
@@ -339,14 +402,22 @@ JNIEXPORT jlong JNICALL Java_CLIPSJNI_Environment_createEnvironment(
    theFactAddressValueClass = env->FindClass("CLIPSJNI/FactAddressValue");
    theInstanceAddressValueClass = env->FindClass("CLIPSJNI/InstanceAddressValue");
    theJavaObjectValueClass = env->FindClass("CLIPSJNI/JavaObjectValue");
+   theExpressionClass = env->FindClass("java/beans/Expression");
                 
    /*=========================================*/
    /* If the Java classes could not be found, */
    /* abort creation of the environment.      */
    /*=========================================*/
    
-   if ((theClassClass == NULL) ||
-       (theLongClass == NULL) || (theDoubleClass == NULL) ||
+   if ((theObjectClass == NULL) ||
+       (theClassClass == NULL) ||
+     (theBooleanClass == NULL) ||
+     (theByteClass == NULL) ||
+     (theShortClass == NULL) ||
+     (theIntClass == NULL) ||
+     (theLongClass == NULL) ||
+     (theFloatClass == NULL) ||
+       (theDoubleClass == NULL) ||
        (theStringClass == NULL) ||
        (theArrayListClass == NULL) ||
        (theVoidValueClass == NULL) ||
@@ -356,17 +427,27 @@ JNIEXPORT jlong JNICALL Java_CLIPSJNI_Environment_createEnvironment(
        (theMultifieldValueClass == NULL) ||
        (theFactAddressValueClass == NULL) ||
        (theInstanceAddressValueClass == NULL) ||
-       (theJavaObjectValueClass == NULL))
+       (theJavaObjectValueClass == NULL) ||
+       (theExpressionClass == NULL))
      { return((jlong) NULL); }
      
-   /*================================*/
-   /* Look up the Java init methods. */
-   /*================================*/
+   /*===========================*/
+   /* Look up the Java methods. */
+   /*===========================*/
    
    theClassGetCanonicalNameMethod = env->GetMethodID(theClassClass,"getCanonicalName","()Ljava/lang/String;");
    theObjectToStringMethod = env->GetMethodID(theClassClass,"toString","()Ljava/lang/String;");
+   theBooleanValueMethod = env->GetMethodID(theBooleanClass,"booleanValue","()Z");
+   theByteInitMethod = env->GetMethodID(theByteClass,"<init>","(B)V");
+   theShortInitMethod = env->GetMethodID(theShortClass,"<init>","(S)V");
+   theIntInitMethod = env->GetMethodID(theIntClass,"<init>","(I)V");
+   theIntValueMethod = env->GetMethodID(theIntClass,"intValue","()I");
    theLongInitMethod = env->GetMethodID(theLongClass,"<init>","(J)V");
+   theLongValueMethod = env->GetMethodID(theLongClass,"longValue","()J");
+   theFloatInitMethod = env->GetMethodID(theFloatClass,"<init>","(F)V");
+   theFloatValueMethod = env->GetMethodID(theFloatClass,"floatValue","()F");
    theDoubleInitMethod = env->GetMethodID(theDoubleClass,"<init>","(D)V");
+   theDoubleValueMethod = env->GetMethodID(theDoubleClass,"doubleValue","()D");
    theArrayListInitMethod = env->GetMethodID(theArrayListClass,"<init>","(I)V");
    theArrayListAddMethod = env->GetMethodID(theArrayListClass,"add","(Ljava/lang/Object;)Z");
    theVoidValueInitMethod = env->GetMethodID(theVoidValueClass,"<init>","()V");
@@ -379,6 +460,9 @@ JNIEXPORT jlong JNICALL Java_CLIPSJNI_Environment_createEnvironment(
    theFactAddressValueInitMethod = env->GetMethodID(theFactAddressValueClass,"<init>","(JLCLIPSJNI/Environment;)V");
    theInstanceAddressValueInitMethod = env->GetMethodID(theInstanceAddressValueClass,"<init>","(JLCLIPSJNI/Environment;)V");
    theJavaObjectValueInitMethod = env->GetMethodID(theJavaObjectValueClass,"<init>","(Ljava/lang/Object;)V");
+   theExpressionInitMethod = env->GetMethodID(theExpressionClass,"<init>","(Ljava/lang/Object;Ljava/lang/String;[Ljava/lang/Object;)V");
+   theExpressionExecuteMethod = env->GetMethodID(theExpressionClass,"execute","()V");
+   theExpressionGetValueMethod = env->GetMethodID(theExpressionClass,"getValue","()Ljava/lang/Object;");
 
    /*==============================================*/
    /* If the Java init methods could not be found, */
@@ -387,7 +471,12 @@ JNIEXPORT jlong JNICALL Java_CLIPSJNI_Environment_createEnvironment(
    
    if ((theClassGetCanonicalNameMethod == NULL) ||
        (theObjectToStringMethod == NULL) ||
+       (theBooleanValueMethod == NULL) ||
+       (theByteInitMethod == NULL) ||
+       (theShortInitMethod == NULL) || (theFloatInitMethod == NULL) || 
+       (theFloatValueMethod == NULL) ||
        (theLongInitMethod == NULL) || (theDoubleInitMethod == NULL) || 
+       (theLongValueMethod == NULL) || (theDoubleValueMethod == NULL) ||
        (theArrayListInitMethod == NULL) || (theArrayListAddMethod == NULL) ||
        (theVoidValueInitMethod == NULL) ||
        (theIntegerValueInitMethod == NULL) || (theFloatValueInitMethod == NULL) ||
@@ -396,7 +485,10 @@ JNIEXPORT jlong JNICALL Java_CLIPSJNI_Environment_createEnvironment(
        (theMultifieldValueInitMethod == NULL) ||
        (theFactAddressValueInitMethod == NULL) ||
        (theInstanceAddressValueInitMethod == NULL) ||
-       (theJavaObjectValueInitMethod == NULL))
+       (theJavaObjectValueInitMethod == NULL) ||
+       (theExpressionInitMethod == NULL) ||
+       (theExpressionExecuteMethod == NULL) ||
+       (theExpressionGetValueMethod == NULL))
      { return((jlong) NULL); }
      
    /*=========================*/
@@ -418,14 +510,29 @@ JNIEXPORT jlong JNICALL Java_CLIPSJNI_Environment_createEnvironment(
    /* so they won't be garbage collected.               */
    /*===================================================*/
 
+   CLIPSJNIData(theEnv)->objectClass = static_cast<jclass>(env->NewGlobalRef(theObjectClass));
    CLIPSJNIData(theEnv)->classClass = static_cast<jclass>(env->NewGlobalRef(theClassClass));
    CLIPSJNIData(theEnv)->classGetCanonicalNameMethod = theClassGetCanonicalNameMethod;
    CLIPSJNIData(theEnv)->objectToStringMethod = theObjectToStringMethod;
 
+   CLIPSJNIData(theEnv)->booleanClass = static_cast<jclass>(env->NewGlobalRef(theBooleanClass));
+   CLIPSJNIData(theEnv)->booleanValueMethod = theBooleanValueMethod;
+   CLIPSJNIData(theEnv)->byteClass = static_cast<jclass>(env->NewGlobalRef(theByteClass));
+   CLIPSJNIData(theEnv)->byteInitMethod = theByteInitMethod;
+   CLIPSJNIData(theEnv)->shortClass = static_cast<jclass>(env->NewGlobalRef(theShortClass));
+   CLIPSJNIData(theEnv)->shortInitMethod = theShortInitMethod;
+   CLIPSJNIData(theEnv)->intClass = static_cast<jclass>(env->NewGlobalRef(theIntClass));
+   CLIPSJNIData(theEnv)->intInitMethod = theIntInitMethod;
+   CLIPSJNIData(theEnv)->intValueMethod = theIntValueMethod;
    CLIPSJNIData(theEnv)->longClass = static_cast<jclass>(env->NewGlobalRef(theLongClass));
    CLIPSJNIData(theEnv)->longInitMethod = theLongInitMethod;
+   CLIPSJNIData(theEnv)->longValueMethod = theLongValueMethod;
+   CLIPSJNIData(theEnv)->floatClass = static_cast<jclass>(env->NewGlobalRef(theFloatClass));
+   CLIPSJNIData(theEnv)->floatInitMethod = theFloatInitMethod;
+   CLIPSJNIData(theEnv)->floatValueMethod = theFloatValueMethod;
    CLIPSJNIData(theEnv)->doubleClass = static_cast<jclass>(env->NewGlobalRef(theDoubleClass));
    CLIPSJNIData(theEnv)->doubleInitMethod = theDoubleInitMethod;
+   CLIPSJNIData(theEnv)->doubleValueMethod = theDoubleValueMethod;
    CLIPSJNIData(theEnv)->stringClass = static_cast<jclass>(env->NewGlobalRef(theStringClass));
    CLIPSJNIData(theEnv)->arrayListClass = static_cast<jclass>(env->NewGlobalRef(theArrayListClass));
    CLIPSJNIData(theEnv)->arrayListInitMethod = theArrayListInitMethod;
@@ -458,6 +565,11 @@ JNIEXPORT jlong JNICALL Java_CLIPSJNI_Environment_createEnvironment(
    CLIPSJNIData(theEnv)->javaObjectValueClass = static_cast<jclass>(env->NewGlobalRef(theJavaObjectValueClass));
    CLIPSJNIData(theEnv)->javaObjectValueInitMethod = theJavaObjectValueInitMethod;
    
+   CLIPSJNIData(theEnv)->expressionClass = static_cast<jclass>(env->NewGlobalRef(theExpressionClass));
+   CLIPSJNIData(theEnv)->expressionInitMethod = theExpressionInitMethod;
+   CLIPSJNIData(theEnv)->expressionExecuteMethod = theExpressionExecuteMethod;
+   CLIPSJNIData(theEnv)->expressionGetValueMethod = theExpressionGetValueMethod;
+
    /*======================================*/
    /* Store the java environment for later */
    /* access by the CLIPS environment.     */
@@ -469,8 +581,14 @@ JNIEXPORT jlong JNICALL Java_CLIPSJNI_Environment_createEnvironment(
    /* Deallocate the local Java references. */
    /*=======================================*/
    
+   env->DeleteLocalRef(theObjectClass);
    env->DeleteLocalRef(theClassClass);
+   env->DeleteLocalRef(theBooleanClass);
+   env->DeleteLocalRef(theByteClass);
+   env->DeleteLocalRef(theShortClass);
+   env->DeleteLocalRef(theIntClass);
    env->DeleteLocalRef(theLongClass);
+   env->DeleteLocalRef(theFloatClass);
    env->DeleteLocalRef(theDoubleClass);
    env->DeleteLocalRef(theArrayListClass);
    env->DeleteLocalRef(theVoidValueClass);
@@ -865,6 +983,7 @@ static jobject ConvertSingleFieldValue(
                                      CLIPSJNIData(clipsEnv)->javaObjectValueClass,
                                      CLIPSJNIData(clipsEnv)->javaObjectValueInitMethod,
                                      reinterpret_cast<jobject>(ValueToExternalAddress(value)));
+          break;
       default: 
         break;
      }
@@ -1581,6 +1700,33 @@ static void PrintJavaObject(
    }
   }
 
+static jclass FindClass(const char* className, void* theEnv, JNIEnv* env) {
+	/*=============================================*/
+	/* Construct the class descriptor by replacing */
+	/* any periods (.) in the class name with a    */
+	/* forward slash (/).                          */
+	/*=============================================*/
+	size_t length = strlen(className);
+	char* classDescriptor = (char*) (genalloc(theEnv, length + 1));
+	for (size_t i = 0; i < length; i++) {
+		if (className[i] != '.') {
+			classDescriptor[i] = className[i];
+		} else {
+			classDescriptor[i] = '/';
+		}
+	}
+	classDescriptor[length] = 0;
+	/*=======================*/
+	/* Search for the class. */
+	/*=======================*/
+	jclass theClass = env->FindClass(classDescriptor);
+	/*========================================*/
+	/* Free the constructed class descriptor. */
+	/*========================================*/
+	genfree(theEnv, classDescriptor, length + 1);
+	return theClass;
+}
+
 /*******************************************************/
 /* NewJavaAddress:  */
 /*******************************************************/
@@ -1588,13 +1734,9 @@ static void NewJavaAddress(
   void *theEnv,
   DATA_OBJECT *rv)
   {
-   jclass theClass, tempClass;
    int numberOfArguments;
    JNIEnv *env;
-   const char *className;
-   char *classDescriptor;
    DATA_OBJECT theValue;
-   size_t i, length;
    jmethodID mid;
    jobjectArray constructorList, parameterList;
    jsize theSize, c; 
@@ -1626,37 +1768,9 @@ static void NewJavaAddress(
    if (EnvArgTypeCheck(theEnv,"new (with type Java)",2,SYMBOL,&theValue) == FALSE) 
      { return; }
    
-   className = DOToString(theValue);
-   
-   /*=============================================*/
-   /* Construct the class descriptor by replacing */
-   /* any periods (.) in the class name with a    */
-   /* forward slash (/).                          */
-   /*=============================================*/
-   
-   length = strlen(className);
-   classDescriptor = (char*) genalloc(theEnv,length + 1);
-   for (i = 0; i < length; i++)
-     {
-      if (className[i] != '.')
-        { classDescriptor[i] = className[i]; }
-      else 
-        { classDescriptor[i] = '/'; }
-     }
-   classDescriptor[i] = 0;
-   
-   /*=======================*/
-   /* Search for the class. */
-   /*=======================*/
-   
-   theClass = env->FindClass(classDescriptor); 
-   
-   /*========================================*/
-   /* Free the constructed class descriptor. */
-   /*========================================*/
-   
-   genfree(theEnv,classDescriptor,length + 1);
+   const char* className = DOToString(theValue);
 
+   jclass theClass = FindClass(className, theEnv, env);
    /*============================================*/
    /* Signal an error if the class wasn't found. */
    /*============================================*/
@@ -1679,7 +1793,7 @@ static void NewJavaAddress(
    else
      {
       newArgs = (DATA_OBJECT_PTR) genalloc(theEnv,sizeof(DATA_OBJECT) * (numberOfArguments - 2));
-      for (i = 0; i < numberOfArguments - 2; i++)
+      for (unsigned int i = 0; i < numberOfArguments - 2; i++)
         {
          EnvRtnUnknown(theEnv,i+3,&newArgs[i]);
          if (GetEvaluationError(theEnv))
@@ -1704,9 +1818,7 @@ static void NewJavaAddress(
    /* method from the java.lang.Class class.      */
    /*=============================================*/
 
-   tempClass = env->FindClass("java/lang/Class");
-   mid = env->GetMethodID(tempClass,"getConstructors","()[Ljava/lang/reflect/Constructor;"); 
-   env->DeleteLocalRef(tempClass);
+   mid = env->GetMethodID(CLIPSJNIData(theEnv)->classClass,"getConstructors","()[Ljava/lang/reflect/Constructor;");
    
    /*=======================================================*/
    /* Get the list of constructors for the specified class. */
@@ -1719,9 +1831,8 @@ static void NewJavaAddress(
    /* from the java.lang.reflect.Constructor class.        */
    /*======================================================*/
 
-   tempClass = env->FindClass("java/lang/reflect/Constructor"); 
-   mid = env->GetMethodID(tempClass,"getParameterTypes","()[Ljava/lang/Class;"); 
-   env->DeleteLocalRef(tempClass);
+   CLIPSJNIData(theEnv)->classClass = env->FindClass("java/lang/reflect/Constructor");
+   mid = env->GetMethodID(CLIPSJNIData(theEnv)->classClass,"getParameterTypes","()[Ljava/lang/Class;");
 
    /*===============================================*/
    /* Search the constructor list for a constructor */
@@ -1747,7 +1858,7 @@ static void NewJavaAddress(
          jstring str;
          const char *cStr;
    
-         tempClass = (jclass) env->GetObjectArrayElement(parameterList,p);
+         jclass tempClass = (jclass) env->GetObjectArrayElement(parameterList,p);
          
          str = (jstring) env->CallObjectMethod(tempClass,CLIPSJNIData(theEnv)->classGetCanonicalNameMethod);
 
@@ -1858,6 +1969,162 @@ static void NewJavaAddress(
      }
   }
 
+static jobject ConvertToJava(void* theEnv, DATA_OBJECT_PTR dataObj) {
+  JNIEnv *env = reinterpret_cast<JNIEnv*>(GetEnvironmentContext(theEnv));
+  jobject result;
+  switch (GetpType(dataObj)) {
+   case INTEGER:
+    /* It might be nice to support byte and short, but Java won't
+       dynamically cast them up to Integer. */
+    {
+     long intValue = DOToLong(*dataObj);
+#ifdef USE_SMALL_INTS
+     if (intValue < (1 << 7) && intValue >= -(1 << 7))
+      {
+       result = env->NewObject(CLIPSJNIData(theEnv)->byteClass,
+         CLIPSJNIData(theEnv)->byteInitMethod, (jbyte) intValue);
+      }
+     else if (intValue < (1<<15) && intValue >= -(1<<15))
+      {
+       result = env->NewObject(CLIPSJNIData(theEnv)->shortClass,
+         CLIPSJNIData(theEnv)->shortInitMethod, (jshort) intValue);
+      }
+     else
+#endif
+      if (intValue < (1L<<31) && intValue >= -(1L<<31))
+      {
+       result = env->NewObject(CLIPSJNIData(theEnv)->intClass,
+         CLIPSJNIData(theEnv)->intInitMethod, (jint) intValue);
+      }
+     else {
+       result = env->NewObject(CLIPSJNIData(theEnv)->longClass,
+         CLIPSJNIData(theEnv)->longInitMethod, (jlong) intValue);
+     }
+    }
+    break;
+   case FLOAT:
+    {
+     float floatValue = DOToFloat(*dataObj);
+     double doubleValue = DOToDouble(*dataObj);
+     if (floatValue == doubleValue) {
+       result = env->NewObject(CLIPSJNIData(theEnv)->floatClass,
+         CLIPSJNIData(theEnv)->floatInitMethod, (jfloat) floatValue);
+     }
+     else {
+       result = env->NewObject(CLIPSJNIData(theEnv)->doubleClass,
+         CLIPSJNIData(theEnv)->doubleInitMethod, (jdouble) doubleValue);
+     }
+    }
+    break;
+    /* Convert SYMBOL and STRING to String */
+   case SYMBOL:
+   case STRING:
+    {
+     char* stringValue = DOToString(*dataObj);
+     result = env->NewStringUTF(stringValue);
+    }
+    break;
+   case EXTERNAL_ADDRESS:
+    {
+     struct externalAddressHashNode *theEA =
+       reinterpret_cast<struct externalAddressHashNode *>(dataObj->value);
+     if (theEA->type == CLIPSJNIData(theEnv)->javaExternalAddressID)
+      {
+       result = reinterpret_cast<jobject>(theEA->externalAddress);
+      }
+     else {
+       result = NULL;
+     }
+    }
+    break;
+   case FACT_ADDRESS:
+    {
+     result = env->NewObject(CLIPSJNIData(theEnv)->factAddressValueClass,
+       CLIPSJNIData(theEnv)->factAddressValueInitMethod, PointerToJLong(GetpValue(dataObj)));
+    }
+    break;
+   case INSTANCE_NAME:
+    {
+     result = env->NewObject(CLIPSJNIData(theEnv)->instanceNameValueClass,
+       CLIPSJNIData(theEnv)->instanceNameValueInitMethod, PointerToJLong(GetpValue(dataObj)));
+    }
+    break;
+   case INSTANCE_ADDRESS:
+    {
+     result = env->NewObject(CLIPSJNIData(theEnv)->instanceAddressValueClass,
+       CLIPSJNIData(theEnv)->instanceAddressValueInitMethod, PointerToJLong(GetpValue(dataObj)));
+    }
+    break;
+   default:
+    result = NULL;
+    break;
+  }
+  return result;
+}
+
+void ConvertJavaToDO(JNIEnv* env, jobject result, void* theEnv, DATA_OBJECT* rv)
+ {
+  jclass klass = env->GetObjectClass(result);
+  if (env->IsInstanceOf(result,CLIPSJNIData(theEnv)->booleanClass))
+   {
+    jboolean jbool = env->CallBooleanMethod(result,CLIPSJNIData(theEnv)->booleanValueMethod);
+    EnvSetpType(theEnv,rv,SYMBOL);
+    EnvSetpValue(theEnv,rv,jbool != JNI_FALSE ? EnvTrueSymbol(theEnv) : EnvFalseSymbol(theEnv));
+   }
+  else if (env->IsInstanceOf(result,CLIPSJNIData(theEnv)->intClass))
+   {
+    jint intValue = env->CallIntMethod(result,CLIPSJNIData(theEnv)->intValueMethod);
+    EnvSetpType(theEnv,rv,INTEGER);
+    EnvSetpValue(theEnv,rv,EnvAddLong(theEnv,intValue));
+   }
+  else if (env->IsInstanceOf(result,CLIPSJNIData(theEnv)->longClass))
+   {
+    jlong longValue = env->CallLongMethod(result,CLIPSJNIData(theEnv)->longValueMethod);
+    EnvSetpType(theEnv,rv,INTEGER);
+    EnvSetpValue(theEnv,rv,EnvAddLong(theEnv,longValue));
+   }
+  else if (env->IsInstanceOf(result,CLIPSJNIData(theEnv)->floatClass))
+   {
+    jfloat floatValue = env->CallFloatMethod(result,CLIPSJNIData(theEnv)->floatValueMethod);
+    EnvSetpType(theEnv,rv,FLOAT);
+    EnvSetpValue(theEnv,rv,EnvAddDouble(theEnv,floatValue));
+   }
+  else if (env->IsInstanceOf(result,CLIPSJNIData(theEnv)->doubleClass))
+   {
+    jdouble doubleValue = env->CallDoubleMethod(result,CLIPSJNIData(theEnv)->doubleValueMethod);
+    EnvSetpType(theEnv,rv,FLOAT);
+    EnvSetpValue(theEnv,rv,EnvAddDouble(theEnv,doubleValue));
+   }
+  else if (env->IsSameObject(klass, CLIPSJNIData(theEnv)->stringClass))
+   {
+    jstring javaString = static_cast<jstring>(result);
+    EnvSetpType(theEnv, rv, STRING);
+    jboolean isCopy = JNI_FALSE;
+    const char *resultString = env->GetStringUTFChars(javaString, &isCopy);
+    EnvSetpValue(theEnv, rv, EnvAddSymbol(theEnv, resultString));
+    env->ReleaseStringUTFChars(javaString, resultString);
+   }
+  else
+   {
+    void* externalAddr;
+    result = env->NewGlobalRef(result);
+    externalAddr = EnvAddExternalAddress(theEnv, result,
+      CLIPSJNIData(theEnv)->javaExternalAddressID);
+    EnvSetpType(theEnv, rv, EXTERNAL_ADDRESS);
+    EnvSetpValue(theEnv, rv, externalAddr);
+   }
+ }
+
+static void JavaError(
+  void *theEnv,
+  int errorID,
+  const char* message
+  )
+  {
+   PrintErrorID(theEnv,JAVA_MODULE,errorID,FALSE);
+   EnvPrintRouter(theEnv,WERROR,message);
+  }
+
 /*******************************************************/
 /* CallJavaMethod:  */
 /*******************************************************/
@@ -1867,7 +2134,6 @@ static intBool CallJavaMethod(
   DATA_OBJECT *rv)
   {
    int numberOfArguments;
-   jobject theObject, theMethod;
    jclass objectClass, tempClass;
    jmethodID mid, getNameID, getReturnTypeID;
    JNIEnv *env;
@@ -1878,10 +2144,9 @@ static intBool CallJavaMethod(
    const char *methodName;
    jstring str;
    const char *cStr;
-   int found = FALSE, matches;
-   DATA_OBJECT_PTR newArgs;
-   jvalue *javaArgs;
+   //int found = FALSE, matches;
    int i;
+   jobject result = NULL;
    
    /*=============================================*/
    /* Retrieve the JNI environment pointer stored */
@@ -1907,322 +2172,143 @@ static intBool CallJavaMethod(
    
    methodName = DOToString(theValue);
 
-   /*===========================================================================*/
-   /* Evaluate the CLIPS arguments that will be passed to the java constructor. */
-   /*===========================================================================*/
-   
-   if (numberOfArguments - 2 == 0)
-     { newArgs = NULL; }
-   else
-     {
-      newArgs = (DATA_OBJECT_PTR) genalloc(theEnv,sizeof(DATA_OBJECT) * (numberOfArguments - 2));
-      for (i = 0; i < numberOfArguments - 2; i++)
-        {
-         EnvRtnUnknown(theEnv,i+3,&newArgs[i]);
-         if (GetEvaluationError(theEnv))
-           { return FALSE; }
-        }
-     }
-
-   /*========================================================================*/
-   /* Construct an array in which to store the corresponding java arguments. */
-   /*========================================================================*/
-   
-   if (numberOfArguments - 2 == 0)
-     { javaArgs = NULL; }
-   else
-     { javaArgs = (jvalue *) genalloc(theEnv,sizeof(jvalue) * (numberOfArguments - 2)); }
-
    /*===============================================*/
    /* If the target is an external address, then we */
    /* should be invoking a method of an instance.   */
    /*===============================================*/
 
-   if (GetpType(target) == EXTERNAL_ADDRESS)
+   int methodArgOffset;
+   jobject theObject;
+   jclass theClass = NULL;
+   switch (GetpType(target))
+    {
+    case EXTERNAL_ADDRESS:
+     theObject = reinterpret_cast<jobject>(DOPToExternalAddress(target));
+     methodArgOffset = 3;
+     break;
+    case SYMBOL:
+     printf("looking for '%s'\n", methodName);
+     theObject = theClass = FindClass(methodName, theEnv, env);
+     if (theObject == NULL) {
+      SetEvaluationError(theEnv, TRUE);
+      JavaError(theEnv, JAVA_UNKNOWN_ERROR, "unknown class name\n");
+     }
+     else {
+      DATA_OBJECT tempDO;
+      if (EnvArgTypeCheck(theEnv,"call (with type Java)",3,SYMBOL,&tempDO) == TRUE) {
+       methodName = DOToString(tempDO);
+       methodArgOffset = 4;
+       numberOfArguments--;
+      }
+      else {
+       SetEvaluationError(theEnv, TRUE);
+       JavaError(theEnv, JAVA_UNKNOWN_ERROR, "expecting method or field name\n");
+       theObject = NULL;
+      }
+     }
+     break;
+    default:
+     theObject = NULL;
+     break;
+    }
+   jobject javaMethodName = env->NewStringUTF(methodName);
+
+   if (theObject != NULL)
+   {
+    DATA_OBJECT_PTR newArgs;
+
+    /*===========================================================================*/
+    /* Evaluate the CLIPS arguments that will be passed to the java constructor. */
+    /*===========================================================================*/
+   
+    if (numberOfArguments - 2 == 0)
+     { newArgs = NULL; }
+    else
      {
-      theObject = reinterpret_cast<jobject>(DOPToExternalAddress(target));
-
-      /*=========================================*/
-      /* Determine the class of the java object. */
-      /*=========================================*/
-      
-      objectClass = env->GetObjectClass(theObject);
-
-      /*=============================================*/
-      /* Get the method index of the getConstructors */
-      /* method from the java.lang.Class class.      */
-      /*=============================================*/
-
-      tempClass = env->FindClass("java/lang/Class"); /* TBD Cache this Value */
-      mid = env->GetMethodID(tempClass,"getMethods","()[Ljava/lang/reflect/Method;"); 
-      env->DeleteLocalRef(tempClass);
-
-      /*==================================================*/
-      /* Get the list of methods for the specified class. */
-      /*==================================================*/
-     
-      methodList = (jobjectArray) env->CallObjectMethod(objectClass,mid);
-      env->DeleteLocalRef(objectClass);
-
-      /*======================================================*/
-      /* Get the method index of the getParameterTypes method */
-      /* from the java.lang.reflect.Method class.             */
-      /*======================================================*/
-
-      tempClass = env->FindClass("java/lang/reflect/Method"); /* TBD Cache this Value */
-      mid = env->GetMethodID(tempClass,"getParameterTypes","()[Ljava/lang/Class;"); 
-      getNameID = env->GetMethodID(tempClass,"getName","()Ljava/lang/String;"); 
-      getReturnTypeID = env->GetMethodID(tempClass,"getReturnType","()Ljava/lang/Class;"); 
-      env->DeleteLocalRef(tempClass);
-
-      /*=====================================*/
-      /* Search the method list for a method */
-      /* with matching arguments.            */
-      /*=====================================*/
-
-      theSize = env->GetArrayLength(methodList); 
-      for (c = 0; c < theSize && !found; c++) 
-        { 
-         theMethod = env->GetObjectArrayElement(methodList,c); 
-         str = (jstring) env->CallObjectMethod(theMethod,getNameID);
-         cStr = (const char *) env->GetStringUTFChars(str,NULL);
-         
-         /*===================================*/
-         /* If the method name doesn't match, */
-         /* move on to the next method.       */
-         /*===================================*/
-         
-         if (strcmp(methodName,cStr) != 0)
-           {
-            env->ReleaseStringUTFChars(str,cStr);
-            continue;
-           }
-         env->ReleaseStringUTFChars(str,cStr);
-         
-         /*==========================================*/
-         /* Get the parameter list of the method and */
-         /* determine the number of parameters.      */
-         /*==========================================*/
-         
-         parameterList = (jobjectArray) env->CallObjectMethod(theMethod,mid);
-      
-         paramCount = env->GetArrayLength(parameterList); 
-      
-         if (paramCount != (numberOfArguments - 2))
-           { 
-            continue; 
-           }
-
-         matches = TRUE;
-      
-         /*=============================================================================*/
-         /* Make a new JNI reference frame so we can easily free any local refs we make */
-         /*=============================================================================*/
-         env->PushLocalFrame(16); // 16 is default
-
-         for (p = 0; (p < paramCount) && matches; p++)
-           {
-            tempClass = (jclass) env->GetObjectArrayElement(parameterList,p);
-         
-            str = (jstring) env->CallObjectMethod(tempClass,CLIPSJNIData(theEnv)->classGetCanonicalNameMethod);
-
-            cStr = (const char *) env->GetStringUTFChars(str,NULL);
-             
-            printf("p[%d] = %s\t%d\n",(int) p,cStr, GetType(newArgs[p]));
-            
-            switch (GetType(newArgs[p])) {
-            case INTEGER:
-               if (strcmp(cStr,"byte") == 0) 
-                 { 
-                  javaArgs[p].b = DOToInteger(newArgs[p]);
-                  break;
-                 }
-               else if (strcmp(cStr,"int") == 0) 
-                 { 
-                  javaArgs[p].i = DOToInteger(newArgs[p]);
-                  break;
-                 }
-               else if (strcmp(cStr,"long") == 0)
-                 { 
-                  javaArgs[p].j = DOToLong(newArgs[p]);
-                  break;
-                 }
-               else if (strcmp(cStr,"short") == 0)  
-                 { 
-                  javaArgs[p].s = DOToInteger(newArgs[p]);
-                  break;
-                 }
-               // fall through to allow a CLIPS INTEGER to be passed to a float/double Java func
-            case FLOAT:
-               if (strcmp(cStr,"double") == 0)  
-                 { 
-                  javaArgs[p].d = DOToDouble(newArgs[p]);
-                 }
-               else if (strcmp(cStr,"float") == 0)  
-                 { 
-                  javaArgs[p].f = DOToFloat(newArgs[p]);
-                 }
-               else
-                {
-                 matches = FALSE;
-                }
-               break;
-            case EXTERNAL_ADDRESS:
-             {
-              struct externalAddressHashNode *theEA = reinterpret_cast<struct externalAddressHashNode *>(newArgs[p].value);
-              if (theEA->type == CLIPSJNIData(theEnv)->javaExternalAddressID) {
-               jobject object = reinterpret_cast<jobject>(theEA->externalAddress);
-               jboolean assignable = env->IsInstanceOf(object, tempClass);
-               if (assignable)
-                {
-                 javaArgs[p].l = object;
-                }
-               else
-                {
-                 matches = FALSE;
-                }
-              }
-              else
-               {
-                SetEvaluationError(theEnv,TRUE);
-                ExpectedTypeError1(theEnv,methodName,p,"Java object (was other kind of external address)");
-                matches = FALSE;
-               }
-             }
-             break;
-            case INSTANCE_NAME:
-            case INSTANCE_ADDRESS:
-             SetEvaluationError(theEnv,TRUE);
-             ExpectedTypeError1(theEnv,methodName,p,"valid Java parameter (instances not supported)");
-             matches = FALSE;
-             break;
-            case STRING:
-             {
-              jobject stringObject = env->NewStringUTF(DOToString(newArgs[p]));
-              jboolean assignable = env->IsInstanceOf(stringObject, tempClass);
-              if (assignable)
-               {
-                javaArgs[p].l = stringObject;
-               }
-              else {
-               matches = FALSE;
-              }
-              // TODO: clean this up (via DeleteLocalRef) after calling the java func
-             }
-             break;
-            case SYMBOL:
-            default:
-             { matches = FALSE; }
-            }
-            
-            env->ReleaseStringUTFChars(str,cStr);
-            
-            env->DeleteLocalRef(tempClass);
-      
-           }
-         
-         if (matches)
-           {
-            jobject returnType = env->CallObjectMethod(theMethod,getReturnTypeID); 
-            jstring returnTypeNameStr = (jstring) env->CallObjectMethod(returnType,CLIPSJNIData(theEnv)->classGetCanonicalNameMethod);
-            const char* returnTypeName = (const char*) env->GetStringUTFChars(returnTypeNameStr,NULL);
-            if (strcmp(returnTypeName, "boolean") == 0) {
-             jboolean result = env->CallBooleanMethodA(theObject, env->FromReflectedMethod(theMethod), javaArgs);
-             EnvSetpType(theEnv,rv,SYMBOL);
-             EnvSetpValue(theEnv,rv,result ? EnvTrueSymbol(theEnv) : EnvFalseSymbol(theEnv));
-            }
-            else if (strcmp(returnTypeName, "byte") == 0) {
-             jint result = env->CallByteMethodA(theObject, env->FromReflectedMethod(theMethod), javaArgs);
-             EnvSetpType(theEnv,rv,INTEGER);
-             EnvSetpValue(theEnv,rv,EnvAddLong(theEnv,result));
-            }
-            else if (strcmp(returnTypeName, "char") == 0) {
-             jchar result = env->CallCharMethodA(theObject, env->FromReflectedMethod(theMethod), javaArgs);
-             char asString[] = { result, '\0' };
-             EnvSetpType(theEnv,rv,STRING);
-             EnvSetpValue(theEnv,rv,EnvAddSymbol(theEnv,asString));
-            }
-            else if (strcmp(returnTypeName, "double") == 0) {
-             jdouble result = env->CallDoubleMethodA(theObject, env->FromReflectedMethod(theMethod), javaArgs);
-             EnvSetpType(theEnv,rv,FLOAT);
-             EnvSetpValue(theEnv,rv,EnvAddDouble(theEnv,result));
-            }
-            else if (strcmp(returnTypeName, "float") == 0) {
-             jfloat result = env->CallFloatMethodA(theObject,
-                                                   env->FromReflectedMethod(theMethod),
-                                                   javaArgs);
-             EnvSetpType(theEnv,rv,FLOAT);
-             EnvSetpValue(theEnv,rv,EnvAddDouble(theEnv,result));
-            }
-            else if (strcmp(returnTypeName, "int") == 0) {
-             jint result = env->CallIntMethodA(theObject,
-                                               env->FromReflectedMethod(theMethod),
-                                               javaArgs);
-             EnvSetpType(theEnv,rv,INTEGER);
-             EnvSetpValue(theEnv,rv,EnvAddLong(theEnv,result));
-            }
-            else if (strcmp(returnTypeName, "long") == 0) {
-             jlong result = env->CallLongMethodA(theObject,
-                                                 env->FromReflectedMethod(theMethod),
-                                                 javaArgs);
-             EnvSetpType(theEnv,rv,INTEGER);
-             EnvSetpValue(theEnv,rv,EnvAddLong(theEnv,result));
-            }
-            else if (strcmp(returnTypeName, "short") == 0) {
-             jshort result = env->CallShortMethodA(theObject,
-                                                   env->FromReflectedMethod(theMethod),
-                                                   javaArgs);
-             EnvSetpType(theEnv,rv,INTEGER);
-             EnvSetpValue(theEnv,rv,EnvAddLong(theEnv,result));
-            }
-            else if (strcmp(returnTypeName, "void") == 0) {
-             env->CallVoidMethodA(theObject, env->FromReflectedMethod(theMethod), javaArgs);
-             // there doesn't seem to be a void type, so just return TRUE
-             EnvSetpType(theEnv,rv,SYMBOL);
-             EnvSetpValue(theEnv,rv,EnvTrueSymbol(theEnv));
-            }
-            else {
-             // returns a Java object
-             jobject result = env->CallObjectMethodA(theObject,
-                                                     env->FromReflectedMethod(theMethod),
-                                                     javaArgs);
-             if (result != NULL) {
-              jclass klass = env->GetObjectClass(result);
-              if (env->IsSameObject(klass,CLIPSJNIData(theEnv)->stringClass)) {
-               jstring javaString = static_cast<jstring>(result);
-               EnvSetpType(theEnv,rv,STRING);
-               jboolean isCopy = JNI_FALSE;
-               const char *resultString = env->GetStringUTFChars(javaString, &isCopy);
-               EnvSetpValue(theEnv,rv,EnvAddSymbol(theEnv,resultString));
-               env->ReleaseStringUTFChars(javaString, resultString);
-              }
-              else {
-               void* externalAddr;
-               result = env->NewGlobalRef(result);
-               externalAddr = EnvAddExternalAddress
-                (theEnv,result, CLIPSJNIData(theEnv)->javaExternalAddressID);
-               EnvSetpType(theEnv,rv,EXTERNAL_ADDRESS);
-               EnvSetpValue(theEnv,rv,externalAddr);
-              }
-             }
-             else {
-              EnvSetpType(theEnv,rv,EXTERNAL_ADDRESS);
-              EnvSetpValue(theEnv,rv,NULL);
-             }
-            }
-            found = TRUE;
-           }
-         env->PopLocalFrame(NULL);
-        }
+      newArgs = (DATA_OBJECT_PTR) genalloc(theEnv,sizeof(DATA_OBJECT) * (numberOfArguments - 2));
+      for (i = 0; i < numberOfArguments - 2; i++)
+       {
+        EnvRtnUnknown(theEnv,i+methodArgOffset,&newArgs[i]);
+        if (GetEvaluationError(theEnv))
+         { return FALSE; }
+       }
      }
 
-   if (newArgs != NULL)
-    { genfree(theEnv,newArgs,sizeof(DATA_OBJECT) * (numberOfArguments - 2)); }
+    unsigned int methodArgumentCount = numberOfArguments - 2;
+    if (methodArgumentCount == 0) {
+     // check for field access instead of method call
+     jclass targetClass = env->GetObjectClass(theObject);
+     jmethodID getFieldID = env->GetMethodID(targetClass,"getField","(Ljava/lang/String;)Ljava/lang/reflect/Field;");
+     jobject fieldOwner = (theClass == NULL) ? targetClass : theObject;
+     jobject field = env->CallObjectMethod(fieldOwner,getFieldID,javaMethodName);
+     if (field != NULL) {
+      // field exists
+      jclass fieldClass = env->GetObjectClass(field);
+      jmethodID fieldGetID = env->GetMethodID(fieldClass,"get","(Ljava/lang/Object;)Ljava/lang/Object;");
+      result = env->CallObjectMethod(field,fieldGetID,theObject);
+      env->DeleteLocalRef(fieldClass);
+     }
+     env->DeleteLocalRef(targetClass);
+    }
 
-   if (javaArgs != NULL)
-    { genfree(theEnv,javaArgs,sizeof(jvalue) * (numberOfArguments - 2)); }
+    if (result == NULL) {
 
-   return found;
+     jobjectArray methodArgs = env->NewObjectArray(methodArgumentCount,
+                                                   CLIPSJNIData(theEnv)->objectClass, NULL);
+     /*====================================*/
+     /* Convert the params to java objects */
+     /*====================================*/
+
+     for (unsigned int i = 0; i < methodArgumentCount; ++i)
+      {
+       env->SetObjectArrayElement(methodArgs, i,
+                                  ConvertToJava(theEnv, &newArgs[i]));
+      }
+    
+     /*========================================================*/
+     /* We'll try to call the method via java.beans.Expression */
+     /*========================================================*/
+     jvalue expressionArgs[3];
+     expressionArgs[0].l = theObject;
+     expressionArgs[1].l = javaMethodName;
+     expressionArgs[2].l = methodArgs;
+
+     jobject expression = env->NewObjectA(CLIPSJNIData(theEnv)->expressionClass,
+                                          CLIPSJNIData(theEnv)->expressionInitMethod, expressionArgs);
+     if (env->ExceptionCheck() == JNI_TRUE)
+      {
+       SetEvaluationError(theEnv, TRUE);
+       JavaError(theEnv, JAVA_UNKNOWN_ERROR,
+                 "could not translate parameters to Java\n");
+      }
+     else {
+      env->CallVoidMethod(expression, CLIPSJNIData(theEnv)->expressionExecuteMethod);
+      if (env->ExceptionCheck() == JNI_TRUE)
+       {
+        SetEvaluationError(theEnv, TRUE);
+        JavaError(theEnv, JAVA_UNKNOWN_ERROR, "could not invoke Java method\n");
+       }
+      else {
+       result = env->CallObjectMethod(expression,
+                                      CLIPSJNIData(theEnv)->expressionGetValueMethod);
+
+      }
+     }
+
+     env->DeleteLocalRef(methodArgs);
+    }
+    if (newArgs != NULL)
+     { genfree(theEnv,newArgs,sizeof(DATA_OBJECT) * (numberOfArguments - 2)); }
+
+   }
+   if (GetEvaluationError(theEnv) == 0) {
+    if (result != NULL)
+     {
+      ConvertJavaToDO(env, result, theEnv, rv);
+     }
+   }
+
+    return GetEvaluationError(theEnv) == 0;
   }
     
 /*******************************************************/
