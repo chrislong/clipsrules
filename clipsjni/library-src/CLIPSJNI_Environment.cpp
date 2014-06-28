@@ -1831,8 +1831,9 @@ static void NewJavaAddress(
    /* from the java.lang.reflect.Constructor class.        */
    /*======================================================*/
 
-   CLIPSJNIData(theEnv)->classClass = env->FindClass("java/lang/reflect/Constructor");
-   mid = env->GetMethodID(CLIPSJNIData(theEnv)->classClass,"getParameterTypes","()[Ljava/lang/Class;");
+   jclass ctorClass = env->FindClass("java/lang/reflect/Constructor");
+   mid = env->GetMethodID(ctorClass,"getParameterTypes","()[Ljava/lang/Class;");
+   env->DeleteLocalRef(ctorClass);
 
    /*===============================================*/
    /* Search the constructor list for a constructor */
@@ -2238,7 +2239,8 @@ static intBool CallJavaMethod(
     if (methodArgumentCount == 0) {
      // check for field access instead of method call
      jclass targetClass = env->GetObjectClass(theObject);
-     jmethodID getFieldID = env->GetMethodID(targetClass,"getField","(Ljava/lang/String;)Ljava/lang/reflect/Field;");
+     jclass classClass = CLIPSJNIData(theEnv)->classClass;
+     jmethodID getFieldID = env->GetMethodID(classClass,"getField","(Ljava/lang/String;)Ljava/lang/reflect/Field;");
      jobject fieldOwner = (theClass == NULL) ? targetClass : theObject;
      jobject field = env->CallObjectMethod(fieldOwner,getFieldID,javaMethodName);
      if (field != NULL) {
@@ -2247,6 +2249,9 @@ static intBool CallJavaMethod(
       jmethodID fieldGetID = env->GetMethodID(fieldClass,"get","(Ljava/lang/Object;)Ljava/lang/Object;");
       result = env->CallObjectMethod(field,fieldGetID,theObject);
       env->DeleteLocalRef(fieldClass);
+     }
+     else {
+      env->ExceptionClear();
      }
      env->DeleteLocalRef(targetClass);
     }
