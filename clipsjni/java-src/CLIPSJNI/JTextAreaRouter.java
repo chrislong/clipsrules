@@ -1,12 +1,10 @@
 package CLIPSJNI;
 
-import javax.swing.*; 
-import javax.swing.border.*; 
-import javax.swing.table.*;
-import java.awt.*; 
-import java.awt.event.*; 
-import java.io.Reader;
-import java.io.InputStreamReader;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
+import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 
 public class JTextAreaRouter extends Router implements KeyListener
   {  
@@ -17,7 +15,6 @@ public class JTextAreaRouter extends Router implements KeyListener
    private int charInput;
    private long bufferInputCount;
    
-   private Reader theReader;
    private boolean ungotten;
    private int lastChar;
    private int numChar;
@@ -50,7 +47,6 @@ public class JTextAreaRouter extends Router implements KeyListener
       ungotten = false;
       numChar = 0;
       curChar = 0;
-      theReader = new InputStreamReader(System.in,"UTF-8");
       
       maxLines = 1000;
       
@@ -266,7 +262,6 @@ public class JTextAreaRouter extends Router implements KeyListener
      String routerName)
      {
       int rv = -1;
-      int readInputChar = -1;
       
       if (ungotten)
         {

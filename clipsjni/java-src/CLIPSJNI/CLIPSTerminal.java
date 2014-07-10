@@ -1,12 +1,21 @@
 package CLIPSJNI;
 
-import javax.swing.*; 
-import javax.swing.border.*; 
-import javax.swing.table.*;
-import java.awt.*; 
-import java.awt.event.*; 
- 
-import CLIPSJNI.*;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+
+import javax.swing.BoxLayout;
+import javax.swing.InputMap;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JScrollPane;
+import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 
 class CLIPSTerminal implements ActionListener
   {  
@@ -14,8 +23,6 @@ class CLIPSTerminal implements ActionListener
          
    private Environment clips;
    
-   private Thread executionThread;
-
    private JTextAreaCommandPromptRouter jta;
       
    /***************/

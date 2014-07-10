@@ -1,13 +1,12 @@
 package CLIPSJNI;
 
 import java.awt.Toolkit;
-import javax.swing.*; 
-import javax.swing.event.CaretEvent; 
-import javax.swing.event.CaretListener; 
-import java.awt.event.*; 
-
-import java.util.List;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+
+import javax.swing.SwingUtilities;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 
 public class JTextAreaCommandPromptRouter extends JTextAreaRouter implements CaretListener
   { 
