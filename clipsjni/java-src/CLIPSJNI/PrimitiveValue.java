@@ -98,7 +98,7 @@ public abstract class PrimitiveValue
    /********************/
    /* multifieldValue: */
    /********************/
-   public List multifieldValue() throws Exception
+   public List<?> multifieldValue() throws Exception
      {
       throw new Exception("PrimitiveValue " + this + " is not multifield type.");
      }

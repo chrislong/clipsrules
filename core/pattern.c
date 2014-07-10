@@ -31,7 +31,6 @@
 #include "setup.h"
 
 #include <stdio.h>
-#define _STDIO_INCLUDED_
 #include <stdlib.h>
 
 #if DEFRULE_CONSTRUCT

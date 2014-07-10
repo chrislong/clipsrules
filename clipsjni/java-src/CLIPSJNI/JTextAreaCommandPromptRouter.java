@@ -581,6 +581,7 @@ public class JTextAreaCommandPromptRouter extends JTextAreaRouter implements Car
    /**********************/
    /* showCommandHistory */
    /**********************/  
+   @SuppressWarnings("unused")
    private void showCommandHistory()
      {
       System.out.println("------------");
