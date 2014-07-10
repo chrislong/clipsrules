@@ -522,6 +522,13 @@ public class Environment
       destroyEnvironment(theEnvironment);
      }
      
+   public void setGlobal(String name, Object value)
+   {
+	   setGlobal(theEnvironment, name, value);
+   }
+   
+   private native void setGlobal(long environment, String name, Object value);
+	
    /*********/
    /* main: */
    /*********/

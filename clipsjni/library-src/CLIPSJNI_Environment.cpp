@@ -183,7 +183,9 @@ static int QueryJNIRouter(
 #pragma argsused
 #endif
 static int ExitJNIRouter(
+  __attribute__((unused))
   void *theEnv,
+  __attribute__((unused))
   int num)
   {
 #if MAC_MCW || IBM_MCW || MAC_XCD
@@ -316,6 +318,7 @@ static int UngetcJNIRouter(
 /*******************************************************/
 JNIEXPORT jstring JNICALL Java_CLIPSJNI_Environment_getCLIPSVersion(
   JNIEnv *env, 
+  __attribute__((unused))
   jclass cls) 
   {
    return env->NewStringUTF(VERSION_STRING);
@@ -330,6 +333,7 @@ JNIEXPORT jstring JNICALL Java_CLIPSJNI_Environment_getCLIPSVersion(
 /************************************************/
 JNIEXPORT jlong JNICALL Java_CLIPSJNI_Environment_createEnvironment(
   JNIEnv *env, 
+  __attribute__((unused))
   jobject obj)
   {
    void *theEnv;
@@ -625,6 +629,7 @@ JNIEXPORT jlong JNICALL Java_CLIPSJNI_Environment_createEnvironment(
 /*********************************************/
 JNIEXPORT void JNICALL Java_CLIPSJNI_Environment_clear(
   JNIEnv *env, 
+  __attribute__((unused))
   jobject obj,
   jlong clipsEnv)
   {
@@ -645,6 +650,7 @@ JNIEXPORT void JNICALL Java_CLIPSJNI_Environment_clear(
 /*********************************************/
 JNIEXPORT void JNICALL Java_CLIPSJNI_Environment_reset(
   JNIEnv *env, 
+  __attribute__((unused))
   jobject obj,
   jlong clipsEnv)
   {
@@ -665,6 +671,7 @@ JNIEXPORT void JNICALL Java_CLIPSJNI_Environment_reset(
 /********************************************/
 JNIEXPORT void JNICALL Java_CLIPSJNI_Environment_load(
   JNIEnv *env, 
+  __attribute__((unused))
   jobject obj,
   jlong clipsEnv,
   jstring fileName)
@@ -690,6 +697,7 @@ JNIEXPORT void JNICALL Java_CLIPSJNI_Environment_load(
 /*************************************************/
 JNIEXPORT jboolean JNICALL Java_CLIPSJNI_Environment_loadFacts(
   JNIEnv *env, 
+  __attribute__((unused))
   jobject obj,
   jlong clipsEnv,
   jstring fileName)
@@ -718,6 +726,7 @@ JNIEXPORT jboolean JNICALL Java_CLIPSJNI_Environment_loadFacts(
 /*********************************************/
 JNIEXPORT jboolean JNICALL Java_CLIPSJNI_Environment_watch(
   JNIEnv *env, 
+  __attribute__((unused))
   jobject obj,
   jlong clipsEnv,
   jstring watchItem)
@@ -746,6 +755,7 @@ JNIEXPORT jboolean JNICALL Java_CLIPSJNI_Environment_watch(
 /***********************************************/
 JNIEXPORT jboolean JNICALL Java_CLIPSJNI_Environment_unwatch(
   JNIEnv *env, 
+  __attribute__((unused))
   jobject obj,
   jlong clipsEnv,
   jstring watchItem)
@@ -774,6 +784,7 @@ JNIEXPORT jboolean JNICALL Java_CLIPSJNI_Environment_unwatch(
 /**************************************************/
 JNIEXPORT jlong JNICALL Java_CLIPSJNI_Environment_run(
   JNIEnv *env, 
+  __attribute__((unused))
   jobject obj, 
   jlong clipsEnv,
   jlong runLimit)
@@ -1001,6 +1012,7 @@ static jobject ConvertSingleFieldValue(
 /****************************************************/
 JNIEXPORT jboolean JNICALL Java_CLIPSJNI_Environment_build(
   JNIEnv *env, 
+  __attribute__((unused))
   jobject obj, 
   jlong clipsEnv,
   jstring buildStr)
@@ -1065,7 +1077,9 @@ JNIEXPORT jobject JNICALL Java_CLIPSJNI_Environment_assertString(
 /*************************************************/
 JNIEXPORT jlong JNICALL Java_CLIPSJNI_Environment_factIndex(
   JNIEnv *env, 
+  __attribute__((unused))
   jclass javaClass, 
+  __attribute__((unused))
   jobject javaEnv,
   jlong clipsEnv, 
   jlong clipsFact)
@@ -1092,6 +1106,7 @@ JNIEXPORT jlong JNICALL Java_CLIPSJNI_Environment_factIndex(
 /**************************************************************/
 JNIEXPORT jobject JNICALL Java_CLIPSJNI_Environment_getFactSlot(
   JNIEnv *env,
+  __attribute__((unused))
   jclass javaClass, 
   jobject javaEnv,
   jlong clipsEnv,
@@ -1127,7 +1142,9 @@ JNIEXPORT jobject JNICALL Java_CLIPSJNI_Environment_getFactSlot(
 /**********************************************************/
 JNIEXPORT void JNICALL Java_CLIPSJNI_Environment_incrementFactCount(
   JNIEnv *env, 
+  __attribute__((unused))
   jclass javaClass, 
+  __attribute__((unused))
   jobject javaEnv,
   jlong clipsEnv, 
   jlong clipsFact)
@@ -1150,7 +1167,9 @@ JNIEXPORT void JNICALL Java_CLIPSJNI_Environment_incrementFactCount(
 /**********************************************************/
 JNIEXPORT void JNICALL Java_CLIPSJNI_Environment_decrementFactCount(
   JNIEnv *env, 
+  __attribute__((unused))
   jclass javaClass, 
+  __attribute__((unused))
   jobject javaEnv,
   jlong clipsEnv, 
   jlong clipsFact)
@@ -1210,7 +1229,9 @@ JNIEXPORT jobject JNICALL Java_CLIPSJNI_Environment_makeInstance(
 /***********************************************************/
 JNIEXPORT jstring JNICALL Java_CLIPSJNI_Environment_getInstanceName(
   JNIEnv *env, 
+  __attribute__((unused))
   jclass javaClass, 
+  __attribute__((unused))
   jobject javaEnv,
   jlong clipsEnv, 
   jlong clipsInstance)
@@ -1236,7 +1257,9 @@ JNIEXPORT jstring JNICALL Java_CLIPSJNI_Environment_getInstanceName(
 /**************************************************************/
 JNIEXPORT void JNICALL Java_CLIPSJNI_Environment_incrementInstanceCount(
   JNIEnv *env, 
+  __attribute__((unused))
   jclass javaClass, 
+  __attribute__((unused))
   jobject javaEnv,
   jlong clipsEnv, 
   jlong clipsInstance)
@@ -1259,7 +1282,9 @@ JNIEXPORT void JNICALL Java_CLIPSJNI_Environment_incrementInstanceCount(
 /**************************************************************/
 JNIEXPORT void JNICALL Java_CLIPSJNI_Environment_decrementInstanceCount(
   JNIEnv *env, 
+  __attribute__((unused))
   jclass javaClass, 
+  __attribute__((unused))
   jobject javaEnv,
   jlong clipsEnv, 
   jlong clipsInstance)
@@ -1282,7 +1307,9 @@ JNIEXPORT void JNICALL Java_CLIPSJNI_Environment_decrementInstanceCount(
 /**************************************************************/
 JNIEXPORT jobject JNICALL Java_CLIPSJNI_Environment_directGetSlot(
   JNIEnv *env,
+  __attribute__((unused))
   jclass javaClass, 
+  __attribute__((unused))
   jobject javaEnv,
   jlong clipsEnv,
   jlong clipsInstance,
@@ -1316,6 +1343,7 @@ JNIEXPORT jobject JNICALL Java_CLIPSJNI_Environment_directGetSlot(
 /**********************************************************/
 JNIEXPORT void JNICALL Java_CLIPSJNI_Environment_destroyEnvironment(
   JNIEnv *env,
+  __attribute__((unused))
   jobject obj,
   jlong clipsEnv)
   {
@@ -1334,6 +1362,7 @@ JNIEXPORT void JNICALL Java_CLIPSJNI_Environment_destroyEnvironment(
 /***************************************************/
 JNIEXPORT void JNICALL Java_CLIPSJNI_Environment_commandLoop(
   JNIEnv *env,
+  __attribute__((unused))
   jobject obj,
   jlong clipsEnv)
   {
@@ -1352,6 +1381,7 @@ JNIEXPORT void JNICALL Java_CLIPSJNI_Environment_commandLoop(
 /****************************************************************/
 JNIEXPORT void JNICALL Java_CLIPSJNI_Environment_commandLoopOnceThenBatch(
   JNIEnv *env,
+  __attribute__((unused))
   jobject obj,
   jlong clipsEnv)
   {
@@ -1370,6 +1400,7 @@ JNIEXPORT void JNICALL Java_CLIPSJNI_Environment_commandLoopOnceThenBatch(
 /***************************************************/
 JNIEXPORT void JNICALL Java_CLIPSJNI_Environment_printBanner(
   JNIEnv *env,
+  __attribute__((unused))
   jobject obj,
   jlong clipsEnv)
   {
@@ -1390,6 +1421,7 @@ JNIEXPORT void JNICALL Java_CLIPSJNI_Environment_printBanner(
 /***************************************************/
 JNIEXPORT void JNICALL Java_CLIPSJNI_Environment_printPrompt(
   JNIEnv *env,
+  __attribute__((unused))
   jobject obj,
   jlong clipsEnv)
   {
@@ -1410,6 +1442,7 @@ JNIEXPORT void JNICALL Java_CLIPSJNI_Environment_printPrompt(
 /******************************************************/
 JNIEXPORT jstring JNICALL Java_CLIPSJNI_Environment_getInputBuffer(
   JNIEnv *env, 
+  __attribute__((unused))
   jobject obj, 
   jlong clipsEnv)
   {
@@ -1445,6 +1478,7 @@ JNIEXPORT jstring JNICALL Java_CLIPSJNI_Environment_getInputBuffer(
 /******************************************************/
 JNIEXPORT void JNICALL Java_CLIPSJNI_Environment_setInputBuffer(
   JNIEnv *env, 
+  __attribute__((unused))
   jobject obj,
   jlong clipsEnv,
   jstring command)
@@ -1470,6 +1504,7 @@ JNIEXPORT void JNICALL Java_CLIPSJNI_Environment_setInputBuffer(
 /***********************************************************/
 JNIEXPORT jlong JNICALL Java_CLIPSJNI_Environment_getInputBufferCount(
   JNIEnv *env,
+  __attribute__((unused))
   jobject obj,
   jlong clipsEnv)
   {
@@ -1493,6 +1528,7 @@ JNIEXPORT jlong JNICALL Java_CLIPSJNI_Environment_getInputBufferCount(
 /***********************************************************/
 JNIEXPORT jlong JNICALL Java_CLIPSJNI_Environment_setInputBufferCount(
   JNIEnv *env,
+  __attribute__((unused))
   jobject obj,
   jlong clipsEnv,
   jlong theValue)
@@ -1520,6 +1556,7 @@ JNIEXPORT jlong JNICALL Java_CLIPSJNI_Environment_setInputBufferCount(
 /*********************************************************/
 JNIEXPORT void JNICALL Java_CLIPSJNI_Environment_appendInputBuffer(
   JNIEnv *env,
+  __attribute__((unused))
   jobject obj,
   jlong clipsEnv,
   jstring commandString)
@@ -1545,6 +1582,7 @@ JNIEXPORT void JNICALL Java_CLIPSJNI_Environment_appendInputBuffer(
 /*********************************************************/
 JNIEXPORT void JNICALL Java_CLIPSJNI_Environment_expandInputBuffer(
   JNIEnv *env,
+  __attribute__((unused))
   jobject obj,
   jlong clipsEnv,
   jchar theChar)
@@ -1566,6 +1604,7 @@ JNIEXPORT void JNICALL Java_CLIPSJNI_Environment_expandInputBuffer(
 /******************************************************************/
 JNIEXPORT jboolean JNICALL Java_CLIPSJNI_Environment_inputBufferContainsCommand(
   JNIEnv *env,
+  __attribute__((unused))
   jobject obj, 
   jlong clipsEnv)
   {
@@ -1589,6 +1628,7 @@ JNIEXPORT jboolean JNICALL Java_CLIPSJNI_Environment_inputBufferContainsCommand(
 /*******************************************************/
 JNIEXPORT jboolean JNICALL Java_CLIPSJNI_Environment_addRouter(
   JNIEnv *env, 
+  __attribute__((unused))
   jobject obj, 
   jlong clipsEnv, 
   jstring routerName, 
@@ -1793,7 +1833,7 @@ static void NewJavaAddress(
    else
      {
       newArgs = (DATA_OBJECT_PTR) genalloc(theEnv,sizeof(DATA_OBJECT) * (numberOfArguments - 2));
-      for (unsigned int i = 0; i < numberOfArguments - 2; i++)
+      for (unsigned int i = 0; i < (unsigned) numberOfArguments - 2; i++)
         {
          EnvRtnUnknown(theEnv,i+3,&newArgs[i]);
          if (GetEvaluationError(theEnv))
@@ -2107,7 +2147,11 @@ void ConvertJavaToDO(JNIEnv* env, jobject result, void* theEnv, DATA_OBJECT* rv)
    }
   else
    {
-    void* externalAddr;
+   void* externalAddr;
+   /* EnvAddExternalAddress doesn't tell us if the value was already in the internal
+    * CLIPS hash table, so we don't know for sure if we need a new global reference.
+    * But we'll make one because it's better to have it and waste some memory later
+    * than for it to get deallocated too soon. */
     result = env->NewGlobalRef(result);
     externalAddr = EnvAddExternalAddress(theEnv, result,
       CLIPSJNIData(theEnv)->javaExternalAddressID);
@@ -2135,16 +2179,9 @@ static intBool CallJavaMethod(
   DATA_OBJECT *rv)
   {
    int numberOfArguments;
-   jclass objectClass, tempClass;
-   jmethodID mid, getNameID, getReturnTypeID;
    JNIEnv *env;
-   jobjectArray methodList, parameterList;
-   jsize theSize, c; 
-   jsize paramCount, p; 
    DATA_OBJECT theValue;
    const char *methodName;
-   jstring str;
-   const char *cStr;
    //int found = FALSE, matches;
    int i;
    jobject result = NULL;
@@ -2335,6 +2372,24 @@ static intBool DiscardJavaAddress(
    
    return TRUE;
   }
+
+/*
+ * Class:     CLIPSJNI_Environment
+ * Method:    setGlobal
+ * Signature: (JLjava/lang/String;Ljava/lang/Object;)V
+ */
+JNIEXPORT void JNICALL Java_CLIPSJNI_Environment_setGlobal
+  (JNIEnv *env,
+   __attribute__((unused))
+   jobject obj,
+   jlong clipsEnv, jstring name, jobject value)
+ {
+  void* theEnv = JLongToPointer(clipsEnv);
+  const char* cName = env->GetStringUTFChars(name, NULL);
+  DATA_OBJECT data;
+  ConvertJavaToDO(env, value, theEnv, &data);
+  EnvSetDefglobalValue(theEnv, cName, &data);
+ }
 
 
 // Local Variables:
