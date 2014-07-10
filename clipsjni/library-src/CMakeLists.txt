@@ -22,4 +22,7 @@ if (APPLE)
   set_target_properties (CLIPSJNI_native PROPERTIES SUFFIX ".jnilib")
 endif ()
 
-target_link_libraries(CLIPSJNI_native libclips)
+target_link_libraries(CLIPSJNI_native libclips --no-allow-shlib-undefined --no-undefined)
+
+# --no-undefined
+# --no-allow-shlib-undefined
