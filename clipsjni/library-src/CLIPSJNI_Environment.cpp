@@ -2256,7 +2256,7 @@ static intBool CallJavaMethod(
     DATA_OBJECT_PTR newArgs;
 
     /*===========================================================================*/
-    /* Evaluate the CLIPS arguments that will be passed to the java constructor. */
+    /* Evaluate the CLIPS arguments that will be passed to the java method. */
     /*===========================================================================*/
    
     if (numberOfArguments - 2 == 0)
