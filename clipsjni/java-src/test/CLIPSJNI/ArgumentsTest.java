@@ -44,47 +44,47 @@ public class ArgumentsTest {
     }
     
     @Test
-	public void testFloat() throws Exception {
+    public void testFloat() throws Exception {
         boolean buildOk = environment.build("(defglobal ?*list* = (new java java.util.ArrayList))");
         Assert.assertTrue("defglobal failed", buildOk);
         PrimitiveValue initLength = environment.eval("(call ?*list* size)");
         Assert.assertEquals("bad initial length", 0, initLength.intValue());
         
         float value = 3.14f;
-		environment.eval("(call ?*list* add " + value + ")");
+        environment.eval("(call ?*list* add " + value + ")");
         PrimitiveValue newLength = environment.eval("(call ?*list* size)");
         Assert.assertEquals("bad new length", 1, newLength.intValue());
         
         PrimitiveValue element = environment.eval("(call ?*list* get 0)");
         Assert.assertEquals("unexpected value from list", value, element.floatValue(), 0.001f);
-	}
+    }
     
     @Test(expected=NoSuchMethodException.class)
-	public void testUnknownMethod() throws Exception {
+    public void testUnknownMethod() throws Exception {
         boolean buildOk = environment.build("(defglobal ?*x* = (new java java.lang.String))");
         Assert.assertTrue("defglobal failed", buildOk);
         System.out.println("Should see CLIPS error message, but it's ok.");
         environment.eval("(call ?*x* foobarishness)");
-	}
+    }
     
     @Test(expected=ArrayIndexOutOfBoundsException.class)
-	public void testJavaMethodException() throws Exception {
+    public void testJavaMethodException() throws Exception {
         boolean buildOk = environment.build("(defglobal ?*list* = (new java java.util.ArrayList))");
         Assert.assertTrue("defglobal failed", buildOk);
         System.out.println("Should see CLIPS error message, but it's ok.");
         environment.eval("(call ?*list* get -1)");
-	}
+    }
     
     @Test
-	public void staticTest() throws Exception {
+    public void staticTest() throws Exception {
         boolean buildOk = environment.build("(defglobal ?*sysout* = (call java java.lang.System out))");
         Assert.assertTrue("defglobal failed", buildOk);
         environment.eval("(call ?*sysout* println \"Hi!\")");
-	}
+    }
     
     @Test
-	public void testField() throws Exception {
-    	boolean buildOk = environment.build("(defglobal ?*foo* = (new java " + Foo.class.getName() + "))");
+    public void testField() throws Exception {
+        boolean buildOk = environment.build("(defglobal ?*foo* = (new java " + Foo.class.getName() + "))");
         Assert.assertTrue("defglobal failed", buildOk);
         PrimitiveValue fooValue = environment.eval("?*foo*");
         System.out.println(fooValue);
@@ -93,6 +93,6 @@ public class ArgumentsTest {
         foo.bar = 8;
         PrimitiveValue value = environment.eval("(call ?*foo* bar)");
         Assert.assertEquals("field did not get new value", 8, value.intValue());
-	}
+    }
 }
 

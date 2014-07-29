@@ -1,0 +1,15 @@
+* type conversions
+
+For clips code calling Java code:
+
+| CLIPS type       | Java Type            |
+|------------------+----------------------|
+| INTEGER          | long                 |
+| FLOAT            | double               |
+| SYMBOL           | String               |
+| STRING           | String               |
+| EXTERNAL-ADDRESS | Object (if Java)     |
+| FACT-ADDRESS     | FactAddressValue     |
+| INSTANCE-NAME    | InstanceNameValue    |
+| INSTANCE-ADDRESS | InstanceAddressValue |
+
